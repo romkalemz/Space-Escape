@@ -1,4 +1,4 @@
-package bounce;
+package space_escape;
 
 import java.util.Iterator;
 
@@ -37,13 +37,13 @@ class StartUpState extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game,
 			Graphics g) throws SlickException {
-		BounceGame bg = (BounceGame)game;
+		Game bg = (Game)game;
 		
 		bg.ball.render(g);
 		g.drawString("Bounces: ?", 10, 30);
 		for (Bang b : bg.explosions)
 			b.render(g);
-		g.drawImage(ResourceManager.getImage(BounceGame.STARTUP_BANNER_RSC),
+		g.drawImage(ResourceManager.getImage(Game.STARTUP_BANNER_RSC),
 				225, 270);		
 	}
 
@@ -52,10 +52,10 @@ class StartUpState extends BasicGameState {
 			int delta) throws SlickException {
 
 		Input input = container.getInput();
-		BounceGame bg = (BounceGame)game;
+		Game bg = (Game)game;
 
 		if (input.isKeyDown(Input.KEY_SPACE))
-			bg.enterState(BounceGame.PLAYINGSTATE);	
+			bg.enterState(Game.PLAYINGSTATE);	
 		
 		// bounce the ball...
 		boolean bounced = false;
@@ -84,7 +84,7 @@ class StartUpState extends BasicGameState {
 
 	@Override
 	public int getID() {
-		return BounceGame.STARTUPSTATE;
+		return Game.STARTUPSTATE;
 	}
 	
 }
