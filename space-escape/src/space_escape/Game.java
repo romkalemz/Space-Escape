@@ -17,8 +17,7 @@ public class Game extends StateBasedGame {
 	public static final int PLAYINGSTATE = 1;
 	public static final int GAMEOVERSTATE = 2;
 	
-	public static final String BALL_BALLIMG_RSC = "space_escape/resource/ball.png";
-	public static final String BALL_BROKENIMG_RSC = "space_escape/resource/brokenball.png";
+	public static final String PLAYER_ORIGIN_RSC = "space_escape/resource/player-origin.png";
 	public static final String GAMEOVER_BANNER_RSC = "space_escape/resource/gameover.png";
 	public static final String STARTUP_BANNER_RSC = "space_escape/resource/PressSpace.png";
 
@@ -26,7 +25,7 @@ public class Game extends StateBasedGame {
 	public final int ScreenWidth;
 	public final int ScreenHeight;
 
-	Ball ball;
+	Ball player;
 
 	/**
 	 * Create the BounceGame frame, saving the width and height for later use.
@@ -61,12 +60,11 @@ public class Game extends StateBasedGame {
 		// attempt to do in the startUp() method.
 
 		// preload all the resources to avoid warnings & minimize latency...
-		ResourceManager.loadImage(BALL_BALLIMG_RSC);
-		ResourceManager.loadImage(BALL_BROKENIMG_RSC);
+		ResourceManager.loadImage(PLAYER_ORIGIN_RSC);
 		ResourceManager.loadImage(GAMEOVER_BANNER_RSC);
 		ResourceManager.loadImage(STARTUP_BANNER_RSC);
 		
-		ball = new Ball(ScreenWidth / 2, ScreenHeight / 2, .1f, .2f);
+		player = new Ball(ScreenWidth / 2, ScreenHeight / 2, 0, 0);
 
 	}
 	

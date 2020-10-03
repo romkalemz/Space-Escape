@@ -37,9 +37,7 @@ class StartUpState extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game,
 			Graphics g) throws SlickException {
-		Game bg = (Game)game;
 		
-		bg.ball.render(g);
 		g.drawImage(ResourceManager.getImage(Game.STARTUP_BANNER_RSC),
 				225, 270);		
 	}
@@ -49,25 +47,11 @@ class StartUpState extends BasicGameState {
 			int delta) throws SlickException {
 
 		Input input = container.getInput();
-		Game bg = (Game)game;
+		Game se = (Game)game;
 
 		if (input.isKeyDown(Input.KEY_SPACE))
-			bg.enterState(Game.PLAYINGSTATE);	
+			se.enterState(Game.PLAYINGSTATE);	
 		
-		// bounce the ball...
-		boolean bounced = false;
-		if (bg.ball.getCoarseGrainedMaxX() > bg.ScreenWidth
-				|| bg.ball.getCoarseGrainedMinX() < 0) {
-			bg.ball.bounce(90);
-			bounced = true;
-		} else if (bg.ball.getCoarseGrainedMaxY() > bg.ScreenHeight
-				|| bg.ball.getCoarseGrainedMinY() < 0) {
-			bg.ball.bounce(0);
-			bounced = true;
-		}
-		bg.ball.update(delta);
-
-
 
 	}
 

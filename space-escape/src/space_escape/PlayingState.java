@@ -1,7 +1,5 @@
 package space_escape;
 
-import java.util.Iterator;
-
 import jig.Vector;
 
 import org.newdawn.slick.GameContainer;
@@ -36,9 +34,9 @@ class PlayingState extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game,
 			Graphics g) throws SlickException {
-		Game bg = (Game)game;
+		Game se = (Game)game;
 		
-		bg.ball.render(g);
+		se.player.render(g);
 	}
 
 	@Override
@@ -46,34 +44,52 @@ class PlayingState extends BasicGameState {
 			int delta) throws SlickException {
 
 		Input input = container.getInput();
-		Game bg = (Game)game;
+		Game se = (Game)game;
 		
+		se.player.setVelocity(new Vector(0, 0));
+		
+		//player movement
 		if (input.isKeyDown(Input.KEY_W)) {
-			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(0f, -.001f)));
+			se.player.setVelocity(se.player.getVelocity().add(new Vector(0f, -.2f)));
 		}
 		if (input.isKeyDown(Input.KEY_S)) {
-			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(0f, +.001f)));
+			se.player.setVelocity(se.player.getVelocity().add(new Vector(0f, +.2f)));
 		}
 		if (input.isKeyDown(Input.KEY_A)) {
-			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(-.001f, 0)));
+			se.player.setVelocity(se.player.getVelocity().add(new Vector(-.2f, 0)));
 		}
 		if (input.isKeyDown(Input.KEY_D)) {
-			bg.ball.setVelocity(bg.ball.getVelocity().add(new Vector(+.001f, 0f)));
+			se.player.setVelocity(se.player.getVelocity().add(new Vector(+.2f, 0f)));
 		}
-		// bounce the ball...
-		boolean bounced = false;
-		if (bg.ball.getCoarseGrainedMaxX() > bg.ScreenWidth
-				|| bg.ball.getCoarseGrainedMinX() < 0) {
-			bg.ball.bounce(90);
-			bounced = true;
-		} else if (bg.ball.getCoarseGrainedMaxY() > bg.ScreenHeight
-				|| bg.ball.getCoarseGrainedMinY() < 0) {
-			bg.ball.bounce(0);
-			bounced = true;
+		//player direction / aim
+		if (input.isKeyDown(Input.KEY_UP))
+			se.player.setRotation(0);
+		if (input.isKeyDown(Input.KEY_RIGHT))
+			se.player.setRotation(90);
+		if (input.isKeyDown(Input.KEY_DOWN))
+			se.player.setRotation(180);
+		if (input.isKeyDown(Input.KEY_LEFT))
+			se.player.setRotation(270);
+		if (input.isKeyDown(Input.KEY_UP) && input.isKeyDown(Input.KEY_RIGHT))
+			se.player.setRotation(45);
+		if (input.isKeyDown(Input.KEY_RIGHT) && input.isKeyDown(Input.KEY_DOWN))
+			se.player.setRotation(135);
+		if (input.isKeyDown(Input.KEY_DOWN) && input.isKeyDown(Input.KEY_LEFT))
+			se.player.setRotation(225);
+		if (input.isKeyDown(Input.KEY_UP) && input.isKeyDown(Input.KEY_LEFT))
+			se.player.setRotation(315);
+		
+		if (se.player.getCoarseGrainedMaxX() > se.ScreenWidth
+				|| se.player.getCoarseGrainedMinX() < 0) {
+			se.player.bounce(90);
+		} else if (se.player.getCoarseGrainedMaxY() > se.ScreenHeight
+				|| se.player.getCoarseGrainedMinY() < 0) {
+			se.player.bounce(0);
 		}
+		
+		
 
-		bg.ball.update(delta);
-
+		se.player.update(delta);
 
 
 		if (input.isKeyDown(Input.KEY_ESCAPE)) {
