@@ -23,7 +23,6 @@ import org.newdawn.slick.state.StateBasedGame;
  * Transitions To GameOverState
  */
 class PlayingState extends BasicGameState {
-	int bounces;
 	
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
@@ -32,7 +31,6 @@ class PlayingState extends BasicGameState {
 
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) {
-		bounces = 0;
 		container.setSoundOn(true);
 	}
 	@Override
@@ -41,9 +39,6 @@ class PlayingState extends BasicGameState {
 		Game bg = (Game)game;
 		
 		bg.ball.render(g);
-		g.drawString("Bounces: " + bounces, 10, 30);
-		for (Bang b : bg.explosions)
-			b.render(g);
 	}
 
 	@Override
@@ -76,21 +71,12 @@ class PlayingState extends BasicGameState {
 			bg.ball.bounce(0);
 			bounced = true;
 		}
-		if (bounced) {
-			bg.explosions.add(new Bang(bg.ball.getX(), bg.ball.getY()));
-			bounces++;
-		}
+
 		bg.ball.update(delta);
 
-		// check if there are any finished explosions, if so remove them
-		for (Iterator<Bang> i = bg.explosions.iterator(); i.hasNext();) {
-			if (!i.next().isActive()) {
-				i.remove();
-			}
-		}
 
-		if (bounces >= 10) {
-			((GameOverState)game.getState(Game.GAMEOVERSTATE)).setUserScore(bounces);
+
+		if (input.isKeyDown(Input.KEY_ESCAPE)) {
 			game.enterState(Game.GAMEOVERSTATE);
 		}
 	}

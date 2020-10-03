@@ -21,14 +21,12 @@ public class Game extends StateBasedGame {
 	public static final String BALL_BROKENIMG_RSC = "space_escape/resource/brokenball.png";
 	public static final String GAMEOVER_BANNER_RSC = "space_escape/resource/gameover.png";
 	public static final String STARTUP_BANNER_RSC = "space_escape/resource/PressSpace.png";
-	public static final String BANG_EXPLOSIONIMG_RSC = "space_escape/resource/explosion.png";
-	public static final String BANG_EXPLOSIONSND_RSC = "space_escape/resource/explosion.wav";
+
 
 	public final int ScreenWidth;
 	public final int ScreenHeight;
 
 	Ball ball;
-	ArrayList<Bang> explosions;
 
 	/**
 	 * Create the BounceGame frame, saving the width and height for later use.
@@ -46,7 +44,6 @@ public class Game extends StateBasedGame {
 		ScreenWidth = width;
 
 		Entity.setCoarseGrainedCollisionBoundary(Entity.AABB);
-		explosions = new ArrayList<Bang>(10);
 				
 	}
 
@@ -62,14 +59,12 @@ public class Game extends StateBasedGame {
 		// and (2) because loading it will load the audio libraries and
 		// unless that is done now, we can't *disable* sound as we
 		// attempt to do in the startUp() method.
-		ResourceManager.loadSound(BANG_EXPLOSIONSND_RSC);	
 
 		// preload all the resources to avoid warnings & minimize latency...
 		ResourceManager.loadImage(BALL_BALLIMG_RSC);
 		ResourceManager.loadImage(BALL_BROKENIMG_RSC);
 		ResourceManager.loadImage(GAMEOVER_BANNER_RSC);
 		ResourceManager.loadImage(STARTUP_BANNER_RSC);
-		ResourceManager.loadImage(BANG_EXPLOSIONIMG_RSC);
 		
 		ball = new Ball(ScreenWidth / 2, ScreenHeight / 2, .1f, .2f);
 

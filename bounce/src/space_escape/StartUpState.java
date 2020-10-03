@@ -40,9 +40,6 @@ class StartUpState extends BasicGameState {
 		Game bg = (Game)game;
 		
 		bg.ball.render(g);
-		g.drawString("Bounces: ?", 10, 30);
-		for (Bang b : bg.explosions)
-			b.render(g);
 		g.drawImage(ResourceManager.getImage(Game.STARTUP_BANNER_RSC),
 				225, 270);		
 	}
@@ -68,17 +65,9 @@ class StartUpState extends BasicGameState {
 			bg.ball.bounce(0);
 			bounced = true;
 		}
-		if (bounced) {
-			bg.explosions.add(new Bang(bg.ball.getX(), bg.ball.getY()));
-		}
 		bg.ball.update(delta);
 
-		// check if there are any finished explosions, if so remove them
-		for (Iterator<Bang> i = bg.explosions.iterator(); i.hasNext();) {
-			if (!i.next().isActive()) {
-				i.remove();
-			}
-		}
+
 
 	}
 
