@@ -38,6 +38,21 @@ import jig.Vector;
 		img.setRotation(dir);
 		addImageWithBoundingBox(img);
 	}
+	
+	public void checkBounds(int screenw, int screenh) {
+		if(this.getCoarseGrainedMinX()<0) {
+			this.setPosition(25, this.getY());
+		}else if(this.getCoarseGrainedMaxX()>screenw){
+			this.setPosition(screenw-25, this.getY());
+		}
+		
+		if(this.getCoarseGrainedMinY()<0) {
+			this.setPosition(this.getX(), 25);
+		}else if(this.getCoarseGrainedMaxY()>screenh){
+			this.setPosition(this.getX(), screenh-25);
+		}
+		
+	}
 
 	/**
 	 * Bounce the ball off a surface. This simple implementation, combined
@@ -47,9 +62,9 @@ import jig.Vector;
 	 * 
 	 * @param surfaceTangent
 	 */
-	public void bounce(float surfaceTangent) {
-		velocity = velocity.bounce(surfaceTangent);
-	}
+//	public void bounce(float surfaceTangent) {
+//		velocity = velocity.bounce(surfaceTangent);
+//	}
 
 	/**
 	 * Update the Ball based on how much time has passed...
@@ -60,4 +75,5 @@ import jig.Vector;
 	public void update(final int delta) {
 		translate(velocity.scale(delta));
 	}
+
 }

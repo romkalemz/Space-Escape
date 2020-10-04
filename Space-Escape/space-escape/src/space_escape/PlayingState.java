@@ -79,18 +79,11 @@ class PlayingState extends BasicGameState {
 		if (input.isKeyDown(Input.KEY_UP) && input.isKeyDown(Input.KEY_LEFT))
 			se.player.setRotation(315);
 		
-		if (se.player.getCoarseGrainedMaxX() > se.ScreenWidth
-				|| se.player.getCoarseGrainedMinX() < 0) {
-			se.player.bounce(90);
-		} else if (se.player.getCoarseGrainedMaxY() > se.ScreenHeight
-				|| se.player.getCoarseGrainedMinY() < 0) {
-			se.player.bounce(0);
-		}
 		
-		
-
 		se.player.update(delta);
-
+		//player bounds
+		se.player.checkBounds(se.ScreenWidth, se.ScreenHeight);
+		
 
 		if (input.isKeyDown(Input.KEY_ESCAPE)) {
 			game.enterState(Game.GAMEOVERSTATE);
