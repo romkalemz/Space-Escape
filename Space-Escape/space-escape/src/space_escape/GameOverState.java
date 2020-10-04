@@ -1,4 +1,4 @@
-package bounce;
+package space_escape;
 
 import java.util.Iterator;
 
@@ -46,11 +46,8 @@ class GameOverState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game,
 			Graphics g) throws SlickException {
 
-		BounceGame bg = (BounceGame)game;
-		g.drawString("Bounces: " + lastKnownBounces, 10, 30);
-		for (Bang b : bg.explosions)
-			b.render(g);
-		g.drawImage(ResourceManager.getImage(BounceGame.GAMEOVER_BANNER_RSC), 225,
+		Game bg = (Game)game;
+		g.drawImage(ResourceManager.getImage(Game.GAMEOVER_BANNER_RSC), 225,
 				270);
 
 	}
@@ -62,20 +59,13 @@ class GameOverState extends BasicGameState {
 		
 		timer -= delta;
 		if (timer <= 0)
-			game.enterState(BounceGame.STARTUPSTATE, new EmptyTransition(), new HorizontalSplitTransition() );
-
-		// check if there are any finished explosions, if so remove them
-		for (Iterator<Bang> i = ((BounceGame)game).explosions.iterator(); i.hasNext();) {
-			if (!i.next().isActive()) {
-				i.remove();
-			}
-		}
+			game.enterState(Game.STARTUPSTATE, new EmptyTransition(), new HorizontalSplitTransition() );
 
 	}
 
 	@Override
 	public int getID() {
-		return BounceGame.GAMEOVERSTATE;
+		return Game.GAMEOVERSTATE;
 	}
 	
 }

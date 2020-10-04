@@ -1,10 +1,9 @@
 ################################# Resolved Issues #####################################
 
-
+- **[1a]** Add a controllable entity (player)
 
 ################################# Open Issues ######################################### 
 ---------------------------------------------------------------------------------------
-- **[1a]** Add a controllable entity (player)
 - **[1b]** Reduce response time needed for angled rotation for player (double arrow keys)
 - **[1c]** Fix boundary out of bounds issues 
 ---------------------------------------------------------------------------------------

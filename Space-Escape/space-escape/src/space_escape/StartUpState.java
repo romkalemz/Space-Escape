@@ -1,4 +1,4 @@
-package bounce;
+package space_escape;
 
 import java.util.Iterator;
 
@@ -37,13 +37,8 @@ class StartUpState extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game,
 			Graphics g) throws SlickException {
-		BounceGame bg = (BounceGame)game;
 		
-		bg.ball.render(g);
-		g.drawString("Bounces: ?", 10, 30);
-		for (Bang b : bg.explosions)
-			b.render(g);
-		g.drawImage(ResourceManager.getImage(BounceGame.STARTUP_BANNER_RSC),
+		g.drawImage(ResourceManager.getImage(Game.STARTUP_BANNER_RSC),
 				225, 270);		
 	}
 
@@ -52,39 +47,17 @@ class StartUpState extends BasicGameState {
 			int delta) throws SlickException {
 
 		Input input = container.getInput();
-		BounceGame bg = (BounceGame)game;
+		Game se = (Game)game;
 
 		if (input.isKeyDown(Input.KEY_SPACE))
-			bg.enterState(BounceGame.PLAYINGSTATE);	
+			se.enterState(Game.PLAYINGSTATE);	
 		
-		// bounce the ball...
-		boolean bounced = false;
-		if (bg.ball.getCoarseGrainedMaxX() > bg.ScreenWidth
-				|| bg.ball.getCoarseGrainedMinX() < 0) {
-			bg.ball.bounce(90);
-			bounced = true;
-		} else if (bg.ball.getCoarseGrainedMaxY() > bg.ScreenHeight
-				|| bg.ball.getCoarseGrainedMinY() < 0) {
-			bg.ball.bounce(0);
-			bounced = true;
-		}
-		if (bounced) {
-			bg.explosions.add(new Bang(bg.ball.getX(), bg.ball.getY()));
-		}
-		bg.ball.update(delta);
-
-		// check if there are any finished explosions, if so remove them
-		for (Iterator<Bang> i = bg.explosions.iterator(); i.hasNext();) {
-			if (!i.next().isActive()) {
-				i.remove();
-			}
-		}
 
 	}
 
 	@Override
 	public int getID() {
-		return BounceGame.STARTUPSTATE;
+		return Game.STARTUPSTATE;
 	}
 	
 }
