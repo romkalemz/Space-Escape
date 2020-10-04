@@ -1,4 +1,6 @@
-package bounce;
+package space_escape;
+
+import org.newdawn.slick.Image;
 
 import jig.Entity;
 import jig.ResourceManager;
@@ -18,7 +20,7 @@ import jig.Vector;
 	public Ball(final float x, final float y, final float vx, final float vy) {
 		super(x, y);
 		addImageWithBoundingBox(ResourceManager
-				.getImage(BounceGame.BALL_BALLIMG_RSC));
+				.getImage(Game.PLAYER_ORIGIN_RSC));
 		velocity = new Vector(vx, vy);
 		countdown = 0;
 	}
@@ -30,6 +32,12 @@ import jig.Vector;
 	public Vector getVelocity() {
 		return velocity;
 	}
+	
+	public void setRotation(int dir) {
+		Image img = ResourceManager.getImage(Game.PLAYER_ORIGIN_RSC);
+		img.setRotation(dir);
+		addImageWithBoundingBox(img);
+	}
 
 	/**
 	 * Bounce the ball off a surface. This simple implementation, combined
@@ -40,10 +48,6 @@ import jig.Vector;
 	 * @param surfaceTangent
 	 */
 	public void bounce(float surfaceTangent) {
-		removeImage(ResourceManager.getImage(BounceGame.BALL_BALLIMG_RSC));
-		addImageWithBoundingBox(ResourceManager
-				.getImage(BounceGame.BALL_BROKENIMG_RSC));
-		countdown = 500;
 		velocity = velocity.bounce(surfaceTangent);
 	}
 
@@ -55,14 +59,5 @@ import jig.Vector;
 	 */
 	public void update(final int delta) {
 		translate(velocity.scale(delta));
-		if (countdown > 0) {
-			countdown -= delta;
-			if (countdown <= 0) {
-				addImageWithBoundingBox(ResourceManager
-						.getImage(BounceGame.BALL_BALLIMG_RSC));
-				removeImage(ResourceManager
-						.getImage(BounceGame.BALL_BROKENIMG_RSC));
-			}
-		}
 	}
 }
