@@ -25,7 +25,7 @@ public class Game extends StateBasedGame {
 	public final int ScreenWidth;
 	public final int ScreenHeight;
 
-	Ball player;
+	Player player;
 
 	/**
 	 * Create the BounceGame frame, saving the width and height for later use.
@@ -64,7 +64,7 @@ public class Game extends StateBasedGame {
 		ResourceManager.loadImage(GAMEOVER_BANNER_RSC);
 		ResourceManager.loadImage(STARTUP_BANNER_RSC);
 		
-		player = new Ball(ScreenWidth / 2, ScreenHeight / 2, 0, 0);
+		player = new Player(ScreenWidth / 2, ScreenHeight / 2, 0, 0);
 
 	}
 	

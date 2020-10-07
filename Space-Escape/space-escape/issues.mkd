@@ -1,11 +1,11 @@
 ################################# Resolved Issues #####################################
 
 - **[1a]** Add a controllable entity (player)
-- **[1c]** Fix boundary out of bounds issues 
+- **[1b]** Fix boundary out of bounds issues 
 
 ################################# Open Issues ######################################### 
 ---------------------------------------------------------------------------------------
-- **[1b]** Reduce response time needed for angled rotation for player (double arrow keys)
+- **[1c]** Reduce response time needed for angled rotation for player (double arrow keys)
 
 ---------------------------------------------------------------------------------------
 - **[2a]** Collision detection between the player and solid entities
