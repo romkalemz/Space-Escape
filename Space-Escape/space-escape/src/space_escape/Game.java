@@ -20,7 +20,7 @@ public class Game extends StateBasedGame {
 	public static final String PLAYER_ORIGIN_RSC = "space_escape/resource/player-origin.png";
 	public static final String GAMEOVER_BANNER_RSC = "space_escape/resource/gameover.png";
 	public static final String STARTUP_BANNER_RSC = "space_escape/resource/PressSpace.png";
-
+	public static final String HEALTH_RSC = "space_escape/resource/heart.png";
 
 	public final int ScreenWidth;
 	public final int ScreenHeight;
@@ -63,6 +63,7 @@ public class Game extends StateBasedGame {
 		ResourceManager.loadImage(PLAYER_ORIGIN_RSC);
 		ResourceManager.loadImage(GAMEOVER_BANNER_RSC);
 		ResourceManager.loadImage(STARTUP_BANNER_RSC);
+		ResourceManager.loadImage(HEALTH_RSC);
 		
 		player = new Player(ScreenWidth / 2, ScreenHeight / 2, .25f);
 

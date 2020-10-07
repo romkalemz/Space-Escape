@@ -20,6 +20,7 @@ import jig.Vector;
 	public float multSpeed;		//speed multiplier
 	public float atkSpeed;		//the rate of fire from player
 	public float atkDmg;		//the amount of hit points per bullet
+	public float hp;			//health of the player
 
 	public Player(final float x, final float y, float initSp) {
 		super(x, y);
@@ -28,6 +29,7 @@ import jig.Vector;
 		velocity = new Vector(0, 0);
 		initSpeed = initSp;
 		multSpeed = atkSpeed = atkDmg = 1;
+		hp = 3;
 		
 		//countdown = 0;
 	}
