@@ -1,7 +1,8 @@
 ################################# Resolved Issues #####################################
 
 - **[1a]** Add a controllable entity (player)
-- **[1b]** Fix boundary out of bounds issues 
+- **[1b]** Fix boundary out of bounds issues
+- **[4a]** UI implementation describing details of players stats 
 
 ################################# Open Issues ######################################### 
 ---------------------------------------------------------------------------------------
@@ -12,11 +13,11 @@
 ---------------------------------------------------------------------------------------
 - **[3a]** AI movement and detecting the players current position
 ---------------------------------------------------------------------------------------
-- **[4a]** UI implementation describing details of players stats
 - **[4b]** Add a dynamically changing health bar
 - **[4c]** Change appearance of items bar once 3 have been collected (final-form powerup)
 ---------------------------------------------------------------------------------------
 - **[5a]** Entity pickups that are called attachments (special powerups)
+- **[5b]** Add visual representation of the attachments collected on the player
 ---------------------------------------------------------------------------------------
 - **[6a]** Unique enemies that behave differently with player (move away, move closer)
 ---------------------------------------------------------------------------------------
