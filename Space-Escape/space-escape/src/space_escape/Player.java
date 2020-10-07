@@ -15,14 +15,21 @@ import jig.Vector;
  class Player extends Entity {
 
 	private Vector velocity;
-	private int countdown;
+	//private int countdown;
+	public float initSpeed;		//initial starting speed
+	public float multSpeed;		//speed multiplier
+	public float atkSpeed;		//the rate of fire from player
+	public float atkDmg;		//the amount of hit points per bullet
 
-	public Player(final float x, final float y, final float vx, final float vy) {
+	public Player(final float x, final float y, float initSp) {
 		super(x, y);
 		addImageWithBoundingBox(ResourceManager
 				.getImage(Game.PLAYER_ORIGIN_RSC));
-		velocity = new Vector(vx, vy);
-		countdown = 0;
+		velocity = new Vector(0, 0);
+		initSpeed = initSp;
+		multSpeed = atkSpeed = atkDmg = 1;
+		
+		//countdown = 0;
 	}
 
 	public void setVelocity(final Vector v) {

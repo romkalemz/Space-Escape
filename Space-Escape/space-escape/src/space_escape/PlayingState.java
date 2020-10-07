@@ -35,6 +35,11 @@ class PlayingState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game,
 			Graphics g) throws SlickException {
 		Game se = (Game)game;
+		
+		g.drawString("Movement Speed: " + se.player.initSpeed * se.player.multSpeed * 4, 25, 700);
+		g.drawString("Attack Speed: " + se.player.atkSpeed, 25, 725);
+		g.drawString("Attack Damage: " + se.player.atkDmg, 25, 750);
+		
 		se.player.render(g);
 	}
 
@@ -49,16 +54,16 @@ class PlayingState extends BasicGameState {
 		
 		//player movement
 		if (input.isKeyDown(Input.KEY_W)) {
-			se.player.setVelocity(se.player.getVelocity().add(new Vector(0f, -.2f)));
+			se.player.setVelocity(se.player.getVelocity().add(new Vector(0f, -se.player.initSpeed * se.player.multSpeed)));
 		}
 		if (input.isKeyDown(Input.KEY_S)) {
-			se.player.setVelocity(se.player.getVelocity().add(new Vector(0f, +.2f)));
+			se.player.setVelocity(se.player.getVelocity().add(new Vector(0f, +se.player.initSpeed * se.player.multSpeed)));
 		}
 		if (input.isKeyDown(Input.KEY_A)) {
-			se.player.setVelocity(se.player.getVelocity().add(new Vector(-.2f, 0)));
+			se.player.setVelocity(se.player.getVelocity().add(new Vector(-se.player.initSpeed * se.player.multSpeed, 0f)));
 		}
 		if (input.isKeyDown(Input.KEY_D)) {
-			se.player.setVelocity(se.player.getVelocity().add(new Vector(+.2f, 0f)));
+			se.player.setVelocity(se.player.getVelocity().add(new Vector(+se.player.initSpeed * se.player.multSpeed, 0f)));
 		}
 		//player direction / aim
 		if (input.isKeyDown(Input.KEY_UP))

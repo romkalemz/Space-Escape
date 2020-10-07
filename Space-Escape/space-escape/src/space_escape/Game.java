@@ -64,7 +64,7 @@ public class Game extends StateBasedGame {
 		ResourceManager.loadImage(GAMEOVER_BANNER_RSC);
 		ResourceManager.loadImage(STARTUP_BANNER_RSC);
 		
-		player = new Player(ScreenWidth / 2, ScreenHeight / 2, 0, 0);
+		player = new Player(ScreenWidth / 2, ScreenHeight / 2, .25f);
 
 	}
 	
