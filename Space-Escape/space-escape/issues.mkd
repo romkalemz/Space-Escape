@@ -6,15 +6,17 @@
 ################################# Open Issues ######################################### 
 ---------------------------------------------------------------------------------------
 - **[1c]** Reduce response time needed for angled rotation for player (double arrow keys)
-
+- **[1d]** Add projectiles to the player
 ---------------------------------------------------------------------------------------
 - **[2a]** Collision detection between the player and solid entities
 ---------------------------------------------------------------------------------------
 - **[3a]** AI movement and detecting the players current position
 ---------------------------------------------------------------------------------------
 - **[4a]** UI implementation describing details of players stats
+- **[4b]** Add a dynamically changing health bar
+- **[4c]** Change appearance of items bar once 3 have been collected (final-form powerup)
 ---------------------------------------------------------------------------------------
 - **[5a]** Entity pickups that are called attachments (special powerups)
 ---------------------------------------------------------------------------------------
 - **[6a]** Unique enemies that behave differently with player (move away, move closer)
------------------------- ---------------------------------------------------------------
+---------------------------------------------------------------------------------------

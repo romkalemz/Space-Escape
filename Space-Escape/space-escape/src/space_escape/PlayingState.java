@@ -1,5 +1,6 @@
 package space_escape;
 
+import jig.ResourceManager;
 import jig.Vector;
 
 import org.newdawn.slick.GameContainer;
@@ -35,6 +36,19 @@ class PlayingState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game,
 			Graphics g) throws SlickException {
 		Game se = (Game)game;
+		
+		g.drawLine(0, 650, 1200, 650);
+		g.drawString("Movement Speed: " + se.player.initSpeed * se.player.multSpeed * 4, 25, 700);
+		g.drawString("Attack Speed: " + se.player.atkSpeed, 25, 725);
+		g.drawString("Attack Damage: " + se.player.atkDmg, 25, 750);
+		
+		for(int x = 0; x < se.player.hp; x++) {
+			g.drawImage(ResourceManager.getImage(Game.HEALTH_RSC).getScaledCopy(60, 60), 1100 - (x * 60), 650);
+		}
+		for(int x = 0; x < 3; x++) {
+			g.drawImage(ResourceManager.getImage(Game.ITEMSQR_RSC), 425 + (x * 120), 675);
+		}
+		
 		se.player.render(g);
 	}
 
@@ -49,16 +63,16 @@ class PlayingState extends BasicGameState {
 		
 		//player movement
 		if (input.isKeyDown(Input.KEY_W)) {
-			se.player.setVelocity(se.player.getVelocity().add(new Vector(0f, -.2f)));
+			se.player.setVelocity(se.player.getVelocity().add(new Vector(0f, -se.player.initSpeed * se.player.multSpeed)));
 		}
 		if (input.isKeyDown(Input.KEY_S)) {
-			se.player.setVelocity(se.player.getVelocity().add(new Vector(0f, +.2f)));
+			se.player.setVelocity(se.player.getVelocity().add(new Vector(0f, +se.player.initSpeed * se.player.multSpeed)));
 		}
 		if (input.isKeyDown(Input.KEY_A)) {
-			se.player.setVelocity(se.player.getVelocity().add(new Vector(-.2f, 0)));
+			se.player.setVelocity(se.player.getVelocity().add(new Vector(-se.player.initSpeed * se.player.multSpeed, 0f)));
 		}
 		if (input.isKeyDown(Input.KEY_D)) {
-			se.player.setVelocity(se.player.getVelocity().add(new Vector(+.2f, 0f)));
+			se.player.setVelocity(se.player.getVelocity().add(new Vector(+se.player.initSpeed * se.player.multSpeed, 0f)));
 		}
 		//player direction / aim
 		if (input.isKeyDown(Input.KEY_UP))
