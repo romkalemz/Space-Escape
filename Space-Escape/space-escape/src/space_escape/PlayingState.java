@@ -35,7 +35,6 @@ class PlayingState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game,
 			Graphics g) throws SlickException {
 		Game se = (Game)game;
-		
 		se.player.render(g);
 	}
 

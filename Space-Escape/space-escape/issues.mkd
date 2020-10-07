@@ -1,11 +1,12 @@
 ################################# Resolved Issues #####################################
 
 - **[1a]** Add a controllable entity (player)
+- **[1c]** Fix boundary out of bounds issues 
 
 ################################# Open Issues ######################################### 
 ---------------------------------------------------------------------------------------
 - **[1b]** Reduce response time needed for angled rotation for player (double arrow keys)
-- **[1c]** Fix boundary out of bounds issues 
+
 ---------------------------------------------------------------------------------------
 - **[2a]** Collision detection between the player and solid entities
 ---------------------------------------------------------------------------------------
@@ -16,4 +17,4 @@
 - **[5a]** Entity pickups that are called attachments (special powerups)
 ---------------------------------------------------------------------------------------
 - **[6a]** Unique enemies that behave differently with player (move away, move closer)
----------------------------------------------------------------------------------------
+------------------------ ---------------------------------------------------------------

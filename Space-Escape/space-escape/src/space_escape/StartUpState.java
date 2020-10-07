@@ -39,7 +39,7 @@ class StartUpState extends BasicGameState {
 			Graphics g) throws SlickException {
 		
 		g.drawImage(ResourceManager.getImage(Game.STARTUP_BANNER_RSC),
-				225, 270);		
+				420, 320);		
 	}
 
 	@Override
