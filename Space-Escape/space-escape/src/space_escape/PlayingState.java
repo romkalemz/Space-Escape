@@ -45,6 +45,9 @@ class PlayingState extends BasicGameState {
 		for(int x = 0; x < se.player.hp; x++) {
 			g.drawImage(ResourceManager.getImage(Game.HEALTH_RSC).getScaledCopy(60, 60), 1100 - (x * 60), 650);
 		}
+		for(int x = 0; x < 3; x++) {
+			g.drawImage(ResourceManager.getImage(Game.ITEMSQR_RSC), 425 + (x * 120), 675);
+		}
 		
 		se.player.render(g);
 	}
