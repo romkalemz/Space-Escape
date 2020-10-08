@@ -23,6 +23,8 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 class PlayingState extends BasicGameState {
 	
+	private int angled_pos_cooldown;
+	
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
@@ -74,23 +76,36 @@ class PlayingState extends BasicGameState {
 		if (input.isKeyDown(Input.KEY_D)) {
 			se.player.setVelocity(se.player.getVelocity().add(new Vector(+se.player.initSpeed * se.player.multSpeed, 0f)));
 		}
+		angled_pos_cooldown -= delta;
 		//player direction / aim
-		if (input.isKeyDown(Input.KEY_UP))
-			se.player.setRotation(0);
-		if (input.isKeyDown(Input.KEY_RIGHT))
-			se.player.setRotation(90);
-		if (input.isKeyDown(Input.KEY_DOWN))
-			se.player.setRotation(180);
-		if (input.isKeyDown(Input.KEY_LEFT))
-			se.player.setRotation(270);
-		if (input.isKeyDown(Input.KEY_UP) && input.isKeyDown(Input.KEY_RIGHT))
+		//wait for a slight cooldown to allow slower response times to angled facing position
+		if (angled_pos_cooldown <= 0) {
+			if (input.isKeyDown(Input.KEY_UP))
+				se.player.setRotation(0);
+			if (input.isKeyDown(Input.KEY_RIGHT))
+				se.player.setRotation(90);
+			if (input.isKeyDown(Input.KEY_DOWN))
+				se.player.setRotation(180);
+			if (input.isKeyDown(Input.KEY_LEFT))
+				se.player.setRotation(270);
+		}
+		if (input.isKeyDown(Input.KEY_UP) && input.isKeyDown(Input.KEY_RIGHT)) {
 			se.player.setRotation(45);
-		if (input.isKeyDown(Input.KEY_RIGHT) && input.isKeyDown(Input.KEY_DOWN))
+			angled_pos_cooldown = 50;
+		}
+		if (input.isKeyDown(Input.KEY_RIGHT) && input.isKeyDown(Input.KEY_DOWN)) {
 			se.player.setRotation(135);
-		if (input.isKeyDown(Input.KEY_DOWN) && input.isKeyDown(Input.KEY_LEFT))
+			angled_pos_cooldown = 50;
+		}
+		if (input.isKeyDown(Input.KEY_DOWN) && input.isKeyDown(Input.KEY_LEFT)) {
 			se.player.setRotation(225);
-		if (input.isKeyDown(Input.KEY_UP) && input.isKeyDown(Input.KEY_LEFT))
+			angled_pos_cooldown = 50;
+		}
+		if (input.isKeyDown(Input.KEY_UP) && input.isKeyDown(Input.KEY_LEFT)) {
 			se.player.setRotation(315);
+			angled_pos_cooldown = 50;
+		}
+			
 		
 		
 		se.player.update(delta);
