@@ -21,3 +21,4 @@
 ---------------------------------------------------------------------------------------
 - **[6a]** Unique enemies that behave differently with player (move away, move closer)
 ---------------------------------------------------------------------------------------
+- **[7a]** Add grid-like structure for map design and maneuvering, add overlay option 
