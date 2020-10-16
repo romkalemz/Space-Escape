@@ -15,6 +15,7 @@ import jig.Vector;
  class Player extends Entity {
 
 	private Vector velocity;
+	public Image image;
 	//private int countdown;
 	public float initSpeed;		//initial starting speed
 	public float multSpeed;		//speed multiplier
@@ -24,8 +25,9 @@ import jig.Vector;
 
 	public Player(final float x, final float y, float initSp) {
 		super(x, y);
-		addImageWithBoundingBox(ResourceManager
-				.getImage(Game.PLAYER_ORIGIN_RSC));
+		image = ResourceManager.getImage(Game.PLAYER_ORIGIN_RSC).getScaledCopy(0.5f);
+		addImageWithBoundingBox(image);
+		
 		velocity = new Vector(0, 0);
 		initSpeed = initSp;
 		multSpeed = atkSpeed = atkDmg = 1;
@@ -44,9 +46,8 @@ import jig.Vector;
 	
 	public void setRotation(int dir) {
 		//countdown = 500;
-		Image img = ResourceManager.getImage(Game.PLAYER_ORIGIN_RSC);
-		img.setRotation(dir);
-		addImageWithBoundingBox(img);
+		image.setRotation(dir);
+		addImageWithBoundingBox(image);
 	}
 	
 	public void checkBounds(int screenw, int screenh) {
