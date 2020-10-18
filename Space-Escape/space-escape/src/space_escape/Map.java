@@ -20,7 +20,6 @@ public class Map {
 	
 	public void loadLevel(int lvl) {
 		if (lvl == 1) {
-			
 			for(int x = 0; x < number_of_tilesX; x++) {
 				for(int y = 0; y < number_of_tilesY; y++) {
 					Tile starTile = new Tile(20+40*x, 20+40*y, 40, 40, false, Game.TILE_OVERLAY_RSC);

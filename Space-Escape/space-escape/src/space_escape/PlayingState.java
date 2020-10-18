@@ -23,7 +23,9 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 class PlayingState extends BasicGameState {
 	
-	private int angled_pos_cooldown;
+	private int angled_pos_delay;
+	//private int cheat_delay;
+	private boolean isOverlay = false;
 	
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
@@ -60,7 +62,8 @@ class PlayingState extends BasicGameState {
 		}
 		
 		// render everything else
-		se.map.render(container, game, g);
+		if(isOverlay)
+			se.map.render(container, game, g);
 		se.player.render(g);
 	}
 
@@ -70,6 +73,14 @@ class PlayingState extends BasicGameState {
 
 		Input input = container.getInput();
 		Game se = (Game)game;
+		
+		// change cheat options / overlay option
+		if(input.isKeyPressed(Input.KEY_O)) {
+			if(!isOverlay)
+				isOverlay = true;
+			else 
+				isOverlay = false;
+		}
 		
 		se.player.setVelocity(new Vector(0, 0));
 		
@@ -86,10 +97,10 @@ class PlayingState extends BasicGameState {
 		if (input.isKeyDown(Input.KEY_D)) {
 			se.player.setVelocity(se.player.getVelocity().add(new Vector(+se.player.initSpeed * se.player.multSpeed, 0f)));
 		}
-		angled_pos_cooldown -= delta;
+		
 		//player direction / aim
 		//wait for a slight cooldown to allow slower response times to angled facing position
-		if (angled_pos_cooldown <= 0) {
+		if (angled_pos_delay <= 0) {
 			if (input.isKeyDown(Input.KEY_UP))
 				se.player.setRotation(0);
 			if (input.isKeyDown(Input.KEY_RIGHT))
@@ -101,23 +112,23 @@ class PlayingState extends BasicGameState {
 		}
 		if (input.isKeyDown(Input.KEY_UP) && input.isKeyDown(Input.KEY_RIGHT)) {
 			se.player.setRotation(45);
-			angled_pos_cooldown = 50;
+			angled_pos_delay = 50;
 		}
 		if (input.isKeyDown(Input.KEY_RIGHT) && input.isKeyDown(Input.KEY_DOWN)) {
 			se.player.setRotation(135);
-			angled_pos_cooldown = 50;
+			angled_pos_delay = 50;
 		}
 		if (input.isKeyDown(Input.KEY_DOWN) && input.isKeyDown(Input.KEY_LEFT)) {
 			se.player.setRotation(225);
-			angled_pos_cooldown = 50;
+			angled_pos_delay = 50;
 		}
 		if (input.isKeyDown(Input.KEY_UP) && input.isKeyDown(Input.KEY_LEFT)) {
 			se.player.setRotation(315);
-			angled_pos_cooldown = 50;
+			angled_pos_delay = 50;
 		}
 			
 		
-		
+		angled_pos_delay -= delta;
 		se.player.update(delta);
 		//player bounds
 		se.player.checkBounds(se.ScreenWidth, se.ScreenHeight);
