@@ -7,6 +7,7 @@ import jig.ResourceManager;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -22,11 +23,16 @@ public class Game extends StateBasedGame {
 	public static final String STARTUP_BANNER_RSC = "space_escape/resource/PressSpace.png";
 	public static final String HEALTH_RSC = "space_escape/resource/heart.png";
 	public static final String ITEMSQR_RSC = "space_escape/resource/itemSqr.png";
-
+	public static final String TILE_OVERLAY_RSC = "space_escape/resource/overlayTile.png";
+	public static final String BG_STARS_RSC = "space_escape/resource/starsBG.png";
+	
 	public final int ScreenWidth;
 	public final int ScreenHeight;
 
 	Player player;
+	Map map;
+	public int level;
+	public Image background;
 
 	/**
 	 * Create the BounceGame frame, saving the width and height for later use.
@@ -42,6 +48,7 @@ public class Game extends StateBasedGame {
 		super(title);
 		ScreenHeight = height;
 		ScreenWidth = width;
+		level = 1;
 
 		Entity.setCoarseGrainedCollisionBoundary(Entity.AABB);
 				
@@ -66,9 +73,11 @@ public class Game extends StateBasedGame {
 		ResourceManager.loadImage(STARTUP_BANNER_RSC);
 		ResourceManager.loadImage(HEALTH_RSC);
 		ResourceManager.loadImage(ITEMSQR_RSC);
+		ResourceManager.loadImage(TILE_OVERLAY_RSC);
+		ResourceManager.loadImage(BG_STARS_RSC);
 		
 		player = new Player(ScreenWidth / 2, ScreenHeight / 2, .25f);
-
+		map = new Map(1, 30, 16);
 	}
 	
 	public static void main(String[] args) {
