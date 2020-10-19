@@ -77,7 +77,7 @@ public class Game extends StateBasedGame {
 		ResourceManager.loadImage(BG_STARS_RSC);
 		
 		player = new Player(ScreenWidth / 2, ScreenHeight / 2, .25f);
-		map = new Map(1, 30, 16);
+		map = new Map();
 	}
 	
 	public static void main(String[] args) {

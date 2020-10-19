@@ -52,15 +52,15 @@ import jig.Vector;
 	
 	public void checkBounds(int screenw, int screenh) {
 		if(this.getCoarseGrainedMinX()<0) {
-			this.setPosition(25, this.getY());
+			this.setPosition(15, this.getY());
 		}else if(this.getCoarseGrainedMaxX()>screenw){
-			this.setPosition(screenw-25, this.getY());
+			this.setPosition(screenw-15, this.getY());
 		}
 		
 		if(this.getCoarseGrainedMinY()<0) {
-			this.setPosition(this.getX(), 25);
+			this.setPosition(this.getX(), 15);
 		}else if(this.getCoarseGrainedMaxY()>screenh){
-			this.setPosition(this.getX(), screenh-25);
+			this.setPosition(this.getX(), screenh-15);
 		}
 		
 	}
