@@ -4,15 +4,16 @@
 - **[1b]** Fix boundary out of bounds issues
 - **[4a]** UI implementation describing details of players stats
 - **[1c]** Reduce response time needed for angled rotation for player (double arrow keys)
-- **[7a]** Add grid-like structure for map design and maneuvering, add overlay option 
+- **[7a]** Add grid-like structure for map design and maneuvering, add overlay option
+- **[3a]** detecting the players and enemies current position in overlay 
 
 ################################# Open Issues ######################################### 
 ---------------------------------------------------------------------------------------
 - **[1d]** Add projectiles to the player
 ---------------------------------------------------------------------------------------
-- **[2a]** Collision detection between the player and solid entities
+- **[2a]** Collision detection between the player and terrain (tiles)
 ---------------------------------------------------------------------------------------
-- **[3a]** AI movement and detecting the players current position
+- **[3b]** Dijkstra's basic algorithm implementation
 ---------------------------------------------------------------------------------------
 - **[4b]** Add a dynamically changing health bar
 - **[4c]** Change appearance of items bar once 3 have been collected (final-form powerup)
