@@ -31,6 +31,7 @@ public class Game extends StateBasedGame {
 
 	Player player;
 	Map map;
+	Enemy alien;
 	public int level;
 	public Image background;
 
@@ -78,6 +79,8 @@ public class Game extends StateBasedGame {
 		
 		player = new Player(ScreenWidth / 2, ScreenHeight / 2, .25f);
 		map = new Map();
+		alien = new Enemy(ScreenWidth / 2 + 100, ScreenHeight / 2 + 100, "type1");
+		
 	}
 	
 	public static void main(String[] args) {

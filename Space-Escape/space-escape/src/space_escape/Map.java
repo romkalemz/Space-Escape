@@ -13,7 +13,6 @@ public class Map {
 
 	private int number_of_tilesX = 30;
 	private int number_of_tilesY = 16;
-	private int level;
 	private Tile playerTile;
 	private Tile[][] tiles, overlay;
 	public int[] playerLocation; 

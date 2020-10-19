@@ -66,6 +66,7 @@ class PlayingState extends BasicGameState {
 			se.map.renderOverlay(g, se.player);
 		se.map.render(g);
 		se.player.render(g); 
+		se.alien.render(g);
 	}
 
 	@Override
