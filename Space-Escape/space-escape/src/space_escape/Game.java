@@ -25,6 +25,7 @@ public class Game extends StateBasedGame {
 	public static final String ITEMSQR_RSC = "space_escape/resource/itemSqr.png";
 	public static final String TILE_OVERLAY_RSC = "space_escape/resource/overlayTile.png";
 	public static final String BG_STARS_RSC = "space_escape/resource/starsBG.png";
+	public static final String TILE_ASTROID1_RSC = "space_escape/resource/asteroid1.png";
 	
 	public final int ScreenWidth;
 	public final int ScreenHeight;
@@ -76,6 +77,7 @@ public class Game extends StateBasedGame {
 		ResourceManager.loadImage(ITEMSQR_RSC);
 		ResourceManager.loadImage(TILE_OVERLAY_RSC);
 		ResourceManager.loadImage(BG_STARS_RSC);
+		ResourceManager.loadImage(TILE_ASTROID1_RSC);
 		
 		player = new Player(ScreenWidth / 2, ScreenHeight / 2, .25f);
 		map = new Map();

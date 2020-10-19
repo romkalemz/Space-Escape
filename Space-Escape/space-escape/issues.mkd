@@ -22,4 +22,3 @@
 ---------------------------------------------------------------------------------------
 - **[6a]** Unique enemies that behave differently with player (move away, move closer)
 ---------------------------------------------------------------------------------------
-- **[7b]** Add terrain that the player and enemies collide with

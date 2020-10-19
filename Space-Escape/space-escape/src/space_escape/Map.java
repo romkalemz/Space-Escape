@@ -13,7 +13,7 @@ public class Map {
 
 	private int number_of_tilesX = 30;
 	private int number_of_tilesY = 16;
-	private Tile playerTile;
+	private Tile playerTile, enemyTile;
 	private Tile[][] tiles, overlay;
 	public int[] playerLocation; 
 	
@@ -28,6 +28,11 @@ public class Map {
 		playerTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(0, 255, 0));
 		playerTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(0, 255, 0));
 		playerTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(0, 255, 0));
+		
+		enemyTile = new Tile(0, 0, 40, 40, false, Game.TILE_OVERLAY_RSC, new Color(255, 0, 0));
+		enemyTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(255, 0, 0));
+		enemyTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(255, 0, 0));
+		enemyTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(255, 0, 0));
 
 		
 		// overlay setup
@@ -46,15 +51,16 @@ public class Map {
 		}
 		
 		if (lvl == 1) {
-			
+			Tile astroidTile = new Tile(20 + 400, 20 + 400, 120, 120, true, Game.TILE_ASTROID1_RSC);
+			tiles[10][10] = astroidTile;
 		}
 	}
 	
-	private Vector findPlayerLocation(Entity player) {
+	private Vector findTileLocation(Entity entity) {
 		
 		for(int x = 0; x < number_of_tilesX; x++) {
 			for(int y = 0; y < number_of_tilesY; y++) {
-				if(player.collides(overlay[x][y]) != null)
+				if(entity.collides(overlay[x][y]) != null)
 					return overlay[x][y].getPosition();
 			}
 		}
@@ -62,12 +68,15 @@ public class Map {
 	}
 
 	
-	public void renderOverlay(Graphics g, Entity player) {
+	public void renderOverlay(Graphics g, Game game) {
 		
-		Vector tilePlace = findPlayerLocation(player);
+		Vector tilePlace = findTileLocation(game.player);
 		playerTile.setPosition(tilePlace);
+		tilePlace = findTileLocation(game.alien);
+		enemyTile.setPosition(tilePlace);
 		
 		playerTile.render(g);
+		enemyTile.render(g);
 		//render the rest of the transparent overlay tiles
 		for(int x = 0; x < number_of_tilesX; x++) {
 			for(int y = 0; y < number_of_tilesY; y++) {

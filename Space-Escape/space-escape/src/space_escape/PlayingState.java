@@ -63,7 +63,7 @@ class PlayingState extends BasicGameState {
 		
 		// render everything else
 		if(overlayEnabled)
-			se.map.renderOverlay(g, se.player);
+			se.map.renderOverlay(g, se);
 		se.map.render(g);
 		se.player.render(g); 
 		se.alien.render(g);
