@@ -25,7 +25,7 @@ class PlayingState extends BasicGameState {
 	
 	private int angled_pos_delay;
 	//private int cheat_delay;
-	private boolean isOverlay = false;
+	private boolean overlayEnabled = false;
 	
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
@@ -62,9 +62,11 @@ class PlayingState extends BasicGameState {
 		}
 		
 		// render everything else
-		if(isOverlay)
-			se.map.render(container, game, g);
-		se.player.render(g);
+		if(overlayEnabled)
+			se.map.renderOverlay(g, se);
+		se.map.render(g);
+		se.player.render(g); 
+		se.alien.render(g);
 	}
 
 	@Override
@@ -76,11 +78,14 @@ class PlayingState extends BasicGameState {
 		
 		// change cheat options / overlay option
 		if(input.isKeyPressed(Input.KEY_O)) {
-			if(!isOverlay)
-				isOverlay = true;
+			if(!overlayEnabled)
+				overlayEnabled = true;
 			else 
-				isOverlay = false;
+				overlayEnabled = false;
 		}
+		
+		// check player position and color tile green at current location
+		
 		
 		se.player.setVelocity(new Vector(0, 0));
 		
