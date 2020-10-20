@@ -64,25 +64,80 @@ import jig.Vector;
 		}
 		
 	}
+	
+	public void checkCollision(Map map) {
+		
+		float wiggle_room = 3;
+		//use the players current location to check surroundings
+		Vector playerPos = map.getTilePosition(this);
+		//grab all the tiles around the player
+		Tile w 		= map.getTile((int) playerPos.getX() - 1, (int) playerPos.getY());
+		Tile n 		= map.getTile((int) playerPos.getX(), (int) playerPos.getY() - 1);
+		Tile e 		= map.getTile((int) playerPos.getX() + 1, (int) playerPos.getY());
+		Tile s 		= map.getTile((int) playerPos.getX(), (int) playerPos.getY() + 1);
+		Tile nw 	= map.getTile((int) playerPos.getX() - 1, (int) playerPos.getY() - 1);
+		Tile ne 	= map.getTile((int) playerPos.getX() + 1, (int) playerPos.getY() - 1);
+		Tile se 	= map.getTile((int) playerPos.getX() + 1, (int) playerPos.getY() + 1);
+		Tile sw 	= map.getTile((int) playerPos.getX() - 1, (int) playerPos.getY() + 1);
+		
+		//check collision between the tiles and the player
+		if(w != null) {
+			if(w.isSolid() && collides(w) != null) {
+				this.setX(w.getCoarseGrainedMaxX() + 13);
+				System.out.println("WEST");
+			}
+		}
+		if(e != null) {
+			if(e.isSolid() && collides(e) != null) {
+				this.setX(e.getCoarseGrainedMinX() - 13);
+				System.out.println("EAST");
+			}
+				
+		}
+		if(n != null) {
+			if(n.isSolid() && collides(n) != null) {
+				this.setY(n.getCoarseGrainedMaxY() + 13);
+				System.out.println("NORTH");
+			}
+		}
+		if(s != null) {
+			if(s.isSolid() && collides(s) != null) {
+				this.setY(s.getCoarseGrainedMinY() - 13);
+				System.out.println("SOUTH");
+			}
+		}
+		//checking corner tiles
+		if(nw != null && nw.isSolid() && collides(nw) != null) {
+			System.out.println("NORTHWEST");
+			if(nw.getCoarseGrainedMaxY() - getCoarseGrainedMinY() > wiggle_room)
+				this.setX(nw.getCoarseGrainedMaxX() + 13);
+			if(nw.getCoarseGrainedMaxX() - getCoarseGrainedMinX() > wiggle_room)
+				this.setY(nw.getCoarseGrainedMaxY() + 13);
+		}
+		if(se != null && se.isSolid() && collides(se) != null) {
+			System.out.println("SOUTHEAST");
+			if(getCoarseGrainedMaxY() - se.getCoarseGrainedMinY() > wiggle_room)
+				this.setX(se.getCoarseGrainedMinX() - 13);
+			if(getCoarseGrainedMaxX() - se.getCoarseGrainedMinX() > wiggle_room)
+				this.setY(se.getCoarseGrainedMinY() - 13);
+		}
+		if(sw != null && sw.isSolid() && collides(sw) != null) {
+			System.out.println("SOUTHWEST");
+			if(getCoarseGrainedMaxY() - sw.getCoarseGrainedMinY() > wiggle_room)
+				this.setX(sw.getCoarseGrainedMaxX() + 13);
+			if(sw.getCoarseGrainedMaxX() - getCoarseGrainedMinX() > wiggle_room)
+				this.setY(sw.getCoarseGrainedMinY() - 13);
+		}
+		if(ne != null && ne.isSolid() && collides(ne) != null) {
+			System.out.println("NORTHEAST");
+			if(ne.getCoarseGrainedMaxY() - getCoarseGrainedMinY() > wiggle_room)
+				this.setX(ne.getCoarseGrainedMinX() - 13);
+			if(getCoarseGrainedMaxX() - ne.getCoarseGrainedMinX() > wiggle_room)
+				this.setY(ne.getCoarseGrainedMaxY() + 13);
+		}
+			
+	}
 
-	/**
-	 * Bounce the ball off a surface. This simple implementation, combined
-	 * with the test used when calling this method can cause "issues" in
-	 * some situations. Can you see where/when? If so, it should be easy to
-	 * fix!
-	 * 
-	 * @param surfaceTangent
-	 */
-//	public void bounce(float surfaceTangent) {
-//		velocity = velocity.bounce(surfaceTangent);
-//	}
-
-	/**
-	 * Update the Ball based on how much time has passed...
-	 * 
-	 * @param delta
-	 *            the number of milliseconds since the last update
-	 */
 	public void update(final int delta) {
 		translate(velocity.scale(delta));
 	}

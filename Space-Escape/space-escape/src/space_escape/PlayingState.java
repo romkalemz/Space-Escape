@@ -137,6 +137,7 @@ class PlayingState extends BasicGameState {
 		se.player.update(delta);
 		//player bounds
 		se.player.checkBounds(se.ScreenWidth, se.ScreenHeight);
+		se.player.checkCollision(se.map);
 		
 
 		if (input.isKeyDown(Input.KEY_ESCAPE)) {
