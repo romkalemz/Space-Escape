@@ -67,7 +67,7 @@ import jig.Vector;
 	
 	public void checkCollision(Map map) {
 		
-		float wiggle_room = initSpeed * 20;
+		float wiggle_room = 3;
 		//use the players current location to check surroundings
 		Vector playerPos = map.getTilePosition(this);
 		//grab all the tiles around the player
@@ -82,45 +82,58 @@ import jig.Vector;
 		
 		//check collision between the tiles and the player
 		if(w != null) {
-			if(w.isSolid() && collides(w) != null)
-				this.setX(w.getCoarseGrainedMaxX() + 20);
+			if(w.isSolid() && collides(w) != null) {
+				this.setX(w.getCoarseGrainedMaxX() + 13);
+				System.out.println("WEST");
+			}
 		}
 		if(e != null) {
-			if(e.isSolid() && collides(e) != null)
-				this.setX(e.getCoarseGrainedMinX() - 20);
+			if(e.isSolid() && collides(e) != null) {
+				this.setX(e.getCoarseGrainedMinX() - 13);
+				System.out.println("EAST");
+			}
+				
 		}
 		if(n != null) {
-			if(n.isSolid() && collides(n) != null)
-				this.setX(n.getCoarseGrainedMaxY() + 20);
+			if(n.isSolid() && collides(n) != null) {
+				this.setY(n.getCoarseGrainedMaxY() + 13);
+				System.out.println("NORTH");
+			}
 		}
 		if(s != null) {
-			if(s.isSolid() && collides(s) != null)
-				this.setX(s.getCoarseGrainedMinY() - 20);
+			if(s.isSolid() && collides(s) != null) {
+				this.setY(s.getCoarseGrainedMinY() - 13);
+				System.out.println("SOUTH");
+			}
 		}
 		//checking corner tiles
 		if(nw != null && nw.isSolid() && collides(nw) != null) {
+			System.out.println("NORTHWEST");
 			if(nw.getCoarseGrainedMaxY() - getCoarseGrainedMinY() > wiggle_room)
-				this.setX(nw.getCoarseGrainedMaxX() + 20);
+				this.setX(nw.getCoarseGrainedMaxX() + 13);
 			if(nw.getCoarseGrainedMaxX() - getCoarseGrainedMinX() > wiggle_room)
-				this.setX(nw.getCoarseGrainedMaxY() + 20);
+				this.setY(nw.getCoarseGrainedMaxY() + 13);
 		}
 		if(se != null && se.isSolid() && collides(se) != null) {
+			System.out.println("SOUTHEAST");
 			if(getCoarseGrainedMaxY() - se.getCoarseGrainedMinY() > wiggle_room)
-				this.setX(se.getCoarseGrainedMinX() - 20);
+				this.setX(se.getCoarseGrainedMinX() - 13);
 			if(getCoarseGrainedMaxX() - se.getCoarseGrainedMinX() > wiggle_room)
-				this.setX(se.getCoarseGrainedMinY() - 20);
+				this.setY(se.getCoarseGrainedMinY() - 13);
 		}
 		if(sw != null && sw.isSolid() && collides(sw) != null) {
+			System.out.println("SOUTHWEST");
 			if(getCoarseGrainedMaxY() - sw.getCoarseGrainedMinY() > wiggle_room)
-				this.setX(sw.getCoarseGrainedMaxX() + 20);
+				this.setX(sw.getCoarseGrainedMaxX() + 13);
 			if(sw.getCoarseGrainedMaxX() - getCoarseGrainedMinX() > wiggle_room)
-				this.setX(sw.getCoarseGrainedMinY() - 20);
+				this.setY(sw.getCoarseGrainedMinY() - 13);
 		}
 		if(ne != null && ne.isSolid() && collides(ne) != null) {
+			System.out.println("NORTHEAST");
 			if(ne.getCoarseGrainedMaxY() - getCoarseGrainedMinY() > wiggle_room)
-				this.setX(ne.getCoarseGrainedMinX() - 20);
+				this.setX(ne.getCoarseGrainedMinX() - 13);
 			if(getCoarseGrainedMaxX() - ne.getCoarseGrainedMinX() > wiggle_room)
-				this.setX(ne.getCoarseGrainedMaxY() + 20);
+				this.setY(ne.getCoarseGrainedMaxY() + 13);
 		}
 			
 	}

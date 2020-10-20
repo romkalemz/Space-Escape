@@ -32,6 +32,7 @@ public class Map {
 		enemyTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(255, 0, 0));
 		enemyTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(255, 0, 0));
 		enemyTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(255, 0, 0));
+		
 
 		
 		// overlay setup
@@ -77,7 +78,9 @@ public class Map {
 		return new Vector(x, y);
 	}
 	
-	public Tile getTile(int x, int y) { 
+	public Tile getTile(int x, int y) {
+		if(x < 0 || y < 0 || x >= number_of_tilesX || y >= number_of_tilesY)
+			return null;
 		return tiles[x][y]; 
 	}
 
@@ -94,8 +97,11 @@ public class Map {
 		//render the rest of the transparent overlay tiles
 		for(int x = 0; x < number_of_tilesX; x++) {
 			for(int y = 0; y < number_of_tilesY; y++) {
-				if(overlay[x][y] != null)
-					overlay[x][y].render(g);
+				overlay[x][y].render(g);
+				if(tiles[x][y].isSolid()) {
+					Tile solidTile = new Tile(x-1, y-1, 1, 1, false, Game.TILE_OVERLAY_RSC, new Color(0, 0, 255));
+					solidTile.render(g);
+				}
 			}
 		}
 	}
