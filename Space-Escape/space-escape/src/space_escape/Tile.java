@@ -1,5 +1,7 @@
 package space_escape;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 
@@ -8,10 +10,16 @@ import jig.ResourceManager;
 
 public class Tile extends Entity {
 	
+	// Tile elements
 	private boolean solid;
 	private int x, y;
 	private int sizeX, sizeY;
 	Image image;
+	
+	// Dijkstra's elements
+	public float cost;
+	public Tile prev;
+	public ArrayList<Tile> neighbors;
 	
 	public boolean isSolid() { return solid; }
 	
@@ -29,6 +37,8 @@ public class Tile extends Entity {
 		sizeX = sx;
 		sizeY = sy;
 		solid = sol;
+		cost = (float) Double.POSITIVE_INFINITY;
+		prev = null;
 		if(texture != "null") {
 			image = ResourceManager.getImage(texture).getScaledCopy(40*sx, 40*sy);
 			addImageWithBoundingBox(image);
