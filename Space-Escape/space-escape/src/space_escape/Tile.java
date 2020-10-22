@@ -8,7 +8,7 @@ import org.newdawn.slick.Image;
 import jig.Entity;
 import jig.ResourceManager;
 
-public class Tile extends Entity {
+public class Tile extends Entity implements Comparable<Tile> {
 	
 	// Tile elements
 	private boolean solid;
@@ -20,8 +20,10 @@ public class Tile extends Entity {
 	public float cost;
 	public Tile prev;
 	public ArrayList<Tile> neighbors;
+	public boolean corner;
 	
-	public boolean isSolid() { return solid; }
+	public boolean isSolid() 	{ return solid; }
+	public boolean isCorner() 	{ return corner; }
 	
 	public int getTileX() { return x; }
 	public int getTileY() { return y; }
@@ -37,6 +39,7 @@ public class Tile extends Entity {
 		sizeX = sx;
 		sizeY = sy;
 		solid = sol;
+		corner = false;
 		cost = (float) Double.POSITIVE_INFINITY;
 		prev = null;
 		if(texture != "null") {
@@ -68,6 +71,12 @@ public class Tile extends Entity {
 		if(c != null)
 			newImage.setImageColor(c.r, c.g, c.b);
 		addImageWithBoundingBox(newImage);
+	}
+
+	@Override
+	public int compareTo(Tile o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }

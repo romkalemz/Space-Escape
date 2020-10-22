@@ -65,34 +65,50 @@ public class Map {
 	// find shortest path between two entities
 	// returns an array of points needed to follow
 	public ArrayList<Vector> dijkstraPath(Entity enemy, Entity player) {
+		int a = 1;
+		
 		// STEP 1, populate graph with costs of tiles from enemy to player
 		// place initial tile and neighbors into queue and adjust costs
 		Tile startTile = getTile(enemy);				// grab first tile
-		startTile.neighbors = findNeighbors(startTile);	// finds all valid tiles around it
 		startTile.cost = 0;								// set cost of travel to 0
 		// unexplored tiles are placed in the queue
 		PriorityQueue<Tile> Q = new PriorityQueue<Tile>();
 		Q.add(startTile);								// add to the queue/stack
 		// if tile is unexplored, visit it and adjust costs
 		while(!Q.isEmpty()) {
-			Tile curTile = Q.poll();					// pop the head of the stack
+			Tile curTile = Q.poll();						// pop the head of the stack
+			curTile.neighbors = findNeighbors(curTile);		// finds all valid tiles around it
 			// adjust and compare values of neighboring tiles, add to Q
 			for (int i = 0; i < curTile.neighbors.size(); i++) {
 				Tile neighbor = curTile.neighbors.get(i);
 				// check if you can walk on the neighbor tile AND adjust costs
-				if(!neighbor.isSolid() && neighbor.cost > curTile.cost + 1) {
-					neighbor.cost = curTile.cost + 1;	// reduce cost of neighbor
-														// since its closer than before
-					neighbor.prev = curTile;			// keep track of the prev
-														// so you can backtrack
-					Q.add(neighbor);					// add to Queue and repeat
+				// first check if this is a neighboring corner tile
+				if(!neighbor.isCorner()) {
+					if(!neighbor.isSolid() && neighbor.cost > curTile.cost + 1) {
+						neighbor.cost = curTile.cost + 1;	// reduce cost of neighbor
+															// since its closer than before
+						neighbor.prev = curTile;			// keep track of the prev
+															// so you can backtrack
+						Q.add(neighbor);					// add to Queue and repeat
+					}
 				}
+				else if(neighbor.isCorner()) {
+					if(!neighbor.isSolid() && neighbor.cost > curTile.cost + 1.5) {
+						neighbor.cost = curTile.cost + 1.5f;	// reduce cost of neighbor
+																// since its closer than before
+						neighbor.prev = curTile;				// keep track of the prev
+																// so you can backtrack
+						Q.add(neighbor);						// add to Queue and repeat
+					}
+				}
+				
 			}
 		}
 		// STEP 2, trace back from player to enemy with previous tiles
 		Tile endTile = getTile(player);
 		Tile previousTile = endTile;
 		ArrayList<Tile> backPath = new ArrayList<Tile>();
+		a = 1;
 		// follow the previous tiles until you reach the enemy (null)
 		while(previousTile != null) {
 			backPath.add(previousTile);
@@ -102,7 +118,7 @@ public class Map {
 		ArrayList<Vector> shortestPath = new ArrayList<Vector>();
 		// add points from the backPath to the shortest path in reverse
 		// for the enemy to follow the shortest path towards the player
-		for (int i = backPath.size(); i >= 0; --i)
+		for (int i = backPath.size()-1; i >= 0; i--)
 			shortestPath.add(backPath.get(i).getPosition());
 		
 		return shortestPath;
@@ -114,6 +130,7 @@ public class Map {
 		int y = (int)pos.getY();
 		
 		ArrayList<Tile> n = new ArrayList<Tile>();
+		// side tiles
 		if(x > 0)							
 			n.add(tiles[x-1][y]);	
 		if(x < number_of_tilesX-1)	
@@ -121,15 +138,26 @@ public class Map {
 		if(y > 0)							
 			n.add(tiles[x][y-1]);
 		if(y < number_of_tilesY-1)			
-			n.add(tiles[x][y+1]);	
-		if(x > 0 && y > 0)					
-			n.add(tiles[x-1][y-1]);	
-		if(x > 0 && y < number_of_tilesY-1)	
+			n.add(tiles[x][y+1]);
+		
+		// corner tiles
+		if(x > 0 && y > 0) {
+			tiles[x-1][y-1].corner = true;
+			n.add(tiles[x-1][y-1]);
+		}	
+		if(x > 0 && y < number_of_tilesY-1)	{
+			tiles[x-1][y+1].corner = true;
 			n.add(tiles[x-1][y+1]);	
-		if(x < number_of_tilesX-1 && y > 0)	
+		}	
+		if(x < number_of_tilesX-1 && y > 0)	{
+			tiles[x+1][y-1].corner = true;
 			n.add(tiles[x+1][y-1]);
-		if(x < number_of_tilesX-1 && y < number_of_tilesY-1)
+		}	
+		if(x < number_of_tilesX-1 && y < number_of_tilesY-1) {
+			tiles[x+1][y+1].corner = true;
 			n.add(tiles[x+1][y+1]);
+		}
+			
 		return n;
 	}
 
@@ -189,6 +217,14 @@ public class Map {
 					tiles[x][y].render(g);
 			}
 		}
+	}
+
+	public void updateEnemies(Game game) {
+		Game g = (Game)game;
+		// find shortest path from enemies to player
+		ArrayList<Vector> shortestPath = dijkstraPath(g.alien, g.player);
+		g.alien.traversePath(shortestPath);
+		
 	}
 	
 }

@@ -47,7 +47,7 @@ class PlayingState extends BasicGameState {
 			Graphics g) throws SlickException {
 		Game se = (Game)game;
 		
-		//background render
+		// background render
 		g.drawImage(se.background, 0, 0);
 		// UI rendering
 		g.drawLine(0, 640, 1200, 640);
@@ -62,8 +62,11 @@ class PlayingState extends BasicGameState {
 		}
 		
 		// render everything else
-		if(overlayEnabled)
+		if(overlayEnabled) {
 			se.map.renderOverlay(g, se);
+			se.alien.renderPath(g);
+		}
+			
 		se.map.render(g);
 		se.player.render(g); 
 		se.alien.render(g);
@@ -84,12 +87,11 @@ class PlayingState extends BasicGameState {
 				overlayEnabled = false;
 		}
 		
-		// check player position and color tile green at current location
-		
+		// set enemies paths
+		se.map.updateEnemies(se);
 		
 		se.player.setVelocity(new Vector(0, 0));
-		
-		//player movement
+		// player movement
 		if (input.isKeyDown(Input.KEY_W)) {
 			se.player.setVelocity(se.player.getVelocity().add(new Vector(0f, -se.player.initSpeed * se.player.multSpeed)));
 		}
@@ -103,8 +105,8 @@ class PlayingState extends BasicGameState {
 			se.player.setVelocity(se.player.getVelocity().add(new Vector(+se.player.initSpeed * se.player.multSpeed, 0f)));
 		}
 		
-		//player direction / aim
-		//wait for a slight cooldown to allow slower response times to angled facing position
+		// player direction / aim
+		// wait for a slight cooldown to allow slower response times to angled facing position
 		if (angled_pos_delay <= 0) {
 			if (input.isKeyDown(Input.KEY_UP))
 				se.player.setRotation(0);
@@ -135,7 +137,8 @@ class PlayingState extends BasicGameState {
 		
 		angled_pos_delay -= delta;
 		se.player.update(delta);
-		//player bounds
+		se.alien.update(delta);
+		// player bounds
 		se.player.checkBounds(se.ScreenWidth, se.ScreenHeight);
 		se.player.checkCollision(se.map);
 		

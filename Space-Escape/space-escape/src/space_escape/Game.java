@@ -81,7 +81,7 @@ public class Game extends StateBasedGame {
 		
 		player = new Player(ScreenWidth / 2, ScreenHeight / 2, .25f);
 		map = new Map();
-		alien = new Enemy(ScreenWidth / 2 + 100, ScreenHeight / 2 + 100, "type1");
+		alien = new Enemy(ScreenWidth / 2 + 200, ScreenHeight / 2 + 200, "alien");
 		
 	}
 	
