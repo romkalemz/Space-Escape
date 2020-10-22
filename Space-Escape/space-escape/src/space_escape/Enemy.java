@@ -2,6 +2,7 @@ package space_escape;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
@@ -40,7 +41,8 @@ public class Enemy extends Entity {
 		for(int i = 0; i < followPath.size()-1; i++) {
 			Vector curPoint = followPath.get(i);
 			Vector nextPoint = followPath.get(i+1);
-			g.drawLine(curPoint.getX(), curPoint.getY(), nextPoint.getX(), nextPoint.getY());
+			g.drawGradientLine(curPoint.getX(), curPoint.getY(), new Color(50, 255, 100),
+							   nextPoint.getX(), nextPoint.getY(), new Color(50, 255, 100));
 		}
 	}
 	

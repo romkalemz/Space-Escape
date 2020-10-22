@@ -21,6 +21,7 @@ public class Tile extends Entity implements Comparable<Tile> {
 	public Tile prev;
 	public ArrayList<Tile> neighbors;
 	public boolean corner;
+	public boolean visited;
 	
 	public boolean isSolid() 	{ return solid; }
 	public boolean isCorner() 	{ return corner; }
@@ -40,6 +41,7 @@ public class Tile extends Entity implements Comparable<Tile> {
 		sizeY = sy;
 		solid = sol;
 		corner = false;
+		visited = false;
 		cost = (float) Double.POSITIVE_INFINITY;
 		prev = null;
 		if(texture != "null") {

@@ -32,10 +32,15 @@ class PlayingState extends BasicGameState {
 			throws SlickException {
 		//load tiles based on level
 		Game se = (Game)game;
+		
 		//if(se.level == 1) {
 			se.map.loadLevel(1);
 			se.background = ResourceManager.getImage(Game.BG_STARS_RSC);
 		//}
+		
+		// load initial routings for enemies
+		se.map.updateEnemies(se);
+			
 	}
 
 	@Override

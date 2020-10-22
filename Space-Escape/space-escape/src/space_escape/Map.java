@@ -65,8 +65,6 @@ public class Map {
 	// find shortest path between two entities
 	// returns an array of points needed to follow
 	public ArrayList<Vector> dijkstraPath(Entity enemy, Entity player) {
-		int a = 1;
-		
 		// STEP 1, populate graph with costs of tiles from enemy to player
 		// place initial tile and neighbors into queue and adjust costs
 		Tile startTile = getTile(enemy);				// grab first tile
@@ -77,38 +75,29 @@ public class Map {
 		// if tile is unexplored, visit it and adjust costs
 		while(!Q.isEmpty()) {
 			Tile curTile = Q.poll();						// pop the head of the stack
+			curTile.visited = true;
 			curTile.neighbors = findNeighbors(curTile);		// finds all valid tiles around it
 			// adjust and compare values of neighboring tiles, add to Q
 			for (int i = 0; i < curTile.neighbors.size(); i++) {
 				Tile neighbor = curTile.neighbors.get(i);
 				// check if you can walk on the neighbor tile AND adjust costs
 				// first check if this is a neighboring corner tile
-				if(!neighbor.isCorner()) {
-					if(!neighbor.isSolid() && neighbor.cost > curTile.cost + 1) {
-						neighbor.cost = curTile.cost + 1;	// reduce cost of neighbor
-															// since its closer than before
-						neighbor.prev = curTile;			// keep track of the prev
-															// so you can backtrack
-						Q.add(neighbor);					// add to Queue and repeat
-					}
+				double travelDistance = travelCost(curTile, neighbor);
+				if(!neighbor.isSolid() && neighbor.cost > curTile.cost + travelDistance) {
+					neighbor.cost = (float) (curTile.cost + travelDistance);	// reduce cost of neighbor
+																	// since its closer than before
+					neighbor.prev = curTile;			// keep track of the prev
+														// so you can backtrack
 				}
-				else if(neighbor.isCorner()) {
-					if(!neighbor.isSolid() && neighbor.cost > curTile.cost + 1.5) {
-						neighbor.cost = curTile.cost + 1.5f;	// reduce cost of neighbor
-																// since its closer than before
-						neighbor.prev = curTile;				// keep track of the prev
-																// so you can backtrack
-						Q.add(neighbor);						// add to Queue and repeat
-					}
-				}
-				
+
+				if(!neighbor.visited)
+					Q.add(neighbor);
 			}
 		}
 		// STEP 2, trace back from player to enemy with previous tiles
 		Tile endTile = getTile(player);
 		Tile previousTile = endTile;
 		ArrayList<Tile> backPath = new ArrayList<Tile>();
-		a = 1;
 		// follow the previous tiles until you reach the enemy (null)
 		while(previousTile != null) {
 			backPath.add(previousTile);
@@ -130,35 +119,53 @@ public class Map {
 		int y = (int)pos.getY();
 		
 		ArrayList<Tile> n = new ArrayList<Tile>();
-		// side tiles
-		if(x > 0)							
-			n.add(tiles[x-1][y]);	
-		if(x < number_of_tilesX-1)	
-			n.add(tiles[x+1][y]);	
-		if(y > 0)							
-			n.add(tiles[x][y-1]);
-		if(y < number_of_tilesY-1)			
-			n.add(tiles[x][y+1]);
-		
-		// corner tiles
-		if(x > 0 && y > 0) {
-			tiles[x-1][y-1].corner = true;
-			n.add(tiles[x-1][y-1]);
-		}	
 		if(x > 0 && y < number_of_tilesY-1)	{
 			tiles[x-1][y+1].corner = true;
 			n.add(tiles[x-1][y+1]);	
-		}	
+		}
+		
+		if(x > 0)							
+			n.add(tiles[x-1][y]);
+		
+		if(x > 0 && y > 0) {
+			tiles[x-1][y-1].corner = true;
+			n.add(tiles[x-1][y-1]);
+		}
+		
+		if(y > 0)							
+			n.add(tiles[x][y-1]);
+		
 		if(x < number_of_tilesX-1 && y > 0)	{
 			tiles[x+1][y-1].corner = true;
 			n.add(tiles[x+1][y-1]);
 		}	
+		
+		if(x < number_of_tilesX-1)	
+			n.add(tiles[x+1][y]);	
+		
 		if(x < number_of_tilesX-1 && y < number_of_tilesY-1) {
 			tiles[x+1][y+1].corner = true;
 			n.add(tiles[x+1][y+1]);
 		}
-			
+		
+		if(y < number_of_tilesY-1)			
+			n.add(tiles[x][y+1]);
+				
 		return n;
+	}
+	
+	private double travelCost(Tile t1, Tile t2) {
+		
+		double lx = Math.abs(t1.getX() - t2.getX());
+		double ly = Math.abs(t1.getY() - t2.getY());
+		double distance;
+		if (lx == 0)		// vertical distance travel
+			distance = ly;
+		else if (ly == 0)	//horizontal distance travel
+			distance = lx;
+		else				//diagonal distance travel
+			distance = Math.hypot(lx, ly);
+		return distance / 40;	//converting to tile distance
 	}
 
 	// returns position of entity in pixel scale
@@ -206,6 +213,8 @@ public class Map {
 					Tile solidTile = new Tile(x-1, y-1, 1, 1, false, Game.TILE_OVERLAY_RSC, new Color(0, 0, 255));
 					solidTile.render(g);
 				}
+				//if(tiles[x][y].cost < 4)
+				//	g.drawString(""+tiles[x][y].cost, tiles[x][y].getPosition().getX() -13, tiles[x][y].getPosition().getY() - 10);
 			}
 		}
 	}
@@ -213,8 +222,12 @@ public class Map {
 	public void render(Graphics g) {
 		for(int x = 0; x < number_of_tilesX; x++) {
 			for(int y = 0; y < number_of_tilesY; y++) {
-				if(tiles[x][y] != null)
+				if(tiles[x][y] != null) {
 					tiles[x][y].render(g);
+					// if(tiles[x][y].prev != null)
+					//	g.drawGradientLine(tiles[x][y].prev.getX(), tiles[x][y].prev.getY(), 255, 255, 255, .5f,
+					//			tiles[x][y].getX(), tiles[x][y].getY(), 255, 255, 255, 0.5f);
+				}
 			}
 		}
 	}
