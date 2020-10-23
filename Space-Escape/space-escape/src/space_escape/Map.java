@@ -57,23 +57,23 @@ public class Map {
 				overlay[x][y] = new Tile(x, y, 1, 1, false, Game.TILE_OVERLAY_RSC);
 	}
 	
-	public void loadLevel(int lvl) {
+	public void loadLevel(Game g, int lvl) {
 		if (lvl == 1) {
 			
 			int[][] mapLayout = 
 				{{0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 				 {0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-				 {0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0},
+				 {0,0,0,0,0,0,3,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0},
 				 {0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0},
 				 {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
 				 {0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
-				 {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0},
+				 {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,2,0,0},
 				 {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
 				 {0,0,0,0,1,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,1,0,0,0,0,0,0,0,0},
 				 {0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0},
 				 {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0},
 				 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0},
-				 {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0},
+				 {0,0,2,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0},
 				 {0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0},
 				 {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
 				 {0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
@@ -81,8 +81,19 @@ public class Map {
 			
 			for(int x = 0; x < number_of_tilesX; x++) {
 				for(int y = 0; y < number_of_tilesY; y++) {
-					if(mapLayout[y][x] == 1) {
+					if(mapLayout[y][x] == 1) {	// wall tile
 						tiles[x][y] = new Tile(x, y, 1, 1, true, Game.TILE_ASTROID1_RSC);
+					}
+					if(mapLayout[y][x] == 2) {	//enemy tile
+						Enemy a = new Enemy(x, y, "alien");
+						g.enemies.add(a);
+					}
+					if(mapLayout[y][x] == 3) {
+						Enemy b = new Enemy(x, y, "ufo");
+						g.enemies.add(b);
+					}
+					if(mapLayout[y][x] == 9) {
+						g.player.setPosition(x *40+20, y*40+20);
 					}
 				}
 			}
@@ -102,9 +113,9 @@ public class Map {
 	// find shortest path between two entities
 	// returns an array of points needed to follow
 	public ArrayList<Vector> dijkstraPath(Entity enemy, Entity player) { 
-		// STEP 1, populate graph with costs of tiles from enemy to player
+		// STEP 1, populate graph with costs of tiles from player to enemies
 		// place initial tile and neighbors into queue and adjust costs
-		Tile startTile = getTile(enemy);				// grab first tile
+		Tile startTile = getTile(player);				// grab first tile
 		startTile.cost = 0;								// set cost of travel to 0
 		// unexplored tiles are placed in the queue
 		PriorityQueue<Tile> Q = new PriorityQueue<Tile>();
@@ -131,23 +142,25 @@ public class Map {
 					Q.add(neighbor);
 			}
 		}
-		// STEP 2, trace back from player to enemy with previous tiles
-		Tile endTile = getTile(player);
-		Tile previousTile = endTile;
-		ArrayList<Tile> backPath = new ArrayList<Tile>();
-		// follow the previous tiles until you reach the enemy (null)
-		while(previousTile != null) {
-			backPath.add(previousTile);
-			previousTile = previousTile.prev;
-		}
-		// STEP 3, return a reversed array of points from step 2
-		ArrayList<Vector> shortestPath = new ArrayList<Vector>();
-		// add points from the backPath to the shortest path in reverse
-		// for the enemy to follow the shortest path towards the player
-		for (int i = backPath.size()-1; i >= 0; i--)
-			shortestPath.add(backPath.get(i).getPosition());
-		
-		return shortestPath;
+//		// STEP 2, trace back from player to enemy with previous tiles
+//		Tile endTile = getTile(enemy);
+//		Tile previousTile = endTile;
+//		ArrayList<Tile> backPath = new ArrayList<Tile>();
+//		// follow the previous tiles until you reach the enemy (null)
+//		while(previousTile != null) {
+//			backPath.add(previousTile);
+//			System.out.println(backPath.size());
+//			previousTile = previousTile.prev;
+//		}
+//		// STEP 3, return a reversed array of points from step 2
+//		ArrayList<Vector> shortestPath = new ArrayList<Vector>();
+//		// add points from the backPath to the shortest path in reverse
+//		// for the enemy to follow the shortest path towards the player
+//		for (int i = backPath.size()-1; i >= 0; i--)
+//			shortestPath.add(backPath.get(i).getPosition());
+//		
+//		return shortestPath;
+		return null;
 	}
 	
 	private ArrayList<Tile> findNeighbors(Tile t) {
@@ -259,6 +272,9 @@ public class Map {
 					Tile solidTile = new Tile(x, y, 1, 1, false, Game.TILE_OVERLAY_RSC, new Color(0, 0, 255));
 					solidTile.render(g);
 				}
+				if(tiles[x][y].prev != null)
+					g.drawGradientLine(tiles[x][y].prev.getX(), tiles[x][y].prev.getY(), 255, 255, 255, .2f,
+							tiles[x][y].getX(), tiles[x][y].getY(), 255, 255, 255, 0.2f);
 				// print the cost of tiles around enemies
 				//if(tiles[x][y].cost < 3)
 				//	g.drawString(""+df.format(tiles[x][y].cost), tiles[x][y].getPosition().getX() -15, tiles[x][y].getPosition().getY() - 10);
@@ -271,9 +287,6 @@ public class Map {
 			for(int y = 0; y < number_of_tilesY; y++) {
 				if(tiles[x][y] != null) {
 					tiles[x][y].render(g);
-					// if(tiles[x][y].prev != null)
-					//	g.drawGradientLine(tiles[x][y].prev.getX(), tiles[x][y].prev.getY(), 255, 255, 255, .5f,
-					//			tiles[x][y].getX(), tiles[x][y].getY(), 255, 255, 255, 0.5f);
 				}
 			}
 		}
@@ -289,7 +302,8 @@ public class Map {
 		// find shortest path from enemies to player
 		for(int i = 0; i < g.enemies.size(); i++) {
 			ArrayList<Vector> shortestPath = dijkstraPath(g.enemies.get(i), g.player);
-			g.enemies.get(i).setPath(shortestPath); 
+			//g.enemies.get(i).setPath(shortestPath); 
+			 g.enemies.get(i).setPath(getTile(g.enemies.get(i)));
 		}
 			
 		
