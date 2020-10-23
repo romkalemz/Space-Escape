@@ -25,7 +25,7 @@ import jig.Vector;
 
 	public Player(final float x, final float y, float initSp) {
 		super(x, y);
-		image = ResourceManager.getImage(Game.PLAYER_ORIGIN_RSC).getScaledCopy(0.5f);
+		image = ResourceManager.getImage(Game.PLAYER_ORIGIN_RSC).getScaledCopy(40, 40);
 		addImageWithBoundingBox(image);
 		
 		velocity = new Vector(0, 0);

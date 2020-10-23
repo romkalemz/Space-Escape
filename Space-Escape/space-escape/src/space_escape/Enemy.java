@@ -13,22 +13,28 @@ import jig.Vector;
 public class Enemy extends Entity {
 	
 	public Image image;
+	public String type;
 	private ArrayList<Vector> followPath;
 	private int followPoint;
 	private float speed;
 	private Vector velocity;
 	
+	
 	public Enemy(final float x, final float y, String type) {
 		super(x, y);
 		
+		this.type = type;
 		followPath = null;
 		followPoint = 0;
-		speed = 0.1f;
+		speed = 0.15f;
 		velocity = new Vector(0.0f, 0.0f);
 		
 		if(type == "alien") {
-			image = ResourceManager.getImage(Game.PLAYER_ORIGIN_RSC).getScaledCopy(0.5f);
-			image.setImageColor(0.5f, 0.5f, 0.5f);
+			image = ResourceManager.getImage(Game.ENEMY_ALIEN_RSC).getScaledCopy(40, 20);
+			addImageWithBoundingBox(image);
+		}
+		else if(type == "aircraft") {
+			image = ResourceManager.getImage(Game.ENEMY_AIRCRAFT_RSC).getScaledCopy(40, 40);
 			addImageWithBoundingBox(image);
 		}
 	}

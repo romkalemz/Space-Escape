@@ -69,12 +69,14 @@ class PlayingState extends BasicGameState {
 		// render everything else
 		if(overlayEnabled) {
 			se.map.renderOverlay(g, se);
-			se.alien.renderPath(g);
+			for(int i = 0; i < se.enemies.size(); i++)
+				se.enemies.get(i).renderPath(g);
 		}
 			
 		se.map.render(g);
-		se.player.render(g); 
-		se.alien.render(g);
+		se.player.render(g);
+		for(int i = 0; i < se.enemies.size(); i++)
+			se.enemies.get(i).render(g);
 	}
 
 	@Override
@@ -142,7 +144,8 @@ class PlayingState extends BasicGameState {
 		
 		angled_pos_delay -= delta;
 		se.player.update(delta);
-		se.alien.update(delta);
+		for(int i = 0; i < se.enemies.size(); i++)
+			se.enemies.get(i).update(delta);
 		// player bounds
 		se.player.checkBounds(se.ScreenWidth, se.ScreenHeight);
 		se.player.checkCollision(se.map);

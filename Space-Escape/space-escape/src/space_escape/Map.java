@@ -137,8 +137,6 @@ public class Map {
 		ArrayList<Tile> backPath = new ArrayList<Tile>();
 		// follow the previous tiles until you reach the enemy (null)
 		while(previousTile != null) {
-			if (previousTile == getTile(enemy))
-				System.out.println("BACK AT ENEMY");
 			backPath.add(previousTile);
 			previousTile = previousTile.prev;
 		}
@@ -244,13 +242,15 @@ public class Map {
 		// --------------------------------------------
 		Vector tilePlace = getPosition(game.player);
 		playerTile.setPosition(tilePlace);
-		tilePlace = getPosition(game.alien);
-		enemyTile.setPosition(tilePlace);
-		
 		playerTile.render(g);
-		enemyTile.render(g);
-		//System.out.println("enemy "+getTilePosition(game.alien));
-		//System.out.println("player "+getTilePosition(game.player));
+		
+		for(int i = 0; i < game.enemies.size(); i++) {
+			tilePlace = getPosition(game.enemies.get(i));
+			enemyTile.setPosition(tilePlace);
+			enemyTile.render(g);
+		}
+		
+		
 		// render the rest of the transparent overlay tiles
 		for(int x = 0; x < number_of_tilesX; x++) {
 			for(int y = 0; y < number_of_tilesY; y++) {
@@ -260,8 +260,8 @@ public class Map {
 					solidTile.render(g);
 				}
 				// print the cost of tiles around enemies
-				if(tiles[x][y].cost < 3)
-					g.drawString(""+df.format(tiles[x][y].cost), tiles[x][y].getPosition().getX() -15, tiles[x][y].getPosition().getY() - 10);
+				//if(tiles[x][y].cost < 3)
+				//	g.drawString(""+df.format(tiles[x][y].cost), tiles[x][y].getPosition().getX() -15, tiles[x][y].getPosition().getY() - 10);
 			}
 		}
 	}
@@ -287,8 +287,11 @@ public class Map {
 				tiles[x][y].resetDijkstraElements();
 		
 		// find shortest path from enemies to player
-		ArrayList<Vector> shortestPath = dijkstraPath(g.alien, g.player);
-		g.alien.setPath(shortestPath);
+		for(int i = 0; i < g.enemies.size(); i++) {
+			ArrayList<Vector> shortestPath = dijkstraPath(g.enemies.get(i), g.player);
+			g.enemies.get(i).setPath(shortestPath); 
+		}
+			
 		
 	}
 	
