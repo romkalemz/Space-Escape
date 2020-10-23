@@ -1,5 +1,6 @@
 package space_escape;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
@@ -12,8 +13,8 @@ import jig.Vector;
 public class Map {
 
 	public static int tileSize = 40;
-	private int number_of_tilesX = 30;
-	private int number_of_tilesY = 16;
+	public int number_of_tilesX = 30;
+	public int number_of_tilesY = 16;
 	private Tile playerTile, enemyTile;
 	private Tile[][] tiles;
 	private Tile[][] overlay;
@@ -30,12 +31,26 @@ public class Map {
 		playerTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(0, 255, 0));
 		playerTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(0, 255, 0));
 		playerTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(0, 255, 0));
+		playerTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(0, 255, 0));
+		playerTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(0, 255, 0));
+		playerTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(0, 255, 0));
 		
 		enemyTile = new Tile(0, 0, 1, 1, false, Game.TILE_OVERLAY_RSC, new Color(255, 0, 0));
 		enemyTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(255, 0, 0));
 		enemyTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(255, 0, 0));
 		enemyTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(255, 0, 0));
+		enemyTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(255, 0, 0));
+		enemyTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(255, 0, 0));
+		enemyTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(255, 0, 0));
 		
+		// empty map
+		// place empty tiles through the whole map first
+		for(int x = 0; x < number_of_tilesX; x++) {
+			for(int y = 0; y < number_of_tilesY; y++) {
+				Tile empty = new Tile(x, y, 1, 1);
+				tiles[x][y] = empty;
+			}
+		}
 		// overlay setup
 		for(int x = 0; x < number_of_tilesX; x++)
 			for(int y = 0; y < number_of_tilesY; y++)
@@ -43,21 +58,43 @@ public class Map {
 	}
 	
 	public void loadLevel(int lvl) {
-		// place empty tiles through the whole map first
-		for(int x = 0; x < number_of_tilesX; x++) {
-			for(int y = 0; y < number_of_tilesY; y++) {
-				Tile empty = new Tile(x, y, 1, 1, false, "null");
-				tiles[x][y] = empty;
-			}
-		}
-		
 		if (lvl == 1) {
-			Tile astroidTile = new Tile(3, 2, 3, 3, true, Game.TILE_ASTROID1_RSC);
-			for(int x = astroidTile.getTileX(); x < astroidTile.getSizeX() + astroidTile.getTileX(); x++) {
-				for(int y = astroidTile.getTileY(); y < astroidTile.getSizeY() + astroidTile.getTileY(); y++ ) {
-					tiles[x][y] = astroidTile;
+			
+			int[][] mapLayout = 
+				{{0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+				 {0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+				 {0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0},
+				 {0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0},
+				 {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
+				 {0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
+				 {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0},
+				 {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
+				 {0,0,0,0,1,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,1,0,0,0,0,0,0,0,0},
+				 {0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0},
+				 {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0},
+				 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0},
+				 {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0},
+				 {0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0},
+				 {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
+				 {0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
+			
+			
+			for(int x = 0; x < number_of_tilesX; x++) {
+				for(int y = 0; y < number_of_tilesY; y++) {
+					if(mapLayout[y][x] == 1) {
+						tiles[x][y] = new Tile(x, y, 1, 1, true, Game.TILE_ASTROID1_RSC);
+					}
 				}
 			}
+			
+//			Tile astroidTile = new Tile(3, 2, 1, 1, true, Game.TILE_ASTROID1_RSC);
+//			tiles[3][2] = astroidTile;
+//			for(int x = astroidTile.getTileX(); x < astroidTile.getSizeX() + astroidTile.getTileX(); x++) {
+//				for(int y = astroidTile.getTileY(); y < astroidTile.getSizeY() + astroidTile.getTileY(); y++ ) {
+//					Tile solid = new Tile(x, y, 1, 1, true, "null");
+//					tiles[x][y] = solid;
+//				}
+//			}
 
 		}
 	}
@@ -119,35 +156,36 @@ public class Map {
 		int y = (int)pos.getY();
 		
 		ArrayList<Tile> n = new ArrayList<Tile>();
+		// SW
 		if(x > 0 && y < number_of_tilesY-1)	{
 			tiles[x-1][y+1].corner = true;
 			n.add(tiles[x-1][y+1]);	
 		}
-		
+		// W
 		if(x > 0)							
 			n.add(tiles[x-1][y]);
-		
+		// NW
 		if(x > 0 && y > 0) {
 			tiles[x-1][y-1].corner = true;
 			n.add(tiles[x-1][y-1]);
 		}
-		
+		// N
 		if(y > 0)							
 			n.add(tiles[x][y-1]);
-		
+		// NE
 		if(x < number_of_tilesX-1 && y > 0)	{
 			tiles[x+1][y-1].corner = true;
 			n.add(tiles[x+1][y-1]);
 		}	
-		
+		// E
 		if(x < number_of_tilesX-1)	
 			n.add(tiles[x+1][y]);	
-		
+		// SE
 		if(x < number_of_tilesX-1 && y < number_of_tilesY-1) {
 			tiles[x+1][y+1].corner = true;
 			n.add(tiles[x+1][y+1]);
 		}
-		
+		// S
 		if(y < number_of_tilesY-1)			
 			n.add(tiles[x][y+1]);
 				
@@ -198,6 +236,10 @@ public class Map {
 
 	
 	public void renderOverlay(Graphics g, Game game) {
+		// for cost printing
+		// setting decimal places (limit 2)
+		DecimalFormat df = new DecimalFormat("0.0");
+		// --------------------------------------------
 		Vector tilePlace = getPosition(game.player);
 		playerTile.setPosition(tilePlace);
 		tilePlace = getPosition(game.alien);
@@ -210,11 +252,12 @@ public class Map {
 			for(int y = 0; y < number_of_tilesY; y++) {
 				overlay[x][y].render(g);
 				if(tiles[x][y].isSolid()) {
-					Tile solidTile = new Tile(x-1, y-1, 1, 1, false, Game.TILE_OVERLAY_RSC, new Color(0, 0, 255));
+					Tile solidTile = new Tile(x, y, 1, 1, false, Game.TILE_OVERLAY_RSC, new Color(0, 0, 255));
 					solidTile.render(g);
 				}
-				//if(tiles[x][y].cost < 4)
-				//	g.drawString(""+tiles[x][y].cost, tiles[x][y].getPosition().getX() -13, tiles[x][y].getPosition().getY() - 10);
+				// print the cost of tiles around enemies
+				if(tiles[x][y].cost < 3)
+					g.drawString(""+df.format(tiles[x][y].cost), tiles[x][y].getPosition().getX() -15, tiles[x][y].getPosition().getY() - 10);
 			}
 		}
 	}

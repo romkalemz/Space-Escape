@@ -32,7 +32,19 @@ public class Tile extends Entity implements Comparable<Tile> {
 	public float getSizeX() { return sizeX; }
 	public float getSizeY() { return sizeY; }
 
-	// basic constructor with location, size, if its a solid, and the texture
+	// constructor of an EMPTY TILE
+	public Tile(int x, int y, int sx, int sy) {
+		super(x *40+20, y *40+20);
+		this.x = x;
+		this.y = y;
+		sizeX = sx;
+		sizeY = sy;
+		solid = false;
+		visited = false;
+		cost = (float) Double.POSITIVE_INFINITY;
+		prev = null;
+	}
+	// constructor of an TEXTURED TILE
 	public Tile(int x, int y, int sx, int sy, boolean sol, String texture) {
 		super(x *40+20, y *40+20);
 		this.x = x;
@@ -40,7 +52,6 @@ public class Tile extends Entity implements Comparable<Tile> {
 		sizeX = sx;
 		sizeY = sy;
 		solid = sol;
-		corner = false;
 		visited = false;
 		cost = (float) Double.POSITIVE_INFINITY;
 		prev = null;
@@ -49,8 +60,7 @@ public class Tile extends Entity implements Comparable<Tile> {
 			addImageWithBoundingBox(image);
 		}
 	}
-	
-	// constructor allowing for color change
+	// constructor of an TEXTURED & COLORED TILE
 	public Tile(int x, int y, int sx, int sy, boolean sol, String texture, Color c) {
 		super(x *40+20, y *40+20);
 		this.x = x;
@@ -58,6 +68,9 @@ public class Tile extends Entity implements Comparable<Tile> {
 		sizeX = sx;
 		sizeY = sy;
 		solid = sol;
+		visited = false;
+		cost = (float) Double.POSITIVE_INFINITY;
+		prev = null;
 		image = ResourceManager.getImage(texture).getScaledCopy(40*sx, 40*sy);
 		image.setImageColor(c.r, c.g, c.b);
 		addImageWithBoundingBox(image);
