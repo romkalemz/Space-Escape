@@ -101,7 +101,7 @@ public class Map {
 	
 	// find shortest path between two entities
 	// returns an array of points needed to follow
-	public ArrayList<Vector> dijkstraPath(Entity enemy, Entity player) {
+	public ArrayList<Vector> dijkstraPath(Entity enemy, Entity player) { 
 		// STEP 1, populate graph with costs of tiles from enemy to player
 		// place initial tile and neighbors into queue and adjust costs
 		Tile startTile = getTile(enemy);				// grab first tile
@@ -137,6 +137,8 @@ public class Map {
 		ArrayList<Tile> backPath = new ArrayList<Tile>();
 		// follow the previous tiles until you reach the enemy (null)
 		while(previousTile != null) {
+			if (previousTile == getTile(enemy))
+				System.out.println("BACK AT ENEMY");
 			backPath.add(previousTile);
 			previousTile = previousTile.prev;
 		}
@@ -247,6 +249,8 @@ public class Map {
 		
 		playerTile.render(g);
 		enemyTile.render(g);
+		//System.out.println("enemy "+getTilePosition(game.alien));
+		//System.out.println("player "+getTilePosition(game.player));
 		// render the rest of the transparent overlay tiles
 		for(int x = 0; x < number_of_tilesX; x++) {
 			for(int y = 0; y < number_of_tilesY; y++) {
@@ -277,9 +281,14 @@ public class Map {
 
 	public void updateEnemies(Game game) {
 		Game g = (Game)game;
+		// reset dijkstra elements for each tile
+		for (int x = 0; x < number_of_tilesX; x++)
+			for (int y = 0; y < number_of_tilesY; y++)
+				tiles[x][y].resetDijkstraElements();
+		
 		// find shortest path from enemies to player
 		ArrayList<Vector> shortestPath = dijkstraPath(g.alien, g.player);
-		g.alien.traversePath(shortestPath);
+		g.alien.setPath(shortestPath);
 		
 	}
 	
