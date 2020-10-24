@@ -26,13 +26,15 @@ public class Game extends StateBasedGame {
 	public static final String TILE_OVERLAY_RSC = "space_escape/resource/overlayTile.png";
 	public static final String BG_STARS_RSC = "space_escape/resource/starsBG.png";
 	public static final String TILE_ASTROID1_RSC = "space_escape/resource/asteroid1.png";
+	public static final String ENEMY_ALIEN_RSC = "space_escape/resource/alien.png";
+	public static final String ENEMY_UFO_RSC = "space_escape/resource/ufo.png";
 	
 	public final int ScreenWidth;
 	public final int ScreenHeight;
 
 	Player player;
 	Map map;
-	Enemy alien;
+	ArrayList<Enemy> enemies;
 	public int level;
 	public Image background;
 
@@ -78,10 +80,13 @@ public class Game extends StateBasedGame {
 		ResourceManager.loadImage(TILE_OVERLAY_RSC);
 		ResourceManager.loadImage(BG_STARS_RSC);
 		ResourceManager.loadImage(TILE_ASTROID1_RSC);
+		ResourceManager.loadImage(ENEMY_ALIEN_RSC);
+		ResourceManager.loadImage(ENEMY_UFO_RSC);
 		
-		player = new Player(ScreenWidth / 2, ScreenHeight / 2, .25f);
+		player = new Player(0, 0, .25f);
 		map = new Map();
-		alien = new Enemy(ScreenWidth / 2 + 100, ScreenHeight / 2 + 100, "alien");
+		enemies = new ArrayList<Enemy>();
+
 		
 	}
 	

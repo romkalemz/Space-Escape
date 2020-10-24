@@ -7,19 +7,17 @@
 - **[7a]** Add grid-like structure for map design and maneuvering, add overlay option
 - **[3a]** detecting the players and enemies current position in overlay
 - **[2a]** Collision detection between the player and terrain (tiles)
-- **[3b]** Dijkstra's basic algorithm implementation 
+- **[3b]** Dijkstra's basic algorithm implementation
+- **[2b]** Add more unique terrain to collide with
+- **[6a]** Unique enemies that behave differently with player 
 
 ################################# Open Issues ######################################### 
 ---------------------------------------------------------------------------------------
-- **[1d]** Add projectiles to the player
----------------------------------------------------------------------------------------
-- **[2b]** Add more unique terrain to collide with
+- **[1d]** Add projectiles to the player & ufo enemy
 ---------------------------------------------------------------------------------------
 - **[4b]** Add a dynamically changing health bar
 - **[4c]** Change appearance of items bar once 3 have been collected (final-form powerup)
 ---------------------------------------------------------------------------------------
 - **[5a]** Entity pickups that are called attachments (special powerups)
 - **[5b]** Add visual representation of the attachments collected on the player
----------------------------------------------------------------------------------------
-- **[6a]** Unique enemies that behave differently with player (move away, move closer)
 ---------------------------------------------------------------------------------------

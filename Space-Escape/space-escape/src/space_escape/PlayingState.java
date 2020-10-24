@@ -34,7 +34,7 @@ class PlayingState extends BasicGameState {
 		Game se = (Game)game;
 		
 		//if(se.level == 1) {
-			se.map.loadLevel(1);
+			se.map.loadLevel(se, 1);
 			se.background = ResourceManager.getImage(Game.BG_STARS_RSC);
 		//}
 		
@@ -69,12 +69,14 @@ class PlayingState extends BasicGameState {
 		// render everything else
 		if(overlayEnabled) {
 			se.map.renderOverlay(g, se);
-			se.alien.renderPath(g);
+			for(int i = 0; i < se.enemies.size(); i++)
+				se.enemies.get(i).renderPath(g);
 		}
 			
 		se.map.render(g);
-		se.player.render(g); 
-		se.alien.render(g);
+		se.player.render(g);
+		for(int i = 0; i < se.enemies.size(); i++)
+			se.enemies.get(i).render(g);
 	}
 
 	@Override
@@ -141,12 +143,15 @@ class PlayingState extends BasicGameState {
 			
 		
 		angled_pos_delay -= delta;
-		se.player.update(delta);
-		se.alien.update(delta);
+		se.player.update(delta);	
 		// player bounds
 		se.player.checkBounds(se.ScreenWidth, se.ScreenHeight);
 		se.player.checkCollision(se.map);
 		
+		for(int i = 0; i < se.enemies.size(); i++) {
+			se.enemies.get(i).checkCollision(se.map);
+			se.enemies.get(i).update(delta);
+		}
 
 		if (input.isKeyDown(Input.KEY_ESCAPE)) {
 			game.enterState(Game.GAMEOVERSTATE);

@@ -87,6 +87,12 @@ public class Tile extends Entity implements Comparable<Tile> {
 			newImage.setImageColor(c.r, c.g, c.b);
 		addImageWithBoundingBox(newImage);
 	}
+	
+	public void resetDijkstraElements() {
+		visited = false;
+		cost = (float) Double.POSITIVE_INFINITY;
+		prev = null;
+	}
 
 	@Override
 	public int compareTo(Tile o) {
