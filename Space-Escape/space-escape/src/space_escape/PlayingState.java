@@ -1,5 +1,6 @@
 package space_escape;
 
+import jig.Entity;
 import jig.ResourceManager;
 import jig.Vector;
 
@@ -23,7 +24,7 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 class PlayingState extends BasicGameState {
 	
-	private int angled_pos_delay;
+	private int angled_pos_delay, cooldown;
 	//private int cheat_delay;
 	private boolean overlayEnabled = false;
 	
@@ -40,7 +41,7 @@ class PlayingState extends BasicGameState {
 		
 		// load initial routings for enemies
 		se.map.updateEnemies(se);
-			
+		
 	}
 
 	@Override
@@ -77,6 +78,12 @@ class PlayingState extends BasicGameState {
 		se.player.render(g);
 		for(int i = 0; i < se.enemies.size(); i++)
 			se.enemies.get(i).render(g);
+		
+		for(int i = 0; i < se.bullets.size(); i++) {
+			//if(se.bullets.get(i) != null) {
+				se.bullets.get(i).render(g);
+			//}
+		}
 	}
 
 	@Override
@@ -115,30 +122,73 @@ class PlayingState extends BasicGameState {
 		// player direction / aim
 		// wait for a slight cooldown to allow slower response times to angled facing position
 		if (angled_pos_delay <= 0) {
-			if (input.isKeyDown(Input.KEY_UP))
-				se.player.setRotation(0);
-			if (input.isKeyDown(Input.KEY_RIGHT))
-				se.player.setRotation(90);
-			if (input.isKeyDown(Input.KEY_DOWN))
+			if (input.isKeyDown(Input.KEY_UP)) {
 				se.player.setRotation(180);
-			if (input.isKeyDown(Input.KEY_LEFT))
+				if(cooldown <= 0) {
+					addBullets(se, se.player, new Vector(0, -1), 180);
+					cooldown = 100;
+				}
+			}
+			
+			if (input.isKeyDown(Input.KEY_RIGHT)) {
 				se.player.setRotation(270);
+				if(cooldown <= 0) {
+					addBullets(se, se.player, new Vector(1, 0), 270);
+					cooldown = 100;
+				}
+			}
+			if (input.isKeyDown(Input.KEY_DOWN)) {
+				se.player.setRotation(0);
+				if(cooldown <= 0) {
+					addBullets(se, se.player, new Vector(0, 1), 0);
+					cooldown = 100;
+				}
+			}
+			if (input.isKeyDown(Input.KEY_LEFT)) {
+				se.player.setRotation(90);
+				if(cooldown <= 0) {
+					addBullets(se, se.player, new Vector(-1, 0), 90);
+					cooldown = 100;
+				}
+			}
 		}
+		
+//		if(cooldown <= 0)
+//			se.bullet = null;
+		cooldown -= delta;
+		
 		if (input.isKeyDown(Input.KEY_UP) && input.isKeyDown(Input.KEY_RIGHT)) {
-			se.player.setRotation(45);
-			angled_pos_delay = 50;
-		}
-		if (input.isKeyDown(Input.KEY_RIGHT) && input.isKeyDown(Input.KEY_DOWN)) {
-			se.player.setRotation(135);
-			angled_pos_delay = 50;
-		}
-		if (input.isKeyDown(Input.KEY_DOWN) && input.isKeyDown(Input.KEY_LEFT)) {
 			se.player.setRotation(225);
 			angled_pos_delay = 50;
+			if(cooldown <= 0) {
+				addBullets(se, se.player, new Vector(1, -1), 225);
+				cooldown = 100;
+			}
+			
 		}
-		if (input.isKeyDown(Input.KEY_UP) && input.isKeyDown(Input.KEY_LEFT)) {
+		if (input.isKeyDown(Input.KEY_RIGHT) && input.isKeyDown(Input.KEY_DOWN)) {
 			se.player.setRotation(315);
 			angled_pos_delay = 50;
+			if(cooldown <= 0) {
+				addBullets(se, se.player, new Vector(1, 1), 315);
+				cooldown = 100;
+			}
+		}
+		if (input.isKeyDown(Input.KEY_DOWN) && input.isKeyDown(Input.KEY_LEFT)) {
+			se.player.setRotation(45);
+			angled_pos_delay = 50;
+			if(cooldown <= 0) {
+				addBullets(se, se.player, new Vector(-1, 1), 45);
+				cooldown = 100;
+			}
+		}
+		if (input.isKeyDown(Input.KEY_UP) && input.isKeyDown(Input.KEY_LEFT)) {
+			se.player.setRotation(135);
+			angled_pos_delay = 50;
+			if(cooldown <= 0) {
+				addBullets(se, se.player, new Vector(-1, -1), 135);
+				cooldown = 100;
+			}
 		}
 			
 		
@@ -152,10 +202,28 @@ class PlayingState extends BasicGameState {
 			se.enemies.get(i).checkCollision(se.map);
 			se.enemies.get(i).update(delta);
 		}
+		
+		for(int i = 0; i < se.bullets.size(); i++) {
+			//if(se.bullets.get(i) != null) {
+				se.bullets.get(i).update(delta);
+				if(se.bullets.get(i).isCollided(se.map, se.ScreenWidth, se.ScreenHeight))
+					se.bullets.remove(i);
+			//}
+		}
+		
 
 		if (input.isKeyDown(Input.KEY_ESCAPE)) {
 			game.enterState(Game.GAMEOVERSTATE);
 		}
+		
+	}
+	
+	private void addBullets(Game g, Entity e, Vector v, int dir) {
+		Projectile b = new Projectile(e.getX(), e.getY());
+		b.setPosition(e.getPosition());
+		b.setVelocity(v);
+		b.image.setRotation(dir);
+		g.bullets.add(b);
 	}
 
 	@Override
