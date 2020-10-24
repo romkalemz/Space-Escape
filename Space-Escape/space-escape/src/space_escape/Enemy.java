@@ -84,7 +84,7 @@ public class Enemy extends Entity {
 		}
 	}
 	
-public void checkCollision(Map map) {
+	public void checkCollision(Map map) {
 		
 		// CHECKING OUTER SIDES OF PLAYERS' TILES METHOD
 		int sideX = (int) Math.floor(getX() / map.tileSize);

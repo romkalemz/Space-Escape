@@ -16,6 +16,7 @@ import jig.Vector;
 
 	private Vector velocity;
 	public Image image;
+	
 	//private int countdown;
 	public float initSpeed;		//initial starting speed
 	public float multSpeed;		//speed multiplier
@@ -24,9 +25,12 @@ import jig.Vector;
 	public float hp;			//health of the player
 	public float pushback = 20;	//amount to push the player back once collided
 	
+	//Projectile bullet;
+	
 	public Player(final float x, final float y, float initSp) {
 		super(x, y);
 		image = ResourceManager.getImage(Game.PLAYER_ORIGIN_RSC).getScaledCopy(40, 40);
+		image.setRotation(180);
 		addImageWithBoundingBox(image);
 		
 		velocity = new Vector(0, 0);
@@ -34,6 +38,7 @@ import jig.Vector;
 		multSpeed = atkSpeed = atkDmg = 1;
 		hp = 3;
 		
+		//bullet = new Projectile();
 		//countdown = 0;
 	}
 

@@ -10,10 +10,9 @@
 - **[3b]** Dijkstra's basic algorithm implementation
 - **[2b]** Add more unique terrain to collide with
 - **[6a]** Unique enemies that behave differently with player 
+- **[1d]** Add projectiles to the player
 
 ################################# Open Issues ######################################### 
----------------------------------------------------------------------------------------
-- **[1d]** Add projectiles to the player & ufo enemy
 ---------------------------------------------------------------------------------------
 - **[4b]** Add a dynamically changing health bar
 - **[4c]** Change appearance of items bar once 3 have been collected (final-form powerup)
@@ -21,3 +20,7 @@
 - **[5a]** Entity pickups that are called attachments (special powerups)
 - **[5b]** Add visual representation of the attachments collected on the player
 ---------------------------------------------------------------------------------------
+- **[6b]** Add UFO enemy to move away from player at a certain proximity
+---------------------------------------------------------------------------------------
+- **[7a]** Add different levels
+- **[7b]** Add splash art, different playing states, organized transitions
