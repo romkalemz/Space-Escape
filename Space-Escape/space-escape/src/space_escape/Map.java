@@ -251,17 +251,17 @@ public class Map {
 	public void renderOverlay(Graphics g, Game game) {
 		// for cost printing
 		// setting decimal places (limit 2)
-		DecimalFormat df = new DecimalFormat("0.0");
+		// DecimalFormat df = new DecimalFormat("0.0");
 		// --------------------------------------------
-		Vector tilePlace = getPosition(game.player);
-		playerTile.setPosition(tilePlace);
-		playerTile.render(g);
-		
-		for(int i = 0; i < game.enemies.size(); i++) {
-			tilePlace = getPosition(game.enemies.get(i));
-			enemyTile.setPosition(tilePlace);
-			enemyTile.render(g);
-		}
+//		Vector tilePlace = getPosition(game.player);
+//		playerTile.setPosition(tilePlace);
+//		playerTile.render(g);
+//		
+//		for(int i = 0; i < game.enemies.size(); i++) {
+//			tilePlace = getPosition(game.enemies.get(i));
+//			enemyTile.setPosition(tilePlace);
+//			enemyTile.render(g);
+//		}
 		
 		
 		// render the rest of the transparent overlay tiles
@@ -272,9 +272,10 @@ public class Map {
 					Tile solidTile = new Tile(x, y, 1, 1, false, Game.TILE_OVERLAY_RSC, new Color(0, 0, 255));
 					solidTile.render(g);
 				}
-				if(tiles[x][y].prev != null)
-					g.drawGradientLine(tiles[x][y].prev.getX(), tiles[x][y].prev.getY(), 255, 255, 255, .2f,
-							tiles[x][y].getX(), tiles[x][y].getY(), 255, 255, 255, 0.2f);
+				// draw lines of costs of tiles around player
+				//if(tiles[x][y].prev != null)
+				//	g.drawGradientLine(tiles[x][y].prev.getX(), tiles[x][y].prev.getY(), 255, 255, 255, .2f,
+				//			tiles[x][y].getX(), tiles[x][y].getY(), 255, 255, 255, 0.2f);
 				// print the cost of tiles around enemies
 				//if(tiles[x][y].cost < 3)
 				//	g.drawString(""+df.format(tiles[x][y].cost), tiles[x][y].getPosition().getX() -15, tiles[x][y].getPosition().getY() - 10);

@@ -31,13 +31,13 @@ public class Enemy extends Entity {
 		velocity = new Vector(0.0f, 0.0f);
 		
 		if(type == "alien") {
-			speed = 0.2f;
+			speed = 0.15f;
 			pushback = new Vector(20, 10);
 			image = ResourceManager.getImage(Game.ENEMY_ALIEN_RSC).getScaledCopy(40, 20);
 			addImageWithBoundingBox(image);
 		}
 		else if(type == "ufo") {
-			speed = 0.15f;
+			speed = 0.1f;
 			pushback = new Vector(20, 20);
 			image = ResourceManager.getImage(Game.ENEMY_UFO_RSC).getScaledCopy(40, 40);
 			addImageWithBoundingBox(image);
@@ -59,7 +59,6 @@ public class Enemy extends Entity {
 			return;
 		if(path.size() == 1)
 			followPoint = 0;
-		System.out.println("path length: "+path.size()+" follow Point: "+followPoint);
 		Vector des = path.get(followPoint);
 		Vector dif = new Vector(des.getX()-getX(), des.getY()-getY());
 		
