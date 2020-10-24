@@ -24,7 +24,7 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 class PlayingState extends BasicGameState {
 	
-	private int angled_pos_delay, cooldown;
+	private int angled_pos_delay, player_shoot_cooldown, enemy_shoot_cooldown;
 	//private int cheat_delay;
 	private boolean overlayEnabled = false;
 	
@@ -124,75 +124,78 @@ class PlayingState extends BasicGameState {
 		if (angled_pos_delay <= 0) {
 			if (input.isKeyDown(Input.KEY_UP)) {
 				se.player.setRotation(180);
-				if(cooldown <= 0) {
-					addBullets(se, se.player, new Vector(0, -1), 180);
-					cooldown = 100;
+				if(player_shoot_cooldown <= 0) {
+					addBullets(se, se.player, new Vector(0, -1));
+					player_shoot_cooldown = 100;
 				}
 			}
 			
 			if (input.isKeyDown(Input.KEY_RIGHT)) {
 				se.player.setRotation(270);
-				if(cooldown <= 0) {
-					addBullets(se, se.player, new Vector(1, 0), 270);
-					cooldown = 100;
+				if(player_shoot_cooldown <= 0) {
+					addBullets(se, se.player, new Vector(1, 0));
+					player_shoot_cooldown = 100;
 				}
 			}
 			if (input.isKeyDown(Input.KEY_DOWN)) {
 				se.player.setRotation(0);
-				if(cooldown <= 0) {
-					addBullets(se, se.player, new Vector(0, 1), 0);
-					cooldown = 100;
+				if(player_shoot_cooldown <= 0) {
+					addBullets(se, se.player, new Vector(0, 1));
+					player_shoot_cooldown = 100;
 				}
 			}
 			if (input.isKeyDown(Input.KEY_LEFT)) {
 				se.player.setRotation(90);
-				if(cooldown <= 0) {
-					addBullets(se, se.player, new Vector(-1, 0), 90);
-					cooldown = 100;
+				if(player_shoot_cooldown <= 0) {
+					addBullets(se, se.player, new Vector(-1, 0));
+					player_shoot_cooldown = 100;
 				}
 			}
 		}
 		
 //		if(cooldown <= 0)
 //			se.bullet = null;
-		cooldown -= delta;
+
 		
 		if (input.isKeyDown(Input.KEY_UP) && input.isKeyDown(Input.KEY_RIGHT)) {
 			se.player.setRotation(225);
 			angled_pos_delay = 50;
-			if(cooldown <= 0) {
-				addBullets(se, se.player, new Vector(1, -1), 225);
-				cooldown = 100;
+			if(player_shoot_cooldown <= 0) {
+				addBullets(se, se.player, new Vector(1, -1));
+				player_shoot_cooldown = 100;
 			}
 			
 		}
 		if (input.isKeyDown(Input.KEY_RIGHT) && input.isKeyDown(Input.KEY_DOWN)) {
 			se.player.setRotation(315);
 			angled_pos_delay = 50;
-			if(cooldown <= 0) {
-				addBullets(se, se.player, new Vector(1, 1), 315);
-				cooldown = 100;
+			if(player_shoot_cooldown <= 0) {
+				addBullets(se, se.player, new Vector(1, 1));
+				player_shoot_cooldown = 100;
 			}
 		}
 		if (input.isKeyDown(Input.KEY_DOWN) && input.isKeyDown(Input.KEY_LEFT)) {
 			se.player.setRotation(45);
 			angled_pos_delay = 50;
-			if(cooldown <= 0) {
-				addBullets(se, se.player, new Vector(-1, 1), 45);
-				cooldown = 100;
+			if(player_shoot_cooldown <= 0) {
+				addBullets(se, se.player, new Vector(-1, 1));
+				player_shoot_cooldown = 100;
 			}
 		}
 		if (input.isKeyDown(Input.KEY_UP) && input.isKeyDown(Input.KEY_LEFT)) {
 			se.player.setRotation(135);
 			angled_pos_delay = 50;
-			if(cooldown <= 0) {
-				addBullets(se, se.player, new Vector(-1, -1), 135);
-				cooldown = 100;
+			if(player_shoot_cooldown <= 0) {
+				addBullets(se, se.player, new Vector(-1, -1));
+				player_shoot_cooldown = 100;
 			}
 		}
 			
-		
+
+		player_shoot_cooldown -= delta;
+		enemy_shoot_cooldown -= delta;
 		angled_pos_delay -= delta;
+		
 		se.player.update(delta);	
 		// player bounds
 		se.player.checkBounds(se.ScreenWidth, se.ScreenHeight);
@@ -201,6 +204,16 @@ class PlayingState extends BasicGameState {
 		for(int i = 0; i < se.enemies.size(); i++) {
 			se.enemies.get(i).checkCollision(se.map);
 			se.enemies.get(i).update(delta);
+		}
+		
+		// check if the UFO's have a direct line of sight to shoot bullets
+		for(int i = 0; i < se.enemies.size(); i++) {
+			if(se.enemies.get(i).type == "ufo" && se.enemies.get(i).path.size() <= 5) {
+				if(enemy_shoot_cooldown <= 0 ) {
+					addBullets(se, se.enemies.get(i), null);
+					enemy_shoot_cooldown = 100;
+				}
+			}
 		}
 		
 		for(int i = 0; i < se.bullets.size(); i++) {
@@ -218,11 +231,19 @@ class PlayingState extends BasicGameState {
 		
 	}
 	
-	private void addBullets(Game g, Entity e, Vector v, int dir) {
+	private void addBullets(Game g, Entity e, Vector v) {
 		Projectile b = new Projectile(e.getX(), e.getY());
-		b.setPosition(e.getPosition());
-		b.setVelocity(v);
-		b.image.setRotation(dir);
+		if (v == null) {
+			
+			// find the direction for the bullets to travel to
+			// check if the entity is an enemy
+			Vector playerPos = g.player.getPosition();
+			if (playerPos != e.getPosition()) {
+				//dir = (int) playerPos.subtract(e.getPosition()).getRotation();
+			}
+			return;
+		}
+		b.setDirection(e, v);
 		g.bullets.add(b);
 	}
 

@@ -26,6 +26,12 @@ public class Projectile extends Entity {
 		velocity = v;
 	}
 	
+	public void setDirection(Entity e, Vector v) {
+		setPosition(e.getPosition());
+		setVelocity(v);
+		image.setRotation((int) v.getRotation() + 90);
+	}
+	
 	public Projectile(final float x, final float y) {
 		super(x, y);
 		velocity = new Vector(0, 0);
@@ -45,9 +51,6 @@ public class Projectile extends Entity {
 	}
 	
 	public boolean checkBounds(int screenw, int screenh) {
-		System.out.println("minX: "+this.getCoarseGrainedMinX()+" maxX: "+this.getCoarseGrainedMaxX());
-		System.out.println("minY: "+this.getCoarseGrainedMinY()+" maxY: "+this.getCoarseGrainedMaxY());
-		System.out.println("sw: "+screenw+" sh: "+screenh);
 		if(this.getCoarseGrainedMinX()<0 || this.getCoarseGrainedMaxX()>screenw-10)
 			return true;
 		
