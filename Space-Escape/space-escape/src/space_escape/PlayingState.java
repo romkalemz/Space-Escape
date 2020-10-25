@@ -209,7 +209,7 @@ class PlayingState extends BasicGameState {
 		// check if the UFO's have a direct line of sight to shoot bullets
 		for(int i = 0; i < se.enemies.size(); i++) {
 			if(se.enemies.get(i).type == "ufo" && se.enemies.get(i).path.size() <= 5) {
-				if(enemy_shoot_cooldown <= 0 ) {
+				if(enemy_shoot_cooldown <= 0) {
 					addBullets(se, se.enemies.get(i), null);
 					enemy_shoot_cooldown = 100;
 				}
@@ -234,14 +234,14 @@ class PlayingState extends BasicGameState {
 	private void addBullets(Game g, Entity e, Vector v) {
 		Projectile b = new Projectile(e.getX(), e.getY());
 		if (v == null) {
-			
 			// find the direction for the bullets to travel to
 			// check if the entity is an enemy
 			Vector playerPos = g.player.getPosition();
 			if (playerPos != e.getPosition()) {
-				//dir = (int) playerPos.subtract(e.getPosition()).getRotation();
+				double dir = playerPos.subtract(e.getPosition()).getRotation();
+				v = new Vector(1, 1).setRotation(dir);
+				b.setSpeed(0.2f);
 			}
-			return;
 		}
 		b.setDirection(e, v);
 		g.bullets.add(b);

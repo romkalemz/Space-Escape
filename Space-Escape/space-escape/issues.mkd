@@ -11,6 +11,7 @@
 - **[2b]** Add more unique terrain to collide with
 - **[6a]** Unique enemies that behave differently with player 
 - **[1d]** Add projectiles to the player
+- **[6b]** UFO enemy shoots out a projectile if in direct line of sight w/ player
 
 ################################# Open Issues ######################################### 
 ---------------------------------------------------------------------------------------
@@ -19,8 +20,6 @@
 ---------------------------------------------------------------------------------------
 - **[5a]** Entity pickups that are called attachments (special powerups)
 - **[5b]** Add visual representation of the attachments collected on the player
----------------------------------------------------------------------------------------
-- **[6b]** UFO enemy shoots out a projectile if in direct line of sight w/ player
 ---------------------------------------------------------------------------------------
 - **[7a]** Add different levels
 - **[7b]** Add splash art, different playing states, organized transitions
