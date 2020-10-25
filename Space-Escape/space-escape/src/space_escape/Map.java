@@ -66,15 +66,15 @@ public class Map {
 				 {0,0,0,0,0,0,3,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0},
 				 {0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0},
 				 {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
-				 {0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
+				 {0,0,0,0,0,0,1,0,0,0,1,0,0,0,5,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
 				 {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,2,0,0},
-				 {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
+				 {0,0,0,0,0,0,0,0,0,0,1,0,6,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
 				 {0,0,0,0,1,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,1,0,0,0,0,0,0,0,0},
 				 {0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0},
 				 {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0},
 				 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0},
 				 {0,0,2,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0},
-				 {0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0},
+				 {0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,7,0,0,0,0,1,0,0,0,0,0,0,0,0,0},
 				 {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
 				 {0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
 			
@@ -85,28 +85,30 @@ public class Map {
 						tiles[x][y] = new Tile(x, y, 1, 1, true, Game.TILE_ASTROID1_RSC);
 					}
 					if(mapLayout[y][x] == 2) {	//enemy tile
-						Enemy a = new Enemy(x, y, "alien");
-						g.enemies.add(a);
+						Enemy e = new Enemy(x, y, "alien");
+						g.enemies.add(e);
 					}
 					if(mapLayout[y][x] == 3) {
-						Enemy b = new Enemy(x, y, "ufo");
-						g.enemies.add(b);
+						Enemy e = new Enemy(x, y, "ufo");
+						g.enemies.add(e);
+					}
+					if(mapLayout[y][x] == 5) {
+						Orb a = new Orb(x, y, "red");
+						g.orbs.add(a);
+					}
+					if(mapLayout[y][x] == 6) {
+						Orb a = new Orb(x, y, "blue");
+						g.orbs.add(a);
+					}
+					if(mapLayout[y][x] == 7) {
+						Orb a = new Orb(x, y, "green");
+						g.orbs.add(a);
 					}
 					if(mapLayout[y][x] == 9) {
 						g.player.setPosition(x *40+20, y*40+20);
 					}
 				}
 			}
-			
-//			Tile astroidTile = new Tile(3, 2, 1, 1, true, Game.TILE_ASTROID1_RSC);
-//			tiles[3][2] = astroidTile;
-//			for(int x = astroidTile.getTileX(); x < astroidTile.getSizeX() + astroidTile.getTileX(); x++) {
-//				for(int y = astroidTile.getTileY(); y < astroidTile.getSizeY() + astroidTile.getTileY(); y++ ) {
-//					Tile solid = new Tile(x, y, 1, 1, true, "null");
-//					tiles[x][y] = solid;
-//				}
-//			}
-
 		}
 	}
 	
@@ -210,11 +212,11 @@ public class Map {
 		double lx = Math.abs(t1.getX() - t2.getX());
 		double ly = Math.abs(t1.getY() - t2.getY());
 		double distance;
-		if (lx == 0)		// vertical distance travel
+		if (lx == 0)			// vertical distance travel
 			distance = ly;
-		else if (ly == 0)	//horizontal distance travel
+		else if (ly == 0)		//horizontal distance travel
 			distance = lx;
-		else				//diagonal distance travel
+		else					//diagonal distance travel
 			distance = Math.hypot(lx, ly);
 		return distance / 40;	//converting to tile distance
 	}

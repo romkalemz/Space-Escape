@@ -12,7 +12,7 @@ public class Projectile extends Entity {
 	private float speed;
 	private double size;		// size of bullet where size = 1 is tile size / 2
 	private int damage;			// amount of hit points it damages
-	//private int rof;			// rate of fire of the bullet (1 = 1 bullet/sec)
+	private int rof;			// rate of fire of the bullet (1 = 1 bullet/sec)
 	private String type;		// type of bullet
 	private Vector velocity;	// direction the bullet is travelling 
 	
@@ -20,7 +20,7 @@ public class Projectile extends Entity {
 	public void setSize(double s) 		{ size = s; }
 	public void setDamage(int d)		{ damage = d; }
 	public void setType(String t)		{ type = t; }
-	//public void setROF(int r)			{ rof = r; }
+	public void setROF(int r)			{ rof = r; }
 	
 	public void setVelocity(Vector v) { 
 		velocity = v;
@@ -39,12 +39,6 @@ public class Projectile extends Entity {
 		image = ResourceManager.getImage(Game.BULLET_REGULAR_RSC).getScaledCopy(5, 10);
 		addImageWithBoundingBox(image);
 	}
-	
-//	public void remove() {
-//		removeImage(image);
-//		setPosition(0, 0);
-//		setVelocity(new Vector(0, 0));
-//	}
 	
 	public boolean isCollided(Map m, int sw, int sh) {
 		return (checkBounds(sw, sh) || checkTileCollision(m));
