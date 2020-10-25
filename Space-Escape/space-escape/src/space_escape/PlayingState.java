@@ -70,9 +70,14 @@ class PlayingState extends BasicGameState {
 			
 		se.map.render(g);
 		se.player.render(g);
+		// render each enemy
 		for(int i = 0; i < se.enemies.size(); i++)
 			se.enemies.get(i).render(g);
+		// render each orb
+		for( int i = 0; i < se.orbs.size(); i++)
+			se.orbs.get(i).render(g);
 		
+		// render each bullet
 		for(int i = 0; i < se.bullets.size(); i++)
 			se.bullets.get(i).render(g);
 	}

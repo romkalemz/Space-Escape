@@ -26,7 +26,7 @@ import jig.Vector;
 	public float hp;			//health of the player
 	public float pushback = 20;	//amount to push the player back once collided
 	
-	public ArrayList<Attachment> attachments;
+	public ArrayList<Orbs> attachments;
 	
 	public Player(final float x, final float y, float initSp) {
 		super(x, y);
