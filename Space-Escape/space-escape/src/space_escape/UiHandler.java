@@ -19,14 +19,24 @@ public class UiHandler {
 	}
 	
 	public void addOrb(Orb o) {
+		
+		// if there is an "empty" spot, place there first
+		for (int i = 0; i < currentOrbs.size(); i++) {
+			if(currentOrbs.get(i) == null) {
+				currentOrbs.set(i, o);
+				return;
+			}
+		}
 		// check if maximum orb count is less than 3
 		if(currentOrbs.size() < 3) 
 			currentOrbs.add(o);
 	}
 	
-	public void dropOrb(int index) {
-		if(currentOrbs.get(index) != null)
-			currentOrbs.remove(index);
+	public Orb dropOrb(int index) {
+		Orb o = currentOrbs.get(index);
+		if(o != null)
+			currentOrbs.set(index, null);
+		return o;
 	}
 
 	public void render(Game se, Graphics g) {
@@ -44,8 +54,10 @@ public class UiHandler {
 		}
 		
 		for (int i = 0; i < currentOrbs.size(); i++) {
-			currentOrbs.get(i).setPosition(465 +(i*120), 710);
-			currentOrbs.get(i).render(g);
+			if(currentOrbs.get(i) != null) {
+				currentOrbs.get(i).setPosition(465 +(i*120), 710);
+				currentOrbs.get(i).render(g);
+			}
 		}
 	}
 	
