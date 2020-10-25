@@ -97,16 +97,6 @@ public class Map {
 					}
 				}
 			}
-			
-//			Tile astroidTile = new Tile(3, 2, 1, 1, true, Game.TILE_ASTROID1_RSC);
-//			tiles[3][2] = astroidTile;
-//			for(int x = astroidTile.getTileX(); x < astroidTile.getSizeX() + astroidTile.getTileX(); x++) {
-//				for(int y = astroidTile.getTileY(); y < astroidTile.getSizeY() + astroidTile.getTileY(); y++ ) {
-//					Tile solid = new Tile(x, y, 1, 1, true, "null");
-//					tiles[x][y] = solid;
-//				}
-//			}
-
 		}
 	}
 	
@@ -210,11 +200,11 @@ public class Map {
 		double lx = Math.abs(t1.getX() - t2.getX());
 		double ly = Math.abs(t1.getY() - t2.getY());
 		double distance;
-		if (lx == 0)		// vertical distance travel
+		if (lx == 0)			// vertical distance travel
 			distance = ly;
-		else if (ly == 0)	//horizontal distance travel
+		else if (ly == 0)		//horizontal distance travel
 			distance = lx;
-		else				//diagonal distance travel
+		else					//diagonal distance travel
 			distance = Math.hypot(lx, ly);
 		return distance / 40;	//converting to tile distance
 	}

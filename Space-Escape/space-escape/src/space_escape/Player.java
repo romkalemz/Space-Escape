@@ -1,5 +1,7 @@
 package space_escape;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.Image;
 
 import jig.Entity;
@@ -17,7 +19,6 @@ import jig.Vector;
 	private Vector velocity;
 	public Image image;
 	
-	//private int countdown;
 	public float initSpeed;		//initial starting speed
 	public float multSpeed;		//speed multiplier
 	public float atkSpeed;		//the rate of fire from player
@@ -25,7 +26,7 @@ import jig.Vector;
 	public float hp;			//health of the player
 	public float pushback = 20;	//amount to push the player back once collided
 	
-	//Projectile bullet;
+	public ArrayList<Attachment> attachments;
 	
 	public Player(final float x, final float y, float initSp) {
 		super(x, y);
@@ -37,9 +38,6 @@ import jig.Vector;
 		initSpeed = initSp;
 		multSpeed = atkSpeed = atkDmg = 1;
 		hp = 3;
-		
-		//bullet = new Projectile();
-		//countdown = 0;
 	}
 
 	public void setVelocity(final Vector v) {
@@ -51,7 +49,6 @@ import jig.Vector;
 	}
 	
 	public void setRotation(int dir) {
-		//countdown = 500;
 		image.setRotation(dir);
 		addImageWithBoundingBox(image);
 	}

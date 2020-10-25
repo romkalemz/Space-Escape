@@ -29,6 +29,7 @@ public class Game extends StateBasedGame {
 	public static final String ENEMY_ALIEN_RSC = "space_escape/resource/alien.png";
 	public static final String ENEMY_UFO_RSC = "space_escape/resource/ufo.png";
 	public static final String BULLET_REGULAR_RSC = "space_escape/resource/bullet.png";
+	public static final String ATTACH_BLUE_RSC = "space_escape/resource/bluesd.png";
 	
 	public final int ScreenWidth;
 	public final int ScreenHeight;
@@ -40,16 +41,7 @@ public class Game extends StateBasedGame {
 	public int level;
 	public Image background;
 
-	/**
-	 * Create the BounceGame frame, saving the width and height for later use.
-	 * 
-	 * @param title
-	 *            the window's title
-	 * @param width
-	 *            the window's width
-	 * @param height
-	 *            the window's height
-	 */
+
 	public Game(String title, int width, int height) {
 		super(title);
 		ScreenHeight = height;
@@ -67,13 +59,6 @@ public class Game extends StateBasedGame {
 		addState(new GameOverState());
 		addState(new PlayingState());
 		
-		// the sound resource takes a particularly long time to load,
-		// we preload it here to (1) reduce latency when we first play it
-		// and (2) because loading it will load the audio libraries and
-		// unless that is done now, we can't *disable* sound as we
-		// attempt to do in the startUp() method.
-
-		// preload all the resources to avoid warnings & minimize latency...
 		ResourceManager.loadImage(PLAYER_ORIGIN_RSC);
 		ResourceManager.loadImage(GAMEOVER_BANNER_RSC);
 		ResourceManager.loadImage(STARTUP_BANNER_RSC);

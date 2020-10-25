@@ -13,11 +13,6 @@ import org.newdawn.slick.state.StateBasedGame;
 
 
 /**
- * This state is active when the Game is being played. In this state, sound is
- * turned on, the bounce counter begins at 0 and increases until 10 at which
- * point a transition to the Game Over state is initiated. The user can also
- * control the ball using the WAS & D keys.
- * 
  * Transitions From StartUpState
  * 
  * Transitions To GameOverState
@@ -25,7 +20,6 @@ import org.newdawn.slick.state.StateBasedGame;
 class PlayingState extends BasicGameState {
 	
 	private int angled_pos_delay, player_shoot_cooldown, enemy_shoot_cooldown;
-	//private int cheat_delay;
 	private boolean overlayEnabled = false;
 	
 	@Override
@@ -79,11 +73,8 @@ class PlayingState extends BasicGameState {
 		for(int i = 0; i < se.enemies.size(); i++)
 			se.enemies.get(i).render(g);
 		
-		for(int i = 0; i < se.bullets.size(); i++) {
-			//if(se.bullets.get(i) != null) {
-				se.bullets.get(i).render(g);
-			//}
-		}
+		for(int i = 0; i < se.bullets.size(); i++)
+			se.bullets.get(i).render(g);
 	}
 
 	@Override
@@ -118,7 +109,7 @@ class PlayingState extends BasicGameState {
 		if (input.isKeyDown(Input.KEY_D)) {
 			se.player.setVelocity(se.player.getVelocity().add(new Vector(+se.player.initSpeed * se.player.multSpeed, 0f)));
 		}
-		
+	
 		// player direction / aim
 		// wait for a slight cooldown to allow slower response times to angled facing position
 		if (angled_pos_delay <= 0) {
@@ -126,7 +117,7 @@ class PlayingState extends BasicGameState {
 				se.player.setRotation(180);
 				if(player_shoot_cooldown <= 0) {
 					addBullets(se, se.player, new Vector(0, -1));
-					player_shoot_cooldown = 100;
+			player_shoot_cooldown = 100;
 				}
 			}
 			
@@ -152,10 +143,6 @@ class PlayingState extends BasicGameState {
 				}
 			}
 		}
-		
-//		if(cooldown <= 0)
-//			se.bullet = null;
-
 		
 		if (input.isKeyDown(Input.KEY_UP) && input.isKeyDown(Input.KEY_RIGHT)) {
 			se.player.setRotation(225);
@@ -217,11 +204,9 @@ class PlayingState extends BasicGameState {
 		}
 		
 		for(int i = 0; i < se.bullets.size(); i++) {
-			//if(se.bullets.get(i) != null) {
 				se.bullets.get(i).update(delta);
 				if(se.bullets.get(i).isCollided(se.map, se.ScreenWidth, se.ScreenHeight))
 					se.bullets.remove(i);
-			//}
 		}
 		
 

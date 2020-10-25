@@ -17,7 +17,6 @@ public class Enemy extends Entity {
 	public ArrayList<Vector> path;
 	private int followPoint;
 	private float speed;
-	private Tile destination;
 	private Vector velocity;
 	public Vector pushback;
 	
@@ -32,14 +31,14 @@ public class Enemy extends Entity {
 		
 		if(type == "alien") {
 			speed = 0.15f;
-			pushback = new Vector(20, 10);
-			image = ResourceManager.getImage(Game.ENEMY_ALIEN_RSC).getScaledCopy(40, 20);
+			pushback = new Vector(15, 15);
+			image = ResourceManager.getImage(Game.ENEMY_ALIEN_RSC).getScaledCopy((int)pushback.getX() *2, (int)pushback.getY() *2);
 			addImageWithBoundingBox(image);
 		}
 		else if(type == "ufo") {
 			speed = 0.1f;
-			pushback = new Vector(20, 20);
-			image = ResourceManager.getImage(Game.ENEMY_UFO_RSC).getScaledCopy(40, 40);
+			pushback = new Vector(25, 15);
+			image = ResourceManager.getImage(Game.ENEMY_UFO_RSC).getScaledCopy((int)pushback.getX() *2, (int)pushback.getY() *2);
 			addImageWithBoundingBox(image);
 		}
 	}

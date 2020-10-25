@@ -96,7 +96,6 @@ public class Tile extends Entity implements Comparable<Tile> {
 
 	@Override
 	public int compareTo(Tile o) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 	
