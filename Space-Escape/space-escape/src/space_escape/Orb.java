@@ -10,12 +10,16 @@ public class Orb extends Entity {
 	
 	private String type;
 	private Animation anim;
+	private Image image;
 	
 	
 	public Orb(final float x, final float y, String t) {
 		super(x *40+20, y *40+20);
 		type = t;
 		Animation a = null;
+		image = ResourceManager.getImage(Game.BOUND_RSC);
+		image.setAlpha(0);
+		addImageWithBoundingBox(image);
 		
 		if(type == "blue") {
 			a = new Animation(ResourceManager.getSpriteSheet(

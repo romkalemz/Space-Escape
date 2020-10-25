@@ -26,7 +26,7 @@ import jig.Vector;
 	public float hp;			//health of the player
 	public float pushback = 20;	//amount to push the player back once collided
 	
-	public ArrayList<Orbs> attachments;
+	public ArrayList<Orb> attachments;
 	
 	public Player(final float x, final float y, float initSp) {
 		super(x, y);
@@ -102,6 +102,13 @@ import jig.Vector;
 				setY(t.getCoarseGrainedMaxY() + pushback);
 			}
 		}	
+	}
+	
+	public boolean checkOrbCollision(Orb o) {
+		if(collides(o) != null) {
+			return true;
+		} else
+			return false;
 	}
 
 	public void update(final int delta) {

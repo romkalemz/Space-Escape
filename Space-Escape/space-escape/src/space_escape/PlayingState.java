@@ -76,7 +76,6 @@ class PlayingState extends BasicGameState {
 		// render each orb
 		for( int i = 0; i < se.orbs.size(); i++)
 			se.orbs.get(i).render(g);
-		
 		// render each bullet
 		for(int i = 0; i < se.bullets.size(); i++)
 			se.bullets.get(i).render(g);
@@ -88,18 +87,45 @@ class PlayingState extends BasicGameState {
 
 		Input input = container.getInput();
 		Game se = (Game)game;
-		
-		// change cheat options / overlay option
-		if(input.isKeyPressed(Input.KEY_O)) {
-			if(!overlayEnabled)
-				overlayEnabled = true;
-			else 
-				overlayEnabled = false;
+				
+		playerMove(se, input);
+		otherUserInput(se, input);
+
+		// remove bullets that have collided with something
+		for(int i = 0; i < se.bullets.size(); i++) {
+				se.bullets.get(i).update(delta);
+				if(se.bullets.get(i).isCollided(se.map, se.ScreenWidth, se.ScreenHeight))
+					se.bullets.remove(i);
+		}
+		// remove orbs that the player collided with
+		for(int i = 0; i < se.orbs.size(); i++) {
+			if (se.player.collides(se.orbs.get(i)) != null)
+				se.orbs.remove(i);
 		}
 		
-		// set enemies paths
-		se.map.updateEnemies(se);
+
+		playerUpdate(se, delta);
+		enemyUpdate(se, delta);
 		
+	}
+	
+	private void addBullets(Game g, Entity e, Vector v) {
+		Projectile b = new Projectile(e.getX(), e.getY());
+		if (v == null) {
+			// find the direction for the bullets to travel to
+			// check if the entity is an enemy
+			Vector playerPos = g.player.getPosition();
+			if (playerPos != e.getPosition()) {
+				double dir = playerPos.subtract(e.getPosition()).getRotation();
+				v = new Vector(1, 1).setRotation(dir);
+				b.setSpeed(0.2f);
+			}
+		}
+		b.setDirection(e, v);
+		g.bullets.add(b);
+	}
+	
+	private void playerMove(Game se, Input input) {
 		se.player.setVelocity(new Vector(0, 0));
 		// player movement
 		if (input.isKeyDown(Input.KEY_W)) {
@@ -182,61 +208,51 @@ class PlayingState extends BasicGameState {
 				player_shoot_cooldown = 100;
 			}
 		}
-			
-
-		player_shoot_cooldown -= delta;
-		enemy_shoot_cooldown -= delta;
+	}
+	
+	private void playerUpdate(Game g, int delta) {
+		g.player.update(delta);	
+		g.player.checkBounds(g.ScreenWidth, g.ScreenHeight);
+		g.player.checkCollision(g.map);
 		angled_pos_delay -= delta;
-		
-		se.player.update(delta);	
-		// player bounds
-		se.player.checkBounds(se.ScreenWidth, se.ScreenHeight);
-		se.player.checkCollision(se.map);
-		
-		for(int i = 0; i < se.enemies.size(); i++) {
-			se.enemies.get(i).checkCollision(se.map);
-			se.enemies.get(i).update(delta);
+		player_shoot_cooldown -= delta;
+	}
+	
+	private void enemyUpdate(Game g, int delta) {
+		// update enemies paths
+		g.map.updateEnemies(g);
+		// for each enemy, check collisions and update their location
+		for(int i = 0; i < g.enemies.size(); i++) {
+			g.enemies.get(i).checkCollision(g.map);
+			g.enemies.get(i).update(delta);
 		}
-		
 		// check if the UFO's have a direct line of sight to shoot bullets
-		for(int i = 0; i < se.enemies.size(); i++) {
-			if(se.enemies.get(i).type == "ufo" && se.enemies.get(i).path.size() <= 5) {
+		for(int i = 0; i < g.enemies.size(); i++) {
+			if(g.enemies.get(i).type == "ufo" && g.enemies.get(i).path.size() <= 5) {
 				if(enemy_shoot_cooldown <= 0) {
-					addBullets(se, se.enemies.get(i), null);
+					addBullets(g, g.enemies.get(i), null);
 					enemy_shoot_cooldown = 100;
 				}
 			}
 		}
-		
-		for(int i = 0; i < se.bullets.size(); i++) {
-				se.bullets.get(i).update(delta);
-				if(se.bullets.get(i).isCollided(se.map, se.ScreenWidth, se.ScreenHeight))
-					se.bullets.remove(i);
-		}
-		
+		enemy_shoot_cooldown -= delta;
+	}
 
+	private void otherUserInput(Game g, Input input) {
+		// enable / disable overlay mapping
+		if(input.isKeyPressed(Input.KEY_O)) {
+			if(!overlayEnabled)
+				overlayEnabled = true;
+			else 
+				overlayEnabled = false;
+		}
+		// game over state
 		if (input.isKeyDown(Input.KEY_ESCAPE)) {
-			game.enterState(Game.GAMEOVERSTATE);
+			g.enterState(Game.GAMEOVERSTATE);
 		}
 		
 	}
 	
-	private void addBullets(Game g, Entity e, Vector v) {
-		Projectile b = new Projectile(e.getX(), e.getY());
-		if (v == null) {
-			// find the direction for the bullets to travel to
-			// check if the entity is an enemy
-			Vector playerPos = g.player.getPosition();
-			if (playerPos != e.getPosition()) {
-				double dir = playerPos.subtract(e.getPosition()).getRotation();
-				v = new Vector(1, 1).setRotation(dir);
-				b.setSpeed(0.2f);
-			}
-		}
-		b.setDirection(e, v);
-		g.bullets.add(b);
-	}
-
 	@Override
 	public int getID() {
 		return Game.PLAYINGSTATE;
