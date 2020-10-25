@@ -37,8 +37,10 @@ public class Game extends StateBasedGame {
 	public final int ScreenWidth;
 	public final int ScreenHeight;
 
-	Player player;
+	
 	Map map;
+	UiHandler UI;
+	Player player;
 	ArrayList<Enemy> enemies;
 	ArrayList<Orb> orbs;
 	ArrayList<Projectile> bullets;
@@ -79,11 +81,13 @@ public class Game extends StateBasedGame {
 		ResourceManager.loadImage(ORB_GREEN_RSC);
 		ResourceManager.loadImage(BOUND_RSC);
 		
-		player = new Player(0, 0, .25f);
 		map = new Map();
+		UI = new UiHandler();
+		player = new Player(0, 0, .25f);
 		enemies = new ArrayList<Enemy>();
 		orbs = new ArrayList<Orb>();
 		bullets = new ArrayList<Projectile>();
+		
 		
 	}
 	

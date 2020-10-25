@@ -47,27 +47,18 @@ class PlayingState extends BasicGameState {
 			Graphics g) throws SlickException {
 		Game se = (Game)game;
 		
-		// background render
+		// render background
 		g.drawImage(se.background, 0, 0);
-		// UI rendering
-		g.drawLine(0, 640, 1200, 640);
-		g.drawString("Movement Speed: " + se.player.initSpeed * se.player.multSpeed * 4, 25, 700);
-		g.drawString("Attack Speed: " + se.player.atkSpeed, 25, 725);
-		g.drawString("Attack Damage: " + se.player.atkDmg, 25, 750);
-		for(int x = 0; x < se.player.hp; x++) {
-			g.drawImage(ResourceManager.getImage(Game.HEALTH_RSC).getScaledCopy(60, 60), 1100 - (x * 60), 650);
-		}
-		for(int x = 0; x < 3; x++) {
-			g.drawImage(ResourceManager.getImage(Game.ITEMSQR_RSC), 425 + (x * 120), 675);
-		}
+		// render UI
+		se.UI.render(se, g);
 		
-		// render everything else
+		// render overlay
 		if(overlayEnabled) {
 			se.map.renderOverlay(g, se);
 			for(int i = 0; i < se.enemies.size(); i++)
 				se.enemies.get(i).renderPath(g);
 		}
-			
+		
 		se.map.render(g);
 		se.player.render(g);
 		// render each enemy
@@ -79,6 +70,7 @@ class PlayingState extends BasicGameState {
 		// render each bullet
 		for(int i = 0; i < se.bullets.size(); i++)
 			se.bullets.get(i).render(g);
+		
 	}
 
 	@Override
@@ -99,8 +91,10 @@ class PlayingState extends BasicGameState {
 		}
 		// remove orbs that the player collided with
 		for(int i = 0; i < se.orbs.size(); i++) {
-			if (se.player.collides(se.orbs.get(i)) != null)
+			if (se.player.collides(se.orbs.get(i)) != null) {
+				se.UI.addOrb(se.orbs.get(i));
 				se.orbs.remove(i);
+			}
 		}
 		
 
