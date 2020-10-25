@@ -14,7 +14,7 @@ public class Enemy extends Entity {
 	
 	public Image image;
 	public String type;
-	private ArrayList<Vector> path;
+	public ArrayList<Vector> path;
 	private int followPoint;
 	private float speed;
 	private Tile destination;
