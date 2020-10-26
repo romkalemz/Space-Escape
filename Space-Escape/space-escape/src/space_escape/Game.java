@@ -33,12 +33,16 @@ public class Game extends StateBasedGame {
 	public static final String ORB_RED_RSC = "space_escape/resource/red_orb_anim.png";
 	public static final String ORB_GREEN_RSC = "space_escape/resource/green_orb_anim.png";
 	public static final String BOUND_RSC = "space_escape/resource/bound.png";
+	public static final String RBG_FORM_RSC = "space_escape/resource/rbg_form_anim.png";
+	public static final String BG_UI_RSC = "space_escape/resource/UIbg.png";
 	
 	public final int ScreenWidth;
 	public final int ScreenHeight;
 
-	Player player;
+	
 	Map map;
+	UiHandler UI;
+	Player player;
 	ArrayList<Enemy> enemies;
 	ArrayList<Orb> orbs;
 	ArrayList<Projectile> bullets;
@@ -78,19 +82,23 @@ public class Game extends StateBasedGame {
 		ResourceManager.loadImage(ORB_BLUE_RSC);
 		ResourceManager.loadImage(ORB_GREEN_RSC);
 		ResourceManager.loadImage(BOUND_RSC);
+		ResourceManager.loadImage(RBG_FORM_RSC);
+		ResourceManager.loadImage(BG_UI_RSC);
 		
-		player = new Player(0, 0, .25f);
 		map = new Map();
+		UI = new UiHandler();
+		player = new Player(0, 0, .25f);
 		enemies = new ArrayList<Enemy>();
 		orbs = new ArrayList<Orb>();
 		bullets = new ArrayList<Projectile>();
+		
 		
 	}
 	
 	public static void main(String[] args) {
 		AppGameContainer app;
 		try {
-			app = new AppGameContainer(new Game("Space Escape", 1200, 650));
+			app = new AppGameContainer(new Game("Space Escape", 1200, 640));
 			app.setDisplayMode(1200, 800, false);
 			app.setVSync(true);
 			app.start();
