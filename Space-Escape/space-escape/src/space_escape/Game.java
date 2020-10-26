@@ -45,7 +45,7 @@ public class Game extends StateBasedGame {
 	Player player;
 	ArrayList<Enemy> enemies;
 	ArrayList<Orb> orbs;
-	ArrayList<Projectile> bullets;
+	ArrayList<Bullet> bullets;
 	public int level;
 	public Image background;
 
@@ -90,7 +90,7 @@ public class Game extends StateBasedGame {
 		player = new Player(0, 0, .25f);
 		enemies = new ArrayList<Enemy>();
 		orbs = new ArrayList<Orb>();
-		bullets = new ArrayList<Projectile>();
+		bullets = new ArrayList<Bullet>();
 		
 		
 	}

@@ -6,18 +6,19 @@ import jig.Entity;
 import jig.ResourceManager;
 import jig.Vector;
 
-public class Projectile extends Entity {
+public class Bullet extends Entity {
 	
 	public Image image;
 	private float speed;
-	private double size;		// size of bullet where size = 1 is tile size / 2
-	private int damage;			// amount of hit points it damages
+	public float force;		// size of bullet where size = 1 is tile size / 2
+	public int damage;			// amount of hit points it damages
 	private int rof;			// rate of fire of the bullet (1 = 1 bullet/sec)
 	private String type;		// type of bullet
-	private Vector velocity;	// direction the bullet is travelling 
+	public Vector velocity;	// direction the bullet is travelling 
+	public boolean isFromEnemy;
 	
-	public void setSpeed(float sp) 	{ speed = sp; }
-	public void setSize(double s) 		{ size = s; }
+	public void setSpeed(float sp) 		{ speed = sp; }
+	//public void setSize(double s) 		{ size = s; }
 	public void setDamage(int d)		{ damage = d; }
 	public void setType(String t)		{ type = t; }
 	public void setROF(int r)			{ rof = r; }
@@ -26,16 +27,24 @@ public class Projectile extends Entity {
 		velocity = v;
 	}
 	
+	public Vector getDirection() {
+		Vector v = velocity;
+		Vector normal = new Vector(1, 1);
+		return normal.setRotation(v.getRotation());
+	}
+	
 	public void setDirection(Entity e, Vector v) {
 		setPosition(e.getPosition());
 		setVelocity(v);
 		image.setRotation((int) v.getRotation() + 90);
 	}
 	
-	public Projectile(final float x, final float y) {
+	public Bullet(final float x, final float y) {
 		super(x, y);
 		velocity = new Vector(0, 0);
 		speed = 0.3f;
+		damage = 1;
+		force = 1;
 		image = ResourceManager.getImage(Game.BULLET_REGULAR_RSC).getScaledCopy(5, 10);
 		addImageWithBoundingBox(image);
 	}

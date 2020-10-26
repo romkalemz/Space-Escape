@@ -21,7 +21,7 @@ import org.newdawn.slick.state.StateBasedGame;
 class PlayingState extends BasicGameState {
 	
 	private int angled_pos_delay, orb_pickup_delay;
-	private int player_shoot_cooldown, enemy_shoot_cooldown;
+	private int player_shoot_cooldown, enemy_shoot_cooldown, enemy_knockout_cooldown;
 	private boolean overlayEnabled = false;
 	
 	@Override
@@ -84,25 +84,31 @@ class PlayingState extends BasicGameState {
 				
 		// cheat codes and testing options
 		userCodes(se, input);
-		
+		// player movement OR other controls input addressed
 		playerMove(se, input);
 		playerControls(se, input);
-
-		// remove bullets that have collided with something
-		for(int i = 0; i < se.bullets.size(); i++) {
-				se.bullets.get(i).update(delta);
-				if(se.bullets.get(i).isCollided(se.map, se.ScreenWidth, se.ScreenHeight))
-					se.bullets.remove(i);
-		}
-
-		
-
+		// update the entities below (translations, animations, etc.)
 		playerUpdate(se, delta);
 		enemyUpdate(se, delta);
 		orbUpdate(se, delta);
+		bulletUpdate(se, delta);
 		
 	}
 	
+
+	private void userCodes(Game g, Input input) {
+		// enable / disable overlay mapping
+		if(input.isKeyPressed(Input.KEY_O)) {
+			if(!overlayEnabled)
+				overlayEnabled = true;
+			else 
+				overlayEnabled = false;
+		}
+		// game over state
+		if (input.isKeyDown(Input.KEY_ESCAPE)) {
+			g.enterState(Game.GAMEOVERSTATE);
+		}
+	}
 	
 	private void playerMove(Game se, Input input) {
 		se.player.setVelocity(new Vector(0, 0));
@@ -188,21 +194,7 @@ class PlayingState extends BasicGameState {
 			}
 		}
 	}
-
-	private void userCodes(Game g, Input input) {
-		// enable / disable overlay mapping
-		if(input.isKeyPressed(Input.KEY_O)) {
-			if(!overlayEnabled)
-				overlayEnabled = true;
-			else 
-				overlayEnabled = false;
-		}
-		// game over state
-		if (input.isKeyDown(Input.KEY_ESCAPE)) {
-			g.enterState(Game.GAMEOVERSTATE);
-		}
-	}
-		
+	
 	private void playerControls(Game g, Input input) {
 		// drop the orb in the corresponding inputted key
 		if(input.isKeyPressed(Input.KEY_1) && g.UI.currentOrbs.get(0) != null) {
@@ -232,24 +224,30 @@ class PlayingState extends BasicGameState {
 		player_shoot_cooldown -= delta;
 	}
 	
-	
 	private void enemyUpdate(Game g, int delta) {
-		// update enemies paths
-		g.map.updateEnemies(g);
 		// for each enemy, check collisions and update their location
 		for(int i = 0; i < g.enemies.size(); i++) {
 			g.enemies.get(i).checkCollision(g.map);
-			g.enemies.get(i).update(delta);
 		}
+		// update enemies paths
+		g.map.updateEnemies(g);
+
 		// check if the UFO's have a direct line of sight to shoot bullets
 		for(int i = 0; i < g.enemies.size(); i++) {
-			if(g.enemies.get(i).type == "ufo" && g.enemies.get(i).path.size() <= 5) {
-				if(enemy_shoot_cooldown <= 0) {
-					addBullets(g, g.enemies.get(i), null);
-					enemy_shoot_cooldown = 100;
+			if(g.enemies.get(i).KO <= 0) {
+				if(g.enemies.get(i).type == "ufo" && g.enemies.get(i).path.size() <= 5) {
+					if(enemy_shoot_cooldown <= 0) {
+						addBullets(g, g.enemies.get(i), null);
+						enemy_shoot_cooldown = 100;
+					}
 				}
+				g.enemies.get(i).traversePath();
 			}
+			g.enemies.get(i).update(delta);
 		}
+		
+		for(int i = 0; i < g.enemies.size(); i++)
+			g.enemies.get(i).KO -= delta;
 		enemy_shoot_cooldown -= delta;
 	}
 	
@@ -293,6 +291,32 @@ class PlayingState extends BasicGameState {
 		orb_pickup_delay -= delta;
 	}
 
+	private void bulletUpdate(Game g, int delta) {
+		// remove bullets that have collided with something
+		for(int i = 0; i < g.bullets.size(); i++) {
+			Bullet bullet = g.bullets.get(i);
+			// check if collided with entity
+			// with enemy
+			for(int j = 0; j < g.enemies.size(); j++) {
+				Enemy enemy = g.enemies.get(j);
+				if(enemy.collides(bullet) != null && !bullet.isFromEnemy) {
+					enemy.KO = 75;
+					enemy.velocity = enemy.velocity.add(bullet.velocity.scale(1.5f));
+					//enemy.pushBack(bullet.getDirection(), bullet.force);
+					enemy.hp -= bullet.damage;
+					if(enemy.hp <= 0) {
+						g.enemies.remove(enemy);
+					}
+					g.bullets.remove(i);
+				}
+			}
+			// remove the bullet
+			if(bullet.isCollided(g.map, g.ScreenWidth, g.ScreenHeight))
+				g.bullets.remove(i);
+			
+			bullet.update(delta);
+		}
+	}
 	
 	private void addOrb(Game g, Orb o) {
 		Vector playerTile = g.map.getTile(g.player).getPosition();
@@ -301,8 +325,9 @@ class PlayingState extends BasicGameState {
 	}
 	
 	private void addBullets(Game g, Entity e, Vector v) {
-		Projectile b = new Projectile(e.getX(), e.getY());
+		Bullet b = new Bullet(e.getX(), e.getY());
 		if (v == null) {
+			b.isFromEnemy = true;
 			// find the direction for the bullets to travel to
 			// check if the entity is an enemy
 			Vector playerPos = g.player.getPosition();

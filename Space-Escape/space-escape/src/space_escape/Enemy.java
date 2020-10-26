@@ -17,8 +17,10 @@ public class Enemy extends Entity {
 	public ArrayList<Vector> path;
 	private int followPoint;
 	private float speed;
-	private Vector velocity;
+	public Vector velocity;
 	public Vector pushback;
+	public int hp;
+	public int KO;			// knocked out cooldown (unable to traverse path if hit)
 	
 	
 	public Enemy(final float x, final float y, String type) {
@@ -28,20 +30,27 @@ public class Enemy extends Entity {
 		path = new ArrayList<Vector>();
 		followPoint = 0;
 		velocity = new Vector(0.0f, 0.0f);
+		KO = 0;
 		
 		if(type == "alien") {
+			hp = 5;
 			speed = 0.15f;
 			pushback = new Vector(15, 15);
 			image = ResourceManager.getImage(Game.ENEMY_ALIEN_RSC).getScaledCopy((int)pushback.getX() *2, (int)pushback.getY() *2);
 			addImageWithBoundingBox(image);
 		}
 		else if(type == "ufo") {
+			hp = 7;
 			speed = 0.1f;
-			pushback = new Vector(25, 15);
+			pushback = new Vector(20, 15);
 			image = ResourceManager.getImage(Game.ENEMY_UFO_RSC).getScaledCopy((int)pushback.getX() *2, (int)pushback.getY() *2);
 			addImageWithBoundingBox(image);
 		}
 	}
+	
+//	public void pushBack(Vector dir, float val) {
+//		velocity.add(dir.scale(val));
+//	}
 	
 	public void setPath(Tile current) {
 		path.clear();
@@ -120,8 +129,9 @@ public class Enemy extends Entity {
 	}
 	
 	public void update(final int delta) {
-		traversePath();
 		translate(velocity.scale(delta * speed));
 	}
+
+
 
 }
