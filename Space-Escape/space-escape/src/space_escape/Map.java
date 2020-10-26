@@ -18,6 +18,7 @@ public class Map {
 	private Tile playerTile, enemyTile;
 	private Tile[][] tiles;
 	private Tile[][] overlay;
+	public ArrayList<Tile> spawnTiles;
 
 	
 	public Map() {
@@ -42,7 +43,6 @@ public class Map {
 		enemyTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(255, 0, 0));
 		enemyTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(255, 0, 0));
 		enemyTile.changeImage(Game.TILE_OVERLAY_RSC, new Color(255, 0, 0));
-		
 		// empty map
 		// place empty tiles through the whole map first
 		for(int x = 0; x < number_of_tilesX; x++) {
@@ -57,26 +57,27 @@ public class Map {
 				overlay[x][y] = new Tile(x, y, 1, 1, false, Game.TILE_OVERLAY_RSC);
 	}
 	
-	public void loadLevel(Game g, int lvl) {
+	public ArrayList<Tile> loadLevel(Game g, int lvl) {
+		spawnTiles = new ArrayList<Tile>();
 		if (lvl == 1) {
 			
 			int[][] mapLayout = 
-				{{0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-				 {0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0},
-				 {0,0,0,0,0,0,3,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0},
+				{{2,0,0,0,0,0,1,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
+				 {0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+				 {0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0},
 				 {0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0},
-				 {0,0,0,0,0,0,0,0,0,0,1,0,5,0,0,6,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
+				 {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
 				 {0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
-				 {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,9,0,1,0,0,0,0,0,1,0,0,2,0,0},
-				 {0,0,0,0,0,0,0,0,0,0,1,7,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
+				 {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,9,0,1,0,0,0,0,0,1,0,0,0,0,0},
+				 {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
 				 {0,0,0,0,1,0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,1,0,0,0,0,0,0,0,0},
 				 {0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0},
 				 {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0},
 				 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0},
-				 {0,0,2,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0},
+				 {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0},
 				 {0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0},
 				 {0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
-				 {0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
+				 {2,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2}};
 			
 			
 			for(int x = 0; x < number_of_tilesX; x++) {
@@ -85,35 +86,35 @@ public class Map {
 						tiles[x][y] = new Tile(x, y, 1, 1, true, Game.TILE_ASTROID1_RSC);
 					}
 					if(mapLayout[y][x] == 2) {	//enemy tile
-						Enemy e = new Enemy(x, y, "alien");
-						g.enemies.add(e);
+						spawnTiles.add(tiles[x][y]);	
 					}
-					if(mapLayout[y][x] == 3) {
-						Enemy e = new Enemy(x, y, "ufo");
-						g.enemies.add(e);
-					}
-					if(mapLayout[y][x] == 4) {
-						Enemy e = new Enemy(x, y, "robot");
-						g.enemies.add(e);
-					}
-					if(mapLayout[y][x] == 5) {
-						Orb a = new Orb(x, y, "red");
-						g.orbs.add(a);
-					}
-					if(mapLayout[y][x] == 6) {
-						Orb a = new Orb(x, y, "blue");
-						g.orbs.add(a);
-					}
-					if(mapLayout[y][x] == 7) {
-						Orb a = new Orb(x, y, "green");
-						g.orbs.add(a);
-					}
+//					if(mapLayout[y][x] == 3) {
+//						Enemy e = new Enemy(x, y, "ufo");
+//						g.enemies.add(e);
+//					}
+//					if(mapLayout[y][x] == 4) {
+//						Enemy e = new Enemy(x, y, "robot");
+//						g.enemies.add(e);
+//					}
+//					if(mapLayout[y][x] == 5) {
+//						Orb a = new Orb(x, y, "red");
+//						g.orbs.add(a);
+//					}
+//					if(mapLayout[y][x] == 6) {
+//						Orb a = new Orb(x, y, "blue");
+//						g.orbs.add(a);
+//					}
+//					if(mapLayout[y][x] == 7) {
+//						Orb a = new Orb(x, y, "green");
+//						g.orbs.add(a);
+//					}
 					if(mapLayout[y][x] == 9) {
 						g.player.setPosition(x *40+20, y*40+20);
 					}
 				}
 			}
 		}
+		return spawnTiles;
 	}
 	
 	// find shortest path between two entities

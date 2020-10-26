@@ -34,7 +34,7 @@ public class Enemy extends Entity {
 		
 		if(type == "alien") {
 			hp = 5;
-			speed = 0.15f;
+			speed = 0.17f;
 			pushback = new Vector(15, 15);
 			image = ResourceManager.getImage(Game.ENEMY_ALIEN_RSC).getScaledCopy((int)pushback.getX() *2, (int)pushback.getY() *2);
 			addImageWithBoundingBox(image);
@@ -55,8 +55,26 @@ public class Enemy extends Entity {
 		}
 	}
 	
-	public Orb dropOrb() {
-		return null;
+	public Orb dropOrb(Map map) {
+		Orb o = null;
+		Vector enemyPos;
+		double rand = Math.random();
+		if(rand > 0.50f) {
+			// drop the orb
+			if(type == "alien") {
+				enemyPos = map.getTilePosition(this);
+				o = new Orb(enemyPos.getX(), enemyPos.getY(), "blue");
+			}
+			else if(type == "ufo") {
+				enemyPos = map.getTilePosition(this);
+				o = new Orb(enemyPos.getX(), enemyPos.getY(), "red");
+			}
+			else if(type == "robot") {
+				enemyPos = map.getTilePosition(this);
+				o = new Orb(enemyPos.getX(), enemyPos.getY(), "green");
+			}
+		} 
+		return o;
 	}
 	
 	public void setPath(Tile current) {

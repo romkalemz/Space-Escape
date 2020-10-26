@@ -21,7 +21,7 @@ import org.newdawn.slick.state.StateBasedGame;
 class PlayingState extends BasicGameState {
 	
 	private int angled_pos_delay, orb_pickup_delay;
-	private int player_shoot_cooldown, enemy_shoot_cooldown;
+	private int player_shoot_cooldown, enemy_shoot_cooldown, spawn_cooldown;
 	private boolean overlayEnabled = false;
 	
 	@Override
@@ -94,7 +94,6 @@ class PlayingState extends BasicGameState {
 		bulletUpdate(se, delta);
 		
 	}
-	
 
 	private void userCodes(Game g, Input input) {
 		// enable / disable overlay mapping
@@ -225,6 +224,31 @@ class PlayingState extends BasicGameState {
 	}
 	
 	private void enemyUpdate(Game g, int delta) {
+		// spawn enemies
+		if(spawn_cooldown <= 0) {
+			spawn_cooldown = 8000;
+			Enemy e;
+			for(int i = 0; i < g.map.spawnTiles.size(); i++) {
+				Vector spawnPos = g.map.getTilePosition(g.map.spawnTiles.get(i));
+				// place enemy at that tile (find a random type of enemy)
+				double rand = Math.random();
+				if(rand <= 0.33) {
+					// spawn alien
+					e = new Enemy(spawnPos.getX(), spawnPos.getY(), "alien");
+				}
+				else if(rand > 0.33 && rand <= 0.66) {
+					// spawn ufo
+					e = new Enemy(spawnPos.getX(), spawnPos.getY(), "ufo");
+				}
+				else if(rand > 0.66) {
+					// spawn robot
+					e = new Enemy(spawnPos.getX(), spawnPos.getY(), "robot");
+				} else
+					e = null;
+				g.enemies.add(e);
+				
+			}
+		}
 		// for each enemy, check collisions and update their location
 		for(int i = 0; i < g.enemies.size(); i++) {
 			g.enemies.get(i).checkCollision(g.map);
@@ -249,6 +273,7 @@ class PlayingState extends BasicGameState {
 		for(int i = 0; i < g.enemies.size(); i++)
 			g.enemies.get(i).KO -= delta;
 		enemy_shoot_cooldown -= delta;
+		spawn_cooldown -= delta;
 	}
 	
 	private void orbUpdate(Game g, int delta) {
@@ -258,6 +283,8 @@ class PlayingState extends BasicGameState {
 			if (g.player.collides(orb) != null) {
 				if(orb_pickup_delay <= 0) {
 					g.UI.addOrb(g.orbs.get(i));
+					g.player.attachments.add(g.orbs.get(i));
+					g.player.setStats();
 					g.orbs.remove(i);
 				}
 			}
@@ -299,13 +326,18 @@ class PlayingState extends BasicGameState {
 			// with enemy
 			for(int j = 0; j < g.enemies.size(); j++) {
 				Enemy enemy = g.enemies.get(j);
+				
 				if(enemy.collides(bullet) != null && !bullet.isFromEnemy) {
 					enemy.KO = 75;
 					enemy.velocity = enemy.velocity.add(bullet.velocity.scale(1.5f));
-					//enemy.pushBack(bullet.getDirection(), bullet.force);
 					enemy.hp -= bullet.damage;
+					
 					if(enemy.hp <= 0) {
-						//Orb potentialOrb = enemy.dropOrb();
+						Orb potentialOrb = enemy.dropOrb(g.map);
+						
+						if(potentialOrb != null)
+							g.orbs.add(potentialOrb);
+
 						g.enemies.remove(enemy);
 					}
 					g.bullets.remove(bullet);

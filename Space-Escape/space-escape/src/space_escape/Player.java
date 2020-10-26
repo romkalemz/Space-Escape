@@ -19,12 +19,17 @@ import jig.Vector;
 	private Vector velocity;
 	public Image image;
 	
-	public float initSpeed;		//initial starting speed
-	public float atkSpeed;		//the rate of fire from player
-	public float atkDmg;		//the amount of hit points per bullet
+	public float initSpeed;		// initial starting speed
+	public float atkSpeed;		// the rate of fire from player
+	public float bulletSpeed;	// the speed of bullet travel
+	public float atkDmg;		// the amount of hit points per bullet
 	public float moveSpeed;		// the movement speed of player
-	public float hp;			//health of the player
-	public float pushback = 20;	//amount to push the player back once collided
+	public float hp;			// health of the player
+	public boolean increaseHP_overtime;
+	public int increaseHP_cooldown;
+	public float pushback = 20;	// amount to push the player back once collided
+	
+	public ArrayList<Orb> attachments;
 	
 	public Player(final float x, final float y, float initSp) {
 		super(x, y);
@@ -37,7 +42,26 @@ import jig.Vector;
 		atkSpeed = atkDmg = 1;
 		hp = 5;
 		moveSpeed = 0.2f;
-
+		increaseHP_overtime = false;
+		attachments = new ArrayList<Orb>();
+	}
+	
+	public void setStats() {
+		for(int i = 0; i < attachments.size(); i++) {
+			Orb orb = attachments.get(i);
+			if(orb.type == "red") {
+				atkDmg++;
+				atkSpeed--;
+			}
+			if(orb.type == "blue") {
+				moveSpeed *= 1.1f;
+				bulletSpeed *= 0.9f;
+			}
+			if(orb.type == "green") {
+				//totalHPincrease = true;
+				increaseHP_overtime = true;
+			}
+		}
 	}
 
 	public void setVelocity(final Vector v) {
