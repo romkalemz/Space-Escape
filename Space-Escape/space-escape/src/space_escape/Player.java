@@ -35,7 +35,7 @@ import jig.Vector;
 		velocity = new Vector(0, 0);
 		initSpeed = initSp;
 		multSpeed = atkSpeed = atkDmg = 1;
-		hp = 3;
+		hp = 5;
 
 	}
 

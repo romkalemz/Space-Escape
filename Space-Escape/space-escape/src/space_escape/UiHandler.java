@@ -60,32 +60,41 @@ public class UiHandler {
 	
 
 	public void render(Game se, Graphics g) {
-		g.drawLine(0, 640, 1200, 640);
-		g.drawString("Movement Speed: " + se.player.initSpeed * se.player.multSpeed * 4, 25, 700);
-		g.drawString("Attack Speed: " + se.player.atkSpeed, 25, 725);
-		g.drawString("Attack Damage: " + se.player.atkDmg, 25, 750);
+		//background
+		g.drawImage(ResourceManager.getImage(Game.BG_UI_RSC), 0, 640);
+		
+		// stats
+		//g.drawLine(0, 640, 1200, 640);
+		g.drawString("Movement Speed: " + se.player.initSpeed * se.player.multSpeed * 4, 25, 710);
+		g.drawString("Attack Speed: " + se.player.atkSpeed, 25, 735);
+		g.drawString("Attack Damage: " + se.player.atkDmg, 25, 760);
+		
+		// health 
 		for(int x = 0; x < se.player.hp; x++) {
-			g.drawImage(ResourceManager.getImage(Game.HEALTH_RSC).getScaledCopy(60, 60), 1100 - (x * 60), 650);
+			g.drawImage(ResourceManager.getImage(Game.HEALTH_RSC).getScaledCopy(60, 60), 1100 - (x * 60), 720);
 		}
+		// item boxes
 		for(int x = 0; x < 3; x++) {
 			Image image = ResourceManager.getImage(Game.ITEMSQR_RSC).getScaledCopy(50, 50);
 			image.setFilter(Image.FILTER_NEAREST);
-			g.drawImage(image, 475 + (x * 100), 650);
+			g.drawImage(image, 475 + (x * 100), 665);
 		}
 		
+		// empty final form display
 		Image image = ResourceManager.getImage(Game.ITEMSQR_RSC).getScaledCopy(250, 50);
 		g.drawImage(image, 475, 730);
+		if(form != null)
+			form.render(g);
 		
+		// orbs in the UI
 		for (int i = 0; i < currentOrbs.size(); i++) {
 			if(currentOrbs.get(i) != null) {
-				currentOrbs.get(i).setPosition(500 +(i*100), 675);
+				currentOrbs.get(i).setPosition(500 +(i*100), 690);
 				currentOrbs.get(i).render(g);
 			}
 		}
 		
-		if(form != null) {
-			form.render(g);
-		}
+		
 	}
 	
 }
