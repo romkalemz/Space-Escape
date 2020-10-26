@@ -65,9 +65,9 @@ public class UiHandler {
 		
 		// stats
 		//g.drawLine(0, 640, 1200, 640);
-		g.drawString("Movement Speed: " + se.player.initSpeed * se.player.multSpeed * 4, 25, 710);
-		g.drawString("Attack Speed: " + se.player.atkSpeed, 25, 735);
-		g.drawString("Attack Damage: " + se.player.atkDmg, 25, 760);
+		g.drawString("Movement Speed: " + (int)(se.player.moveSpeed *100), 25, 710);
+		g.drawString("Attack Speed: " + (int)(se.player.atkSpeed), 25, 735);
+		g.drawString("Attack Damage: " + (int)(se.player.atkDmg), 25, 760);
 		
 		// health 
 		for(int x = 0; x < se.player.hp; x++) {

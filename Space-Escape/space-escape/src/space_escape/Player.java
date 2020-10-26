@@ -20,9 +20,9 @@ import jig.Vector;
 	public Image image;
 	
 	public float initSpeed;		//initial starting speed
-	public float multSpeed;		//speed multiplier
 	public float atkSpeed;		//the rate of fire from player
 	public float atkDmg;		//the amount of hit points per bullet
+	public float moveSpeed;		// the movement speed of player
 	public float hp;			//health of the player
 	public float pushback = 20;	//amount to push the player back once collided
 	
@@ -33,9 +33,10 @@ import jig.Vector;
 		addImageWithBoundingBox(image);
 		
 		velocity = new Vector(0, 0);
-		initSpeed = initSp;
-		multSpeed = atkSpeed = atkDmg = 1;
+		//initSpeed = initSp;
+		atkSpeed = atkDmg = 1;
 		hp = 5;
+		moveSpeed = 0.2f;
 
 	}
 
@@ -111,7 +112,7 @@ import jig.Vector;
 	}
 
 	public void update(final int delta) {
-		translate(velocity.scale(delta));
+		translate(velocity.scale(delta * moveSpeed));
 	}
 
 }

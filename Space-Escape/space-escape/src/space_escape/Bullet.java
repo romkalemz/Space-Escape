@@ -42,7 +42,7 @@ public class Bullet extends Entity {
 	public Bullet(final float x, final float y) {
 		super(x, y);
 		velocity = new Vector(0, 0);
-		speed = 0.3f;
+		speed = 0.25f;
 		damage = 1;
 		force = 1;
 		image = ResourceManager.getImage(Game.BULLET_REGULAR_RSC).getScaledCopy(5, 10);

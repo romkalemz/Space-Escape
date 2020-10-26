@@ -29,7 +29,7 @@ public class Enemy extends Entity {
 		this.type = type;
 		path = new ArrayList<Vector>();
 		followPoint = 0;
-		velocity = new Vector(0.0f, 0.0f);
+		velocity = new Vector(0, 0);
 		KO = 0;
 		
 		if(type == "alien") {
@@ -40,17 +40,24 @@ public class Enemy extends Entity {
 			addImageWithBoundingBox(image);
 		}
 		else if(type == "ufo") {
-			hp = 7;
-			speed = 0.1f;
+			hp = 5;
+			speed = 0.12f;
 			pushback = new Vector(20, 15);
 			image = ResourceManager.getImage(Game.ENEMY_UFO_RSC).getScaledCopy((int)pushback.getX() *2, (int)pushback.getY() *2);
 			addImageWithBoundingBox(image);
 		}
+		else if(type == "robot") {
+			hp = 10;
+			speed = 0.1f;
+			pushback = new Vector(20, 20);
+			image = ResourceManager.getImage(Game.ENEMY_ROBOT_RSC).getScaledCopy((int)pushback.getX() *2, (int)pushback.getY() *2);
+			addImageWithBoundingBox(image);
+		}
 	}
 	
-//	public void pushBack(Vector dir, float val) {
-//		velocity.add(dir.scale(val));
-//	}
+	public Orb dropOrb() {
+		return null;
+	}
 	
 	public void setPath(Tile current) {
 		path.clear();
@@ -131,6 +138,9 @@ public class Enemy extends Entity {
 	public void update(final int delta) {
 		translate(velocity.scale(delta * speed));
 	}
+
+
+
 
 
 

@@ -21,7 +21,7 @@ import org.newdawn.slick.state.StateBasedGame;
 class PlayingState extends BasicGameState {
 	
 	private int angled_pos_delay, orb_pickup_delay;
-	private int player_shoot_cooldown, enemy_shoot_cooldown, enemy_knockout_cooldown;
+	private int player_shoot_cooldown, enemy_shoot_cooldown;
 	private boolean overlayEnabled = false;
 	
 	@Override
@@ -114,16 +114,16 @@ class PlayingState extends BasicGameState {
 		se.player.setVelocity(new Vector(0, 0));
 		// player movement
 		if (input.isKeyDown(Input.KEY_W)) {
-			se.player.setVelocity(se.player.getVelocity().add(new Vector(0f, -se.player.initSpeed * se.player.multSpeed)));
+			se.player.setVelocity(se.player.getVelocity().add(new Vector(0, -1)));
 		}
 		if (input.isKeyDown(Input.KEY_S)) {
-			se.player.setVelocity(se.player.getVelocity().add(new Vector(0f, +se.player.initSpeed * se.player.multSpeed)));
+			se.player.setVelocity(se.player.getVelocity().add(new Vector(0, 1)));
 		}
 		if (input.isKeyDown(Input.KEY_A)) {
-			se.player.setVelocity(se.player.getVelocity().add(new Vector(-se.player.initSpeed * se.player.multSpeed, 0f)));
+			se.player.setVelocity(se.player.getVelocity().add(new Vector(-1, 0)));
 		}
 		if (input.isKeyDown(Input.KEY_D)) {
-			se.player.setVelocity(se.player.getVelocity().add(new Vector(+se.player.initSpeed * se.player.multSpeed, 0f)));
+			se.player.setVelocity(se.player.getVelocity().add(new Vector(1, 0)));
 		}
 	
 		// player direction / aim
@@ -133,7 +133,7 @@ class PlayingState extends BasicGameState {
 				se.player.setRotation(180);
 				if(player_shoot_cooldown <= 0) {
 					addBullets(se, se.player, new Vector(0, -1));
-			player_shoot_cooldown = 100;
+					player_shoot_cooldown = 200;
 				}
 			}
 			
@@ -141,21 +141,21 @@ class PlayingState extends BasicGameState {
 				se.player.setRotation(270);
 				if(player_shoot_cooldown <= 0) {
 					addBullets(se, se.player, new Vector(1, 0));
-					player_shoot_cooldown = 100;
+					player_shoot_cooldown = 200;
 				}
 			}
 			if (input.isKeyDown(Input.KEY_DOWN)) {
 				se.player.setRotation(0);
 				if(player_shoot_cooldown <= 0) {
 					addBullets(se, se.player, new Vector(0, 1));
-					player_shoot_cooldown = 100;
+					player_shoot_cooldown = 200;
 				}
 			}
 			if (input.isKeyDown(Input.KEY_LEFT)) {
 				se.player.setRotation(90);
 				if(player_shoot_cooldown <= 0) {
 					addBullets(se, se.player, new Vector(-1, 0));
-					player_shoot_cooldown = 100;
+					player_shoot_cooldown = 200;
 				}
 			}
 		}
@@ -165,7 +165,7 @@ class PlayingState extends BasicGameState {
 			angled_pos_delay = 50;
 			if(player_shoot_cooldown <= 0) {
 				addBullets(se, se.player, new Vector(1, -1));
-				player_shoot_cooldown = 100;
+				player_shoot_cooldown = 200;
 			}
 			
 		}
@@ -174,7 +174,7 @@ class PlayingState extends BasicGameState {
 			angled_pos_delay = 50;
 			if(player_shoot_cooldown <= 0) {
 				addBullets(se, se.player, new Vector(1, 1));
-				player_shoot_cooldown = 100;
+				player_shoot_cooldown = 200;
 			}
 		}
 		if (input.isKeyDown(Input.KEY_DOWN) && input.isKeyDown(Input.KEY_LEFT)) {
@@ -182,7 +182,7 @@ class PlayingState extends BasicGameState {
 			angled_pos_delay = 50;
 			if(player_shoot_cooldown <= 0) {
 				addBullets(se, se.player, new Vector(-1, 1));
-				player_shoot_cooldown = 100;
+				player_shoot_cooldown = 200;
 			}
 		}
 		if (input.isKeyDown(Input.KEY_UP) && input.isKeyDown(Input.KEY_LEFT)) {
@@ -190,7 +190,7 @@ class PlayingState extends BasicGameState {
 			angled_pos_delay = 50;
 			if(player_shoot_cooldown <= 0) {
 				addBullets(se, se.player, new Vector(-1, -1));
-				player_shoot_cooldown = 100;
+				player_shoot_cooldown = 200;
 			}
 		}
 	}
@@ -238,7 +238,7 @@ class PlayingState extends BasicGameState {
 				if(g.enemies.get(i).type == "ufo" && g.enemies.get(i).path.size() <= 5) {
 					if(enemy_shoot_cooldown <= 0) {
 						addBullets(g, g.enemies.get(i), null);
-						enemy_shoot_cooldown = 100;
+						enemy_shoot_cooldown = 700;
 					}
 				}
 				g.enemies.get(i).traversePath();
@@ -305,10 +305,15 @@ class PlayingState extends BasicGameState {
 					//enemy.pushBack(bullet.getDirection(), bullet.force);
 					enemy.hp -= bullet.damage;
 					if(enemy.hp <= 0) {
+						//Orb potentialOrb = enemy.dropOrb();
 						g.enemies.remove(enemy);
 					}
-					g.bullets.remove(i);
+					g.bullets.remove(bullet);
 				}
+			}
+			if(g.player.collides(bullet) != null && bullet.isFromEnemy) {
+				g.player.hp -= bullet.damage;
+				g.bullets.remove(bullet);
 			}
 			// remove the bullet
 			if(bullet.isCollided(g.map, g.ScreenWidth, g.ScreenHeight))
