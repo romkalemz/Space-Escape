@@ -26,8 +26,6 @@ import jig.Vector;
 	public float hp;			//health of the player
 	public float pushback = 20;	//amount to push the player back once collided
 	
-	public ArrayList<Orb> attachments;
-	
 	public Player(final float x, final float y, float initSp) {
 		super(x, y);
 		image = ResourceManager.getImage(Game.PLAYER_ORIGIN_RSC).getScaledCopy(40, 40);
@@ -38,6 +36,7 @@ import jig.Vector;
 		initSpeed = initSp;
 		multSpeed = atkSpeed = atkDmg = 1;
 		hp = 3;
+
 	}
 
 	public void setVelocity(final Vector v) {

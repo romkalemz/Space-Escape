@@ -2,6 +2,7 @@ package space_escape;
 
 import jig.Entity;
 import jig.ResourceManager;
+import jig.Shape;
 import jig.Vector;
 
 import org.newdawn.slick.GameContainer;
@@ -255,13 +256,40 @@ class PlayingState extends BasicGameState {
 	private void orbUpdate(Game g, int delta) {
 		// remove orbs that the player collided with
 		for(int i = 0; i < g.orbs.size(); i++) {
-			if (g.player.collides(g.orbs.get(i)) != null) {
+			Orb orb = g.orbs.get(i);
+			if (g.player.collides(orb) != null) {
 				if(orb_pickup_delay <= 0) {
 					g.UI.addOrb(g.orbs.get(i));
 					g.orbs.remove(i);
 				}
 			}
 		}
+		// check if the player has 3 orbs already if so, go into final form
+		if(g.UI.currentOrbs.size() == 3) {
+			int reds = 0, blues = 0, greens = 0;
+			for(int i = 0; i < g.UI.currentOrbs.size(); i++) {
+				Orb orb = g.UI.currentOrbs.get(i);
+				if(orb != null) {
+					if(orb.type == "red")
+						reds++;
+					if(orb.type == "green")
+						greens++;
+					if(orb.type == "blue")
+						blues++;
+				}
+			}
+			if(reds == 1 && blues == 1 && greens == 1) {
+				if(g.UI.form == null) {
+					Entity rbg = new Entity(600, 755);
+					g.UI.setForm(rbg);
+				}
+			}
+			// if there is not at least 3 orbs, then remove form
+			else if(reds + blues + greens != 3)
+				g.UI.setForm(null);
+		}
+		
+		
 		orb_pickup_delay -= delta;
 	}
 

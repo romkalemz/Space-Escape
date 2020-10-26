@@ -33,6 +33,7 @@ public class Game extends StateBasedGame {
 	public static final String ORB_RED_RSC = "space_escape/resource/red_orb_anim.png";
 	public static final String ORB_GREEN_RSC = "space_escape/resource/green_orb_anim.png";
 	public static final String BOUND_RSC = "space_escape/resource/bound.png";
+	public static final String RBG_FORM_RSC = "space_escape/resource/rbg_form_anim.png";
 	
 	public final int ScreenWidth;
 	public final int ScreenHeight;
@@ -80,6 +81,7 @@ public class Game extends StateBasedGame {
 		ResourceManager.loadImage(ORB_BLUE_RSC);
 		ResourceManager.loadImage(ORB_GREEN_RSC);
 		ResourceManager.loadImage(BOUND_RSC);
+		ResourceManager.loadImage(RBG_FORM_RSC);
 		
 		map = new Map();
 		UI = new UiHandler();

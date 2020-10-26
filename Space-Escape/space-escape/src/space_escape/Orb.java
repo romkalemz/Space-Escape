@@ -8,8 +8,7 @@ import jig.ResourceManager;
 
 public class Orb extends Entity {
 	
-	private String type;
-	private Animation anim;
+	String type;
 	private Image image;
 	
 	
