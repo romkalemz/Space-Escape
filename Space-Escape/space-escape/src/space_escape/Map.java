@@ -280,9 +280,9 @@ public class Map {
 					solidTile.render(g);
 				}
 				// draw lines of costs of tiles around player
-				//if(tiles[x][y].prev != null)
-				//	g.drawGradientLine(tiles[x][y].prev.getX(), tiles[x][y].prev.getY(), 255, 255, 255, .2f,
-				//			tiles[x][y].getX(), tiles[x][y].getY(), 255, 255, 255, 0.2f);
+				if(tiles[x][y].prev != null)
+					g.drawGradientLine(tiles[x][y].prev.getX(), tiles[x][y].prev.getY(), 255, 255, 255, .2f,
+							tiles[x][y].getX(), tiles[x][y].getY(), 255, 255, 255, 0.2f);
 				// print the cost of tiles around enemies
 				//if(tiles[x][y].cost < 3)
 				//	g.drawString(""+df.format(tiles[x][y].cost), tiles[x][y].getPosition().getX() -15, tiles[x][y].getPosition().getY() - 10);

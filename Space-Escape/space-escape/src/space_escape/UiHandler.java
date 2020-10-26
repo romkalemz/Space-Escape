@@ -66,11 +66,11 @@ public class UiHandler {
 		// stats
 		//g.drawLine(0, 640, 1200, 640);
 		g.drawString("Movement Speed: " + (int)(se.player.moveSpeed *100), 25, 710);
-		g.drawString("Attack Speed: " + (int)(se.player.atkSpeed), 25, 735);
+		g.drawString("Attack Speed: " + (int)(se.player.rof / 100), 25, 735);
 		g.drawString("Attack Damage: " + (int)(se.player.atkDmg), 25, 760);
 		
 		// health 
-		for(int x = 0; x < se.player.hp; x++) {
+		for(int x = 0; x < se.player.HP; x++) {
 			g.drawImage(ResourceManager.getImage(Game.HEALTH_RSC).getScaledCopy(60, 60), 1100 - (x * 60), 720);
 		}
 		// item boxes

@@ -130,67 +130,59 @@ class PlayingState extends BasicGameState {
 		if (angled_pos_delay <= 0) {
 			if (input.isKeyDown(Input.KEY_UP)) {
 				se.player.setRotation(180);
-				if(player_shoot_cooldown <= 0) {
+				
+				if(player_shoot_cooldown <= 0)
 					addBullets(se, se.player, new Vector(0, -1));
-					player_shoot_cooldown = 200;
-				}
 			}
 			
 			if (input.isKeyDown(Input.KEY_RIGHT)) {
 				se.player.setRotation(270);
-				if(player_shoot_cooldown <= 0) {
+				
+				if(player_shoot_cooldown <= 0)
 					addBullets(se, se.player, new Vector(1, 0));
-					player_shoot_cooldown = 200;
-				}
 			}
 			if (input.isKeyDown(Input.KEY_DOWN)) {
 				se.player.setRotation(0);
-				if(player_shoot_cooldown <= 0) {
+				
+				if(player_shoot_cooldown <= 0)
 					addBullets(se, se.player, new Vector(0, 1));
-					player_shoot_cooldown = 200;
-				}
+
 			}
 			if (input.isKeyDown(Input.KEY_LEFT)) {
 				se.player.setRotation(90);
-				if(player_shoot_cooldown <= 0) {
+				
+				if(player_shoot_cooldown <= 0)
 					addBullets(se, se.player, new Vector(-1, 0));
-					player_shoot_cooldown = 200;
-				}
 			}
 		}
 		
 		if (input.isKeyDown(Input.KEY_UP) && input.isKeyDown(Input.KEY_RIGHT)) {
 			se.player.setRotation(225);
 			angled_pos_delay = 50;
-			if(player_shoot_cooldown <= 0) {
-				addBullets(se, se.player, new Vector(1, -1));
-				player_shoot_cooldown = 200;
-			}
 			
+			if(player_shoot_cooldown <= 0)
+				addBullets(se, se.player, new Vector(1, -1));
 		}
 		if (input.isKeyDown(Input.KEY_RIGHT) && input.isKeyDown(Input.KEY_DOWN)) {
 			se.player.setRotation(315);
 			angled_pos_delay = 50;
-			if(player_shoot_cooldown <= 0) {
+			
+			if(player_shoot_cooldown <= 0)
 				addBullets(se, se.player, new Vector(1, 1));
-				player_shoot_cooldown = 200;
-			}
 		}
 		if (input.isKeyDown(Input.KEY_DOWN) && input.isKeyDown(Input.KEY_LEFT)) {
 			se.player.setRotation(45);
 			angled_pos_delay = 50;
-			if(player_shoot_cooldown <= 0) {
+			
+			if(player_shoot_cooldown <= 0)
 				addBullets(se, se.player, new Vector(-1, 1));
-				player_shoot_cooldown = 200;
-			}
 		}
 		if (input.isKeyDown(Input.KEY_UP) && input.isKeyDown(Input.KEY_LEFT)) {
 			se.player.setRotation(135);
 			angled_pos_delay = 50;
-			if(player_shoot_cooldown <= 0) {
+			
+			if(player_shoot_cooldown <= 0)
 				addBullets(se, se.player, new Vector(-1, -1));
-				player_shoot_cooldown = 200;
-			}
 		}
 	}
 	
@@ -199,16 +191,19 @@ class PlayingState extends BasicGameState {
 		if(input.isKeyPressed(Input.KEY_1) && g.UI.currentOrbs.get(0) != null) {
 			Orb droppedOrb = g.UI.dropOrb(0);
 			addOrb(g, droppedOrb);
+			g.player.removeStats(droppedOrb);
 			orb_pickup_delay = 400;
 		}
 		if(input.isKeyPressed(Input.KEY_2) && g.UI.currentOrbs.get(1) != null) {
 			Orb droppedOrb = g.UI.dropOrb(1);
 			addOrb(g, droppedOrb);
+			g.player.removeStats(droppedOrb);
 			orb_pickup_delay = 400;
 		}
 		if(input.isKeyPressed(Input.KEY_3) && g.UI.currentOrbs.get(2) != null) {
 			Orb droppedOrb = g.UI.dropOrb(2);
 			addOrb(g, droppedOrb);
+			g.player.removeStats(droppedOrb);
 			orb_pickup_delay = 400;
 		}
 		
@@ -262,7 +257,6 @@ class PlayingState extends BasicGameState {
 				if(g.enemies.get(i).type == "ufo" && g.enemies.get(i).path.size() <= 5) {
 					if(enemy_shoot_cooldown <= 0) {
 						addBullets(g, g.enemies.get(i), null);
-						enemy_shoot_cooldown = 700;
 					}
 				}
 				g.enemies.get(i).traversePath();
@@ -280,11 +274,12 @@ class PlayingState extends BasicGameState {
 		// remove orbs that the player collided with
 		for(int i = 0; i < g.orbs.size(); i++) {
 			Orb orb = g.orbs.get(i);
+			
 			if (g.player.collides(orb) != null) {
-				if(orb_pickup_delay <= 0) {
+				
+				if(orb_pickup_delay <= 0 && g.player.orbCount < 3) {
 					g.UI.addOrb(g.orbs.get(i));
-					g.player.attachments.add(g.orbs.get(i));
-					g.player.setStats();
+					g.player.setStats(g.orbs.get(i));
 					g.orbs.remove(i);
 				}
 			}
@@ -292,9 +287,11 @@ class PlayingState extends BasicGameState {
 		// check if the player has 3 orbs already if so, go into final form
 		if(g.UI.currentOrbs.size() == 3) {
 			int reds = 0, blues = 0, greens = 0;
+			
 			for(int i = 0; i < g.UI.currentOrbs.size(); i++) {
 				Orb orb = g.UI.currentOrbs.get(i);
 				if(orb != null) {
+					
 					if(orb.type == "red")
 						reds++;
 					if(orb.type == "green")
@@ -304,7 +301,9 @@ class PlayingState extends BasicGameState {
 				}
 			}
 			if(reds == 1 && blues == 1 && greens == 1) {
+				
 				if(g.UI.form == null) {
+					
 					Entity rbg = new Entity(600, 755);
 					g.UI.setForm(rbg);
 				}
@@ -344,12 +343,12 @@ class PlayingState extends BasicGameState {
 				}
 			}
 			if(g.player.collides(bullet) != null && bullet.isFromEnemy) {
-				g.player.hp -= bullet.damage;
+				g.player.HP -= bullet.damage;
 				g.bullets.remove(bullet);
 			}
 			// remove the bullet
-			if(bullet.isCollided(g.map, g.ScreenWidth, g.ScreenHeight))
-				g.bullets.remove(i);
+			else if(bullet.isCollided(g.map, g.ScreenWidth, g.ScreenHeight))
+				g.bullets.remove(bullet);
 			
 			bullet.update(delta);
 		}
@@ -373,6 +372,13 @@ class PlayingState extends BasicGameState {
 				v = new Vector(1, 1).setRotation(dir);
 				b.setSpeed(0.2f);
 			}
+			enemy_shoot_cooldown = 700;
+		} else {
+			// bullet is from the player, adjust speed and damage
+			b.setDamage(g.player.atkDmg);
+			b.setSpeed(g.player.bulletSpeed);
+			
+			player_shoot_cooldown = g.player.rof;
 		}
 		b.setDirection(e, v);
 		g.bullets.add(b);
