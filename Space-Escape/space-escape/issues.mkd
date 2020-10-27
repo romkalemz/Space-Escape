@@ -15,8 +15,7 @@
 - **[5a]** Entity pickups that are called attachments (special powerups)
 - **[4b]** Update UI, show the orbs "picked up" in UI
 - **[5b]** Adjust stats of player based on the orbs collected, enemies can die now
+- **[8a]** Add different levels
+- **[8a]** Add splash art, different playing states, organized transitions
 
 ################################# Open Issues ######################################### 
----------------------------------------------------------------------------------------
-- **[7a]** Add different levels
-- **[7b]** Add splash art, different playing states, organized transitions

@@ -20,21 +20,13 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 class PlayingState extends BasicGameState {
 	
-	private int angled_pos_delay, orb_pickup_delay;
-	private int player_shoot_cooldown, enemy_shoot_cooldown, spawn_cooldown;
-	private boolean overlayEnabled = false, superEnabled = false;
-	
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		//load tiles based on level
 		Game se = (Game)game;
 		
-		//if(se.level == 1) {
-			se.map.loadLevel(se, 1);
-			se.background = ResourceManager.getImage(Game.BG_STARS_RSC);
-		//}
-		
+		se.background = ResourceManager.getImage(Game.BG_STARS_RSC);
 		// load initial routings for enemies
 		se.map.updateEnemies(se);
 		
@@ -55,7 +47,7 @@ class PlayingState extends BasicGameState {
 		se.UI.render(se, g);
 		
 		// render overlay
-		if(overlayEnabled) {
+		if(se.overlayEnabled) {
 			se.map.renderOverlay(g, se);
 			for(int i = 0; i < se.enemies.size(); i++)
 				se.enemies.get(i).renderPath(g);
@@ -93,36 +85,34 @@ class PlayingState extends BasicGameState {
 		orbUpdate(se, delta);
 		bulletUpdate(se, delta);
 		
-		if(se.UI.score >= 30) {
-			se.enterState(Game.GAMEOVERSTATE);
-		}
+		if(se.UI.score >= 30) 
+			se.enterState(Game.STARTUPSTATE);
 		
 	}
 
 	private void userCodes(Game g, Input input) {
 		// enable / disable overlay mapping
 		if(input.isKeyPressed(Input.KEY_O)) {
-			if(!overlayEnabled)
-				overlayEnabled = true;
+			if(!g.overlayEnabled)
+				g.overlayEnabled = true;
 			else 
-				overlayEnabled = false;
+				g.overlayEnabled = false;
 		}
 		// god mode enable / disable
 		if(input.isKeyPressed(Input.KEY_G)) {
-			if(!superEnabled) {
-				superEnabled = true;
+			if(!g.superEnabled) {
+				g.superEnabled = true;
 				g.player.setSuperStats(true);
 			}
 			else {
-				superEnabled = false;
+				g.superEnabled = false;
 				g.player.setSuperStats(false);
 			}
 		}
 		
-		// game over state
-		if (input.isKeyDown(Input.KEY_ESCAPE)) {
-			g.enterState(Game.GAMEOVERSTATE);
-		}
+		// next level
+		if (input.isKeyDown(Input.KEY_ESCAPE))
+			g.UI.score = 30;
 	}
 	
 	private void playerMove(Game se, Input input) {
@@ -143,61 +133,61 @@ class PlayingState extends BasicGameState {
 	
 		// player direction / aim
 		// wait for a slight cooldown to allow slower response times to angled facing position
-		if (angled_pos_delay <= 0) {
+		if (se.angled_pos_delay <= 0) {
 			if (input.isKeyDown(Input.KEY_UP)) {
 				se.player.setRotation(180);
 				
-				if(player_shoot_cooldown <= 0)
+				if(se.player_shoot_cooldown <= 0)
 					addBullets(se, se.player, new Vector(0, -1));
 			}
 			
 			if (input.isKeyDown(Input.KEY_RIGHT)) {
 				se.player.setRotation(270);
 				
-				if(player_shoot_cooldown <= 0)
+				if(se.player_shoot_cooldown <= 0)
 					addBullets(se, se.player, new Vector(1, 0));
 			}
 			if (input.isKeyDown(Input.KEY_DOWN)) {
 				se.player.setRotation(0);
 				
-				if(player_shoot_cooldown <= 0)
+				if(se.player_shoot_cooldown <= 0)
 					addBullets(se, se.player, new Vector(0, 1));
 
 			}
 			if (input.isKeyDown(Input.KEY_LEFT)) {
 				se.player.setRotation(90);
 				
-				if(player_shoot_cooldown <= 0)
+				if(se.player_shoot_cooldown <= 0)
 					addBullets(se, se.player, new Vector(-1, 0));
 			}
 		}
 		
 		if (input.isKeyDown(Input.KEY_UP) && input.isKeyDown(Input.KEY_RIGHT)) {
 			se.player.setRotation(225);
-			angled_pos_delay = 50;
+			se.angled_pos_delay = 50;
 			
-			if(player_shoot_cooldown <= 0)
+			if(se.player_shoot_cooldown <= 0)
 				addBullets(se, se.player, new Vector(1, -1));
 		}
 		if (input.isKeyDown(Input.KEY_RIGHT) && input.isKeyDown(Input.KEY_DOWN)) {
 			se.player.setRotation(315);
-			angled_pos_delay = 50;
+			se.angled_pos_delay = 50;
 			
-			if(player_shoot_cooldown <= 0)
+			if(se.player_shoot_cooldown <= 0)
 				addBullets(se, se.player, new Vector(1, 1));
 		}
 		if (input.isKeyDown(Input.KEY_DOWN) && input.isKeyDown(Input.KEY_LEFT)) {
 			se.player.setRotation(45);
-			angled_pos_delay = 50;
+			se.angled_pos_delay = 50;
 			
-			if(player_shoot_cooldown <= 0)
+			if(se.player_shoot_cooldown <= 0)
 				addBullets(se, se.player, new Vector(-1, 1));
 		}
 		if (input.isKeyDown(Input.KEY_UP) && input.isKeyDown(Input.KEY_LEFT)) {
 			se.player.setRotation(135);
-			angled_pos_delay = 50;
+			se.angled_pos_delay = 50;
 			
-			if(player_shoot_cooldown <= 0)
+			if(se.player_shoot_cooldown <= 0)
 				addBullets(se, se.player, new Vector(-1, -1));
 		}
 	}
@@ -208,19 +198,19 @@ class PlayingState extends BasicGameState {
 			Orb droppedOrb = g.UI.dropOrb(0);
 			addOrb(g, droppedOrb);
 			g.player.removeStats(droppedOrb);
-			orb_pickup_delay = 400;
+			g.orb_pickup_delay = 400;
 		}
 		if(input.isKeyPressed(Input.KEY_2) && g.UI.currentOrbs.get(1) != null) {
 			Orb droppedOrb = g.UI.dropOrb(1);
 			addOrb(g, droppedOrb);
 			g.player.removeStats(droppedOrb);
-			orb_pickup_delay = 400;
+			g.orb_pickup_delay = 400;
 		}
 		if(input.isKeyPressed(Input.KEY_3) && g.UI.currentOrbs.get(2) != null) {
 			Orb droppedOrb = g.UI.dropOrb(2);
 			addOrb(g, droppedOrb);
 			g.player.removeStats(droppedOrb);
-			orb_pickup_delay = 400;
+			g.orb_pickup_delay = 400;
 		}
 		
 		
@@ -230,14 +220,14 @@ class PlayingState extends BasicGameState {
 		g.player.update(delta);	
 		g.player.checkBounds(g.ScreenWidth, g.ScreenHeight);
 		g.player.checkCollision(g.map);
-		angled_pos_delay -= delta;
-		player_shoot_cooldown -= delta;
+		g.angled_pos_delay -= delta;
+		g.player_shoot_cooldown -= delta;
 	}
 	
 	private void enemyUpdate(Game g, int delta) {
 		// spawn enemies
-		if(spawn_cooldown <= 0) {
-			spawn_cooldown = 8500;
+		if(g.spawn_cooldown <= 0) {
+			g.spawn_cooldown = 8500;
 			Enemy e;
 			for(int i = 0; i < g.map.spawnTiles.size(); i++) {
 				Vector spawnPos = g.map.getTilePosition(g.map.spawnTiles.get(i));
@@ -287,8 +277,8 @@ class PlayingState extends BasicGameState {
 			g.enemies.get(i).shoot_cooldown -= delta;
 			g.enemies.get(i).KO -= delta;
 		}
-		enemy_shoot_cooldown -= delta;
-		spawn_cooldown -= delta;
+		g.enemy_shoot_cooldown -= delta;
+		g.spawn_cooldown -= delta;
 	}
 	
 	private void orbUpdate(Game g, int delta) {
@@ -298,7 +288,7 @@ class PlayingState extends BasicGameState {
 			
 			if (g.player.collides(orb) != null) {
 				
-				if(orb_pickup_delay <= 0) {
+				if(g.orb_pickup_delay <= 0) {
 					if(g.player.orbCount < 3) {
 						g.UI.addOrb(g.orbs.get(i));
 						g.player.setStats(g.orbs.get(i));
@@ -341,7 +331,7 @@ class PlayingState extends BasicGameState {
 		}
 		
 		
-		orb_pickup_delay -= delta;
+		g.orb_pickup_delay -= delta;
 	}
 
 	private void bulletUpdate(Game g, int delta) {
@@ -371,7 +361,7 @@ class PlayingState extends BasicGameState {
 				}
 			}
 			if(g.player.collides(bullet) != null && bullet.isFromEnemy) {
-				if(!superEnabled)
+				if(!g.superEnabled)
 					g.player.HP -= bullet.damage;
 				if(g.player.HP <= 0)
 					g.enterState(Game.GAMEOVERSTATE);
@@ -408,7 +398,7 @@ class PlayingState extends BasicGameState {
 			b.setDamage(g.player.atkDmg);
 			b.setSpeed(g.player.bulletSpeed);
 			
-			player_shoot_cooldown = g.player.rof;
+			g.player_shoot_cooldown = g.player.rof;
 		}
 		b.setDirection(e, v);
 		g.bullets.add(b);

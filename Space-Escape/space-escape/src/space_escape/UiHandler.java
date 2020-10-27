@@ -59,7 +59,11 @@ public class UiHandler {
 		rbg_anim.setLooping(true);
 		form.addAnimation(rbg_anim);
 	}
-	
+
+	public void clear() {
+		score = 0;
+		currentOrbs.clear();
+	}
 
 	public void render(Game se, Graphics g) {
 		//background

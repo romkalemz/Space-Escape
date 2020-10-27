@@ -17,10 +17,14 @@ public class Game extends StateBasedGame {
 	public static final int STARTUPSTATE = 0;
 	public static final int PLAYINGSTATE = 1;
 	public static final int GAMEOVERSTATE = 2;
+	public static final int WINSTATE = 3;
 	
 	public static final String PLAYER_ORIGIN_RSC = "space_escape/resource/player-origin.png";
-	public static final String GAMEOVER_BANNER_RSC = "space_escape/resource/gameover.png";
-	public static final String STARTUP_BANNER_RSC = "space_escape/resource/PressSpace.png";
+	public static final String GAMEOVER_BANNER_RSC = "space_escape/resource/gameover_screen.png";
+	public static final String STARTUP_BANNER_RSC = "space_escape/resource/title_screen.png";
+	public static final String LEVEL1_BANNER_RSC = "space_escape/resource/level1_screen.png";
+	public static final String LEVEL2_BANNER_RSC = "space_escape/resource/level2_screen.png";
+	public static final String WIN_BANNER_RSC = "space_escape/resource/victory_screen.png";
 	public static final String HEALTH_RSC = "space_escape/resource/heart.png";
 	public static final String ITEMSQR_RSC = "space_escape/resource/itemSqr.png";
 	public static final String TILE_OVERLAY_RSC = "space_escape/resource/overlayTile.png";
@@ -49,16 +53,27 @@ public class Game extends StateBasedGame {
 	ArrayList<Bullet> bullets;
 	public int level;
 	public Image background;
+	
+	public int angled_pos_delay, orb_pickup_delay;
+	public int player_shoot_cooldown, enemy_shoot_cooldown, spawn_cooldown;
+	public boolean overlayEnabled = false, superEnabled = false;
 
 
 	public Game(String title, int width, int height) {
 		super(title);
 		ScreenHeight = height;
 		ScreenWidth = width;
-		level = 1;
 
 		Entity.setCoarseGrainedCollisionBoundary(Entity.AABB);
 				
+	}
+	
+	public void clear() {
+		angled_pos_delay = orb_pickup_delay = 0;
+		player_shoot_cooldown = enemy_shoot_cooldown = spawn_cooldown = 0;
+		enemies.clear();
+		orbs.clear();
+		bullets.clear();
 	}
 
 	@Override
@@ -70,6 +85,9 @@ public class Game extends StateBasedGame {
 		ResourceManager.loadImage(PLAYER_ORIGIN_RSC);
 		ResourceManager.loadImage(GAMEOVER_BANNER_RSC);
 		ResourceManager.loadImage(STARTUP_BANNER_RSC);
+		ResourceManager.loadImage(LEVEL1_BANNER_RSC);
+		ResourceManager.loadImage(LEVEL2_BANNER_RSC);
+		ResourceManager.loadImage(WIN_BANNER_RSC);
 		ResourceManager.loadImage(HEALTH_RSC);
 		ResourceManager.loadImage(ITEMSQR_RSC);
 		ResourceManager.loadImage(TILE_OVERLAY_RSC);
@@ -92,6 +110,7 @@ public class Game extends StateBasedGame {
 		enemies = new ArrayList<Enemy>();
 		orbs = new ArrayList<Orb>();
 		bullets = new ArrayList<Bullet>();
+		level = -1;
 		
 		
 	}
