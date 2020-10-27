@@ -21,7 +21,7 @@ public class Enemy extends Entity {
 	public Vector pushback;
 	public int hp;
 	public int KO;			// knocked out cooldown (unable to traverse path if hit)
-	
+	public int shoot_cooldown;
 	
 	public Enemy(final float x, final float y, String type) {
 		super(x *40+20, y *40+20);

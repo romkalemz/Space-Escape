@@ -93,6 +93,10 @@ class PlayingState extends BasicGameState {
 		orbUpdate(se, delta);
 		bulletUpdate(se, delta);
 		
+		if(se.UI.score >= 30) {
+			se.enterState(Game.GAMEOVERSTATE);
+		}
+		
 	}
 
 	private void userCodes(Game g, Input input) {
@@ -233,7 +237,7 @@ class PlayingState extends BasicGameState {
 	private void enemyUpdate(Game g, int delta) {
 		// spawn enemies
 		if(spawn_cooldown <= 0) {
-			spawn_cooldown = 8000;
+			spawn_cooldown = 8500;
 			Enemy e;
 			for(int i = 0; i < g.map.spawnTiles.size(); i++) {
 				Vector spawnPos = g.map.getTilePosition(g.map.spawnTiles.get(i));
@@ -269,7 +273,8 @@ class PlayingState extends BasicGameState {
 		for(int i = 0; i < g.enemies.size(); i++) {
 			if(g.enemies.get(i).KO <= 0) {
 				if(g.enemies.get(i).type == "ufo" && g.enemies.get(i).path.size() <= 5) {
-					if(enemy_shoot_cooldown <= 0) {
+					if(g.enemies.get(i).shoot_cooldown <= 0) {
+						g.enemies.get(i).shoot_cooldown = 700;
 						addBullets(g, g.enemies.get(i), null);
 					}
 				}
@@ -278,8 +283,10 @@ class PlayingState extends BasicGameState {
 			g.enemies.get(i).update(delta);
 		}
 		
-		for(int i = 0; i < g.enemies.size(); i++)
+		for(int i = 0; i < g.enemies.size(); i++) {
+			g.enemies.get(i).shoot_cooldown -= delta;
 			g.enemies.get(i).KO -= delta;
+		}
 		enemy_shoot_cooldown -= delta;
 		spawn_cooldown -= delta;
 	}
@@ -357,6 +364,7 @@ class PlayingState extends BasicGameState {
 						if(potentialOrb != null)
 							g.orbs.add(potentialOrb);
 
+						g.UI.score += 1;
 						g.enemies.remove(enemy);
 					}
 					g.bullets.remove(bullet);
@@ -365,6 +373,8 @@ class PlayingState extends BasicGameState {
 			if(g.player.collides(bullet) != null && bullet.isFromEnemy) {
 				if(!superEnabled)
 					g.player.HP -= bullet.damage;
+				if(g.player.HP <= 0)
+					g.enterState(Game.GAMEOVERSTATE);
 				g.bullets.remove(bullet);
 			}
 			// remove the bullet
@@ -393,7 +403,6 @@ class PlayingState extends BasicGameState {
 				v = new Vector(1, 1).setRotation(dir);
 				b.setSpeed(0.2f);
 			}
-			enemy_shoot_cooldown = 700;
 		} else {
 			// bullet is from the player, adjust speed and damage
 			b.setDamage(g.player.atkDmg);
