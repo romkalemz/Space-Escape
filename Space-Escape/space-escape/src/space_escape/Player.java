@@ -38,14 +38,12 @@ import jig.Vector;
 		addImageWithBoundingBox(image);
 		
 		velocity = new Vector(0, 0);
-		//initSpeed = initSp;
 		rof = 450;
 		atkDmg = 1;
 		totalHP = HP = 5;
 		moveSpeed = 0.21f;
 		bulletSpeed = 0.3f;
 		regen_enabled = false;
-		//attachments = new ArrayList<Orb>();
 	}
 	
 	public void setSuperStats(boolean bool) {

@@ -70,7 +70,7 @@ public class UiHandler {
 		g.drawString("Movement Speed: " + (int)(se.player.moveSpeed *100), 25, 710);
 		g.drawString("Attack Speed: " + (int)(se.player.rof / 100), 25, 735);
 		g.drawString("Attack Damage: " + (int)(se.player.atkDmg), 25, 760);
-		g.drawString("Score: "+score, 600, 10);
+		g.drawString("Score: "+score, 550, 10);
 		
 		// health 
 		for(int x = 0; x < se.player.HP; x++) {
