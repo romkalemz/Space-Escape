@@ -220,6 +220,8 @@ class PlayingState extends BasicGameState {
 		g.player.update(delta);	
 		g.player.checkBounds(g.ScreenWidth, g.ScreenHeight);
 		g.player.checkCollision(g.map);
+		if(g.player.HP <= 0)
+			g.enterState(Game.GAMEOVERSTATE);
 		g.angled_pos_delay -= delta;
 		g.player_shoot_cooldown -= delta;
 	}
@@ -255,6 +257,10 @@ class PlayingState extends BasicGameState {
 		// for each enemy, check collisions and update their location
 		for(int i = 0; i < g.enemies.size(); i++) {
 			g.enemies.get(i).checkCollision(g.map);
+			if(g.enemies.get(i).collides(g.player) != null && g.touchdamage_cooldown <= 0) {
+				g.player.HP -= 1;
+				g.touchdamage_cooldown = 200;
+			}
 		}
 		// update enemies paths
 		g.map.updateEnemies(g);
@@ -277,6 +283,7 @@ class PlayingState extends BasicGameState {
 			g.enemies.get(i).shoot_cooldown -= delta;
 			g.enemies.get(i).KO -= delta;
 		}
+		g.touchdamage_cooldown -= delta;
 		g.enemy_shoot_cooldown -= delta;
 		g.spawn_cooldown -= delta;
 	}

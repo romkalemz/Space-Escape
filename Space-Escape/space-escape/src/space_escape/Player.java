@@ -46,6 +46,17 @@ import jig.Vector;
 		regen_enabled = false;
 	}
 	
+	public void clear() {
+		HP = totalHP = 5;
+		atkDmg = 1;
+		rof = 450;
+		atkDmg = 1;
+		moveSpeed = 0.21f;
+		bulletSpeed = 0.3f;
+		regen_enabled = false;
+		super_enabled = false;
+	}
+	
 	public void setSuperStats(boolean bool) {
 		super_enabled = bool;
 		if(bool) {

@@ -37,6 +37,7 @@ class StartUpState extends BasicGameState {
 		
 		se.clear();
 		se.map.clear();
+		se.player.clear();
 		se.UI.clear();
 		se.enemies.clear();
 		se.orbs.clear();

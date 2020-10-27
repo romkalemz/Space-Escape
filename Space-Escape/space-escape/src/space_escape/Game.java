@@ -55,7 +55,7 @@ public class Game extends StateBasedGame {
 	public Image background;
 	
 	public int angled_pos_delay, orb_pickup_delay;
-	public int player_shoot_cooldown, enemy_shoot_cooldown, spawn_cooldown;
+	public int player_shoot_cooldown, enemy_shoot_cooldown, spawn_cooldown, touchdamage_cooldown;
 	public boolean overlayEnabled = false, superEnabled = false;
 
 
@@ -70,7 +70,7 @@ public class Game extends StateBasedGame {
 	
 	public void clear() {
 		angled_pos_delay = orb_pickup_delay = 0;
-		player_shoot_cooldown = enemy_shoot_cooldown = spawn_cooldown = 0;
+		touchdamage_cooldown = player_shoot_cooldown = enemy_shoot_cooldown = spawn_cooldown = 0;
 		enemies.clear();
 		orbs.clear();
 		bullets.clear();
