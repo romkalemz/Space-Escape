@@ -1,0 +1,90 @@
+Name: Roman Stolyarov
+Email: romkas2000@gmail.com
+
+Overview:
+	This game is called Space Escape where you control a spaceship who's main goal is
+	to kill as many enemies (up to 30 to pass the level) and collect attachment powerups
+	that strengthen the player throughout the level. The game contains 3 different types
+	of enemies that vary in strength and uniqueness. The game in its prototype only contains
+	two unique levels and only three different enemies. Future plans are to continue
+	developing for this game introducing a boss, different animations for the player
+	and enemies as well as displaying the attachments gained from the orbs to display
+	on the player.
+	
+	
+Version 1.0 LOW BAR ITEMS:
+
+	- Collision Detection  ||  100%
+		The enemies and the player are restricted in the bounds of the map / level. 
+		Collisions amongst one another result in damage being taken by either player or enemy. 
+	
+	- Player Movement / Aiming  ||  100%
+		The player will have a set of controls to move around, 
+		and a set of controls to shoot the enemies.
+		
+	- AI Movement  ||  100%
+		The enemies in the game are able to detect the player, 
+		and either run away, or get closer to engage in combat. 
+	
+	- UI of Statistics  ||  100%
+		A User Interface that describes in the details of the player at its current time. 
+		Some example statistics would be, movement speed, damage, projectile speed, etc. 
+	
+	- Attachment Power Ups  ||  100%
+		The player gains abilities that change the play style and transform to a powerful expression of the 
+		three chosen abilities. These attachments grant the player a big spike advantage towards the enemies.
+	
+	- Unique Enemies  ||  100%
+		One enemy’s (aliens) primary goal is to touch the player which will result in a collision 
+		and damage being taken on impact. Another enemy’s goal is to shoot out a projectile towards the player.
+	
+		
+How to Run in Eclipse:
+	Needed libraries:
+		- JIG
+		- LIB
+
+	SpaceEscape -> src -> space_escape -> Game.java (right-click)
+	RunAs -> Java Application
+	
+	
+Controls:
+	W					Move up
+	A					Move left
+	S					Move down
+	D					Move right
+	
+	Right Arrow Key		aim / shoot right
+	Left Arrow Key		aim / shoot left
+	Up Arrow Key 		aim / shoot up
+	Dowm Arrow Key 		aim / shoot down
+	
+	1					Drop orb in SLOT 1
+	2					Drop orb in SLOT 2
+	3					Drop orb in SLOT 3
+	
+	G					Enable GOD MODE
+	O					Enable DEBUG MODE
+	ESCAPE				SKIP LEVEL
+
+
+External Resources:
+	Robot Enemy
+		https://pixelstarships.fandom.com/wiki/Boarder_Droid
+	
+	Orb Images
+		https://www.pngfind.com/mpng/TRiRhhi_different-colored-orbs-pixel-planet-transparent-hd-png/
+		
+	UFO Enemy
+		http://pixelartmaker.com/art/fef63d6d02f7a8e
+		
+	Alien Enemy
+		https://pngio.com/images/png-a2857760.html
+		
+	Astroid Tile
+		https://www.pinterest.com/pin/854065516815476467/?nic_v2=1a1rRFsuR
+		
+	Player Spaceship
+		https://www.clipartmax.com/middle/m2i8N4m2i8b1d3N4_preview-pixel-spaceship/
+	
+	
