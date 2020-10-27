@@ -33,21 +33,21 @@ public class Enemy extends Entity {
 		KO = 0;
 		
 		if(type == "alien") {
-			hp = 5;
+			hp = 3;
 			speed = 0.17f;
 			pushback = new Vector(15, 15);
 			image = ResourceManager.getImage(Game.ENEMY_ALIEN_RSC).getScaledCopy((int)pushback.getX() *2, (int)pushback.getY() *2);
 			addImageWithBoundingBox(image);
 		}
 		else if(type == "ufo") {
-			hp = 5;
+			hp = 4;
 			speed = 0.12f;
 			pushback = new Vector(20, 15);
 			image = ResourceManager.getImage(Game.ENEMY_UFO_RSC).getScaledCopy((int)pushback.getX() *2, (int)pushback.getY() *2);
 			addImageWithBoundingBox(image);
 		}
 		else if(type == "robot") {
-			hp = 10;
+			hp = 6;
 			speed = 0.1f;
 			pushback = new Vector(20, 20);
 			image = ResourceManager.getImage(Game.ENEMY_ROBOT_RSC).getScaledCopy((int)pushback.getX() *2, (int)pushback.getY() *2);
