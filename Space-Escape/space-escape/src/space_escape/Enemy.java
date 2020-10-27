@@ -17,9 +17,11 @@ public class Enemy extends Entity {
 	public ArrayList<Vector> path;
 	private int followPoint;
 	private float speed;
-	private Vector velocity;
+	public Vector velocity;
 	public Vector pushback;
-	
+	public int hp;
+	public int KO;			// knocked out cooldown (unable to traverse path if hit)
+	public int shoot_cooldown;
 	
 	public Enemy(final float x, final float y, String type) {
 		super(x *40+20, y *40+20);
@@ -27,20 +29,52 @@ public class Enemy extends Entity {
 		this.type = type;
 		path = new ArrayList<Vector>();
 		followPoint = 0;
-		velocity = new Vector(0.0f, 0.0f);
+		velocity = new Vector(0, 0);
+		KO = 0;
 		
 		if(type == "alien") {
-			speed = 0.15f;
+			hp = 5;
+			speed = 0.17f;
 			pushback = new Vector(15, 15);
 			image = ResourceManager.getImage(Game.ENEMY_ALIEN_RSC).getScaledCopy((int)pushback.getX() *2, (int)pushback.getY() *2);
 			addImageWithBoundingBox(image);
 		}
 		else if(type == "ufo") {
-			speed = 0.1f;
-			pushback = new Vector(25, 15);
+			hp = 5;
+			speed = 0.12f;
+			pushback = new Vector(20, 15);
 			image = ResourceManager.getImage(Game.ENEMY_UFO_RSC).getScaledCopy((int)pushback.getX() *2, (int)pushback.getY() *2);
 			addImageWithBoundingBox(image);
 		}
+		else if(type == "robot") {
+			hp = 10;
+			speed = 0.1f;
+			pushback = new Vector(20, 20);
+			image = ResourceManager.getImage(Game.ENEMY_ROBOT_RSC).getScaledCopy((int)pushback.getX() *2, (int)pushback.getY() *2);
+			addImageWithBoundingBox(image);
+		}
+	}
+	
+	public Orb dropOrb(Map map) {
+		Orb o = null;
+		Vector enemyPos;
+		double rand = Math.random();
+		if(rand > 0.50f) {
+			// drop the orb
+			if(type == "alien") {
+				enemyPos = map.getTilePosition(this);
+				o = new Orb(enemyPos.getX(), enemyPos.getY(), "blue");
+			}
+			else if(type == "ufo") {
+				enemyPos = map.getTilePosition(this);
+				o = new Orb(enemyPos.getX(), enemyPos.getY(), "red");
+			}
+			else if(type == "robot") {
+				enemyPos = map.getTilePosition(this);
+				o = new Orb(enemyPos.getX(), enemyPos.getY(), "green");
+			}
+		} 
+		return o;
 	}
 	
 	public void setPath(Tile current) {
@@ -120,8 +154,12 @@ public class Enemy extends Entity {
 	}
 	
 	public void update(final int delta) {
-		traversePath();
 		translate(velocity.scale(delta * speed));
 	}
+
+
+
+
+
 
 }

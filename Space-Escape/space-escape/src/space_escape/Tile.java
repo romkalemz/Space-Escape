@@ -24,7 +24,6 @@ public class Tile extends Entity implements Comparable<Tile> {
 	public boolean visited;
 	
 	public boolean isSolid() 	{ return solid; }
-	public boolean isCorner() 	{ return corner; }
 	
 	public int getTileX() { return x; }
 	public int getTileY() { return y; }

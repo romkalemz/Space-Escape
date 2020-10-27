@@ -3,6 +3,7 @@ package space_escape;
 import java.util.ArrayList;
 
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
@@ -16,12 +17,13 @@ public class UiHandler {
 	ArrayList<Orb> currentOrbs;		// an array of current occupied orbs
 	Entity form;					// the final transfomation after 3 collected orbs
 	Animation rbg_anim;
+	int score;
 	
 	public UiHandler() {
 		//healthBar = new ArrayList<Shape>();
 		currentOrbs = new ArrayList<Orb>();
 		form = null;
-		
+		score = 0;
 	}
 	
 	public void addOrb(Orb o) {
@@ -65,13 +67,17 @@ public class UiHandler {
 		
 		// stats
 		//g.drawLine(0, 640, 1200, 640);
-		g.drawString("Movement Speed: " + se.player.initSpeed * se.player.multSpeed * 4, 25, 710);
-		g.drawString("Attack Speed: " + se.player.atkSpeed, 25, 735);
-		g.drawString("Attack Damage: " + se.player.atkDmg, 25, 760);
+		g.drawString("Movement Speed: " + (int)(se.player.moveSpeed *100), 25, 710);
+		g.drawString("Attack Speed: " + (int)(se.player.rof / 100), 25, 735);
+		g.drawString("Attack Damage: " + (int)(se.player.atkDmg), 25, 760);
+		g.drawString("Score: "+score, 550, 10);
 		
 		// health 
-		for(int x = 0; x < se.player.hp; x++) {
-			g.drawImage(ResourceManager.getImage(Game.HEALTH_RSC).getScaledCopy(60, 60), 1100 - (x * 60), 720);
+		for(int x = 0; x < se.player.HP; x++) {
+			Image image = ResourceManager.getImage(Game.HEALTH_RSC).getScaledCopy(60, 60);
+			if(se.player.super_enabled)
+				image.setImageColor(0.9f, 1.0f, 0.0f);
+			g.drawImage(image, 1100 - (x * 60), 720);
 		}
 		// item boxes
 		for(int x = 0; x < 3; x++) {

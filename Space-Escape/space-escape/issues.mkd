@@ -14,10 +14,9 @@
 - **[6b]** UFO enemy shoots out a projectile if in direct line of sight w/ player
 - **[5a]** Entity pickups that are called attachments (special powerups)
 - **[4b]** Update UI, show the orbs "picked up" in UI
+- **[5b]** Adjust stats of player based on the orbs collected, enemies can die now
 
 ################################# Open Issues ######################################### 
----------------------------------------------------------------------------------------
-- **[5b]** Adjust stats of player based on the orbs collected
 ---------------------------------------------------------------------------------------
 - **[7a]** Add different levels
 - **[7b]** Add splash art, different playing states, organized transitions
