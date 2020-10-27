@@ -22,7 +22,7 @@ class PlayingState extends BasicGameState {
 	
 	private int angled_pos_delay, orb_pickup_delay;
 	private int player_shoot_cooldown, enemy_shoot_cooldown, spawn_cooldown;
-	private boolean overlayEnabled = false;
+	private boolean overlayEnabled = false, superEnabled = false;
 	
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
@@ -103,6 +103,18 @@ class PlayingState extends BasicGameState {
 			else 
 				overlayEnabled = false;
 		}
+		// god mode enable / disable
+		if(input.isKeyPressed(Input.KEY_G)) {
+			if(!superEnabled) {
+				superEnabled = true;
+				g.player.setSuperStats(true);
+			}
+			else {
+				superEnabled = false;
+				g.player.setSuperStats(false);
+			}
+		}
+		
 		// game over state
 		if (input.isKeyDown(Input.KEY_ESCAPE)) {
 			g.enterState(Game.GAMEOVERSTATE);
@@ -225,22 +237,24 @@ class PlayingState extends BasicGameState {
 			Enemy e;
 			for(int i = 0; i < g.map.spawnTiles.size(); i++) {
 				Vector spawnPos = g.map.getTilePosition(g.map.spawnTiles.get(i));
-				// place enemy at that tile (find a random type of enemy)
-				double rand = Math.random();
-				if(rand <= 0.33) {
-					// spawn alien
-					e = new Enemy(spawnPos.getX(), spawnPos.getY(), "alien");
+				if(spawnPos != g.map.getTilePosition(g.player)) {
+					// place enemy at that tile (find a random type of enemy)
+					double rand = Math.random();
+					if(rand <= 0.33) {
+						// spawn alien
+						e = new Enemy(spawnPos.getX(), spawnPos.getY(), "alien");
+					}
+					else if(rand > 0.33 && rand <= 0.66) {
+						// spawn ufo
+						e = new Enemy(spawnPos.getX(), spawnPos.getY(), "ufo");
+					}
+					else if(rand > 0.66) {
+						// spawn robot
+						e = new Enemy(spawnPos.getX(), spawnPos.getY(), "robot");
+					} else
+						e = null;
+					g.enemies.add(e);
 				}
-				else if(rand > 0.33 && rand <= 0.66) {
-					// spawn ufo
-					e = new Enemy(spawnPos.getX(), spawnPos.getY(), "ufo");
-				}
-				else if(rand > 0.66) {
-					// spawn robot
-					e = new Enemy(spawnPos.getX(), spawnPos.getY(), "robot");
-				} else
-					e = null;
-				g.enemies.add(e);
 				
 			}
 		}
@@ -277,9 +291,15 @@ class PlayingState extends BasicGameState {
 			
 			if (g.player.collides(orb) != null) {
 				
-				if(orb_pickup_delay <= 0 && g.player.orbCount < 3) {
-					g.UI.addOrb(g.orbs.get(i));
-					g.player.setStats(g.orbs.get(i));
+				if(orb_pickup_delay <= 0) {
+					if(g.player.orbCount < 3) {
+						g.UI.addOrb(g.orbs.get(i));
+						g.player.setStats(g.orbs.get(i));
+						
+					} else if(g.player.orbCount == 3) {
+						// start collecting points for the score
+						g.UI.score += 1;
+					}
 					g.orbs.remove(i);
 				}
 			}
@@ -343,7 +363,8 @@ class PlayingState extends BasicGameState {
 				}
 			}
 			if(g.player.collides(bullet) != null && bullet.isFromEnemy) {
-				g.player.HP -= bullet.damage;
+				if(!superEnabled)
+					g.player.HP -= bullet.damage;
 				g.bullets.remove(bullet);
 			}
 			// remove the bullet

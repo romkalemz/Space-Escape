@@ -19,14 +19,13 @@ import jig.Vector;
 	private Vector velocity;
 	public Image image;
 	
-	public float initSpeed;		// initial starting speed
-	public int rof;				// the rate of fire from player
-	public float bulletSpeed;	// the speed of bullet travel
-	public int atkDmg;			// the amount of hit points per bullet
-	public float moveSpeed;		// the movement speed of player
-	public float HP;			// health of the player
-	public float totalHP;		// the max hp the player can have
-	public boolean regen_enabled;
+	public int rof, super_rof = 450;			// the rate of fire from player
+	public float bulletSpeed;					// the speed of bullet travel
+	public int atkDmg, superDmg = 100;			// the amount of hit points per bullet
+	public float moveSpeed, super_speed = 0.2f;	// the movement speed of player
+	public float HP;							// health of the player
+	public float totalHP;						// the max hp the player can have
+	public boolean regen_enabled, super_enabled;
 	public int regen_cooldown;
 	public float pushback = 20;	// amount to push the player back once collided
 	
@@ -49,51 +48,67 @@ import jig.Vector;
 		//attachments = new ArrayList<Orb>();
 	}
 	
+	public void setSuperStats(boolean bool) {
+		super_enabled = bool;
+		if(bool) {
+			atkDmg += superDmg;
+			rof -= super_rof;
+			moveSpeed += super_speed;
+		}
+		else {
+			atkDmg -= superDmg;
+			rof += super_rof;
+			moveSpeed -= super_speed;
+		} 
+	}
 	
 	public void setStats(Orb orb) {
-	
-		if(orb.type == "red") {
-			if(atkDmg == 3)
-				atkDmg += 2;
-			else 
-				atkDmg += 1;
-		}
-		if(orb.type == "blue") {
-			moveSpeed += 0.05;
-			if(rof == 150) {
-				rof -= 50;
-			} else
-				rof -= 150;
-		}
-		if(orb.type == "green") {
-			//totalHPincrease = true;
-			HP += 1;
-			totalHP++;
-			regen_enabled = true;
-			regen_cooldown = 2000;
+		if(!super_enabled) {
+			if(orb.type == "red") {
+				if(atkDmg == 3)
+					atkDmg += 2;
+				else 
+					atkDmg += 1;
+			}
+			if(orb.type == "blue") {
+				moveSpeed += 0.05;
+				if(rof == 150) {
+					rof -= 50;
+				} else
+					rof -= 150;
+			}
+			if(orb.type == "green") {
+				//totalHPincrease = true;
+				HP += 1;
+				totalHP++;
+				regen_enabled = true;
+				regen_cooldown = 2000;
+			}
 		}
 		orbCount++;
 	}
 	
 	public void removeStats(Orb orb) {
-		if(orb.type == "red") {
-			if(atkDmg == 5) {
-				atkDmg -= 2;
-			} else
-				atkDmg -= 1;
-		}
-		if(orb.type == "blue") {
-			moveSpeed -= 0.05;
-			rof += 150;
-		}
-		if(orb.type == "green") {
-			if(HP > 1) {
-				totalHP--;
-				HP -= 1;	
+		if(!super_enabled) {
+			if(orb.type == "red") {
+				if(atkDmg == 5) {
+					atkDmg -= 2;
+				} else
+					atkDmg -= 1;
 			}
-			else
-				totalHP--;
-			regen_enabled = false;
+			if(orb.type == "blue") {
+				moveSpeed -= 0.05;
+				rof += 150;
+			}
+			if(orb.type == "green") {
+				if(HP > 1) {
+					totalHP--;
+					HP -= 1;	
+				}
+				else
+					totalHP--;
+				regen_enabled = false;
+			}
 		}
 		orbCount--;
 	}
@@ -172,7 +187,7 @@ import jig.Vector;
 
 	public void update(final int delta) {
 		// update health if you have regen
-		if(regen_enabled && regen_cooldown <= 0) {
+		if(regen_enabled && regen_cooldown <= 0 && !super_enabled) {
 			if(HP < totalHP) {
 				HP++;
 				if(totalHP == 6)
