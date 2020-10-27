@@ -12,12 +12,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-
-/**
- * Transitions From StartUpState
- * 
- * Transitions To GameOverState
- */
 class PlayingState extends BasicGameState {
 	
 	@Override
@@ -257,9 +251,9 @@ class PlayingState extends BasicGameState {
 		// for each enemy, check collisions and update their location
 		for(int i = 0; i < g.enemies.size(); i++) {
 			g.enemies.get(i).checkCollision(g.map);
-			if(g.enemies.get(i).collides(g.player) != null && g.touchdamage_cooldown <= 0) {
+			if(g.enemies.get(i).collides(g.player) != null && g.touchdamage_cooldown <= 0 && !g.superEnabled) {
 				g.player.HP -= 1;
-				g.touchdamage_cooldown = 200;
+				g.touchdamage_cooldown = 400;
 			}
 		}
 		// update enemies paths

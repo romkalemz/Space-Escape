@@ -11,16 +11,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-/**
- * This state is active prior to the Game starting. In this state, sound is
- * turned off, and the bounce counter shows '?'. The user can only interact with
- * the game by pressing the SPACE key which transitions to the Playing State.
- * Otherwise, all game objects are rendered and updated normally.
- * 
- * Transitions From (Initialization), GameOverState
- * 
- * Transitions To PlayingState
- */
 class StartUpState extends BasicGameState {
 	
 	public int delay;
